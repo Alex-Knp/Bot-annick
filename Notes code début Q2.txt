@@ -1,0 +1,96 @@
+Général:
+- le plus important est que le robot soit fiable. Il faut que si une action ne fonctionne pas comme prévu, le robot s'en rende compte et sache agir en conséquence.
+  Il faut prévoir l'échec et l'action qui s'en suit pour chaque action. Il faut un maxiumum de redondance, un maximum de sécurité pour ne pas que le robot 
+  s'autodétruise (surtout les ciseaux) et que la position ne soit update par le lidar que si l'information est complètement sûre.
+  
+- il faut faire un code très modulaire, bien segmenté et facile à lire/modifier par tout le monde. On doit pouvoir modifier les conditions/l'ordre des actions/les
+  paramètres des actions très facilement. Les FSM sont très bien pour ça.
+  
+- il faut essayer de faire en sorte que toutes les informations/variables soient accèssible partout pour ne pas devoir les faire passer en paramètres dans tous les
+  sens
+  
+- il faut qu'on apprenne tous à bien utiliser git
+
+ 
+Répartition du codage (par ordre de longueur estimé de la tâche):
+- quelqu'un qui fait le thread de contrôle
+- quelqu'un qui fait la caméra
+- quelqu'un qui fait le DE0-nano/controle des actuators et des sensors
+- quelqu'un qui fait le LiDAR
+- quelqu'un qui fait le path planning
+- quelqu'un qui code les pami
+- quelqu'un qui fait le contrôleur bas niveau sur la teensy
+
+
+Structure génrale du code:
+- le code est composé de trois threads : un thread de contrôle, un thread LiDAR et un thread caméra.
+
+- il y a une structure partagée entre le thread de contrôle et le thread LiDAR. Cette structure est bidirectionelle car le LiDAR doit savoir où est le robot
+  pour pouvoir exclure les balises ennemies.
+  
+- il y a une structure partagée entre le thread de contrôle et le thread caméra. Cette structure est en principe unidirectionelle car la caméra n'a pas pas 
+  besoin d'informations du thread de contrôle.
+	
+	
+Thread de contrôle:
+- le thread de contrôle comporte une FSM dont chaque état est une action de jeu (e.g. ramasser plantes, ramasser pots, panneaux solaires, ...)
+
+- chaque état de la FSM est une sous-FSM qui décompose les actions (e.g. pour ramasser les plantes : tourner la pince, descendre la pince, fermer la pince, ...)
+
+- le déplacement n'est pas un état de la FSM, mais chaque bloc de la FSM retourne l'endroit ou il veut être et c'est dans la boucle principale de conrôle
+  (en série avec la FSM principale) que se situe de contrôleur en position. Il obéit aux commandes des états de la FSM, tout en gérant l'évitement d'ennemi
+  et le path planning
+  
+  
+PAMI:
+- ce serait bien qu'ils puissent communiquer avec le robot principal, pour qu'il sachent quand partir et vers quelle jardinière se diriger
+
+	
+
+
+Améliorations lidar:
+- A chaque fois que le lidar calule une nouvelle position, le thread de controle vérifie la vitesse moyenne depuis la dernière position que
+  cela implique, et rejette cette nouvelle position si celle vitesse est impossible (il faut surement prendre une grosse marge car interval de temps très court).
+  Cela permettrait de dégager les mauavaises mesures qui localisent le robot de l'autre côté du plateau de jeu en un coup et qui le font partir en couille.
+  
+- Faire une fonction de calibration du lidar qui fonctionnerait comme suit : avant chaque partie, on met le robot sur la table et il mesure plein de fois les
+  balises. Il calcule ensuite la moyenne de la distance entre les balises qu'il a mesuré comme ça même si les balises sont pas parfaitement mises, on a quand même
+  une très bonne précision. C'est peut-être compliqué mais on pourrait aussi faire une trilatération inverse qui, avec une postion connue du robot(on le met à 
+  une coordonnée précise sur la table) mesure la posititon précise des balises. Je pense qu'une grosse partie de l'imprécision des balises vient du fait que
+  les coordonnées qu'on entre ne sont pas extrêmement précises
+  
+- implémenter la réjection des balises ennemies
+
+- implémenter la détection d'ennemis
+  
+  
+Améliorations contrôle:
+- utiliser atan2() plutôt que atan() avec un if(x<0)
+
+- pour les odomètres et les encodeurs, régler le temps du counter de tics sur le DE0-nano de manière à ce qu'il compte envrion autant de temps que la boucle de
+  contrôle met à faire une itération, comme ça il y a une nouvelle info d'odo/encodeurs par boucle -> compromis parfait entre précision et délai
+  
+- mettre toutes les constantes en variable globales (du genre Kp, Ki, ...) et mettre un maximum de paramètres en paramètre des fonctions pour un max de 
+  flexibilité
+  
+- grouper les requêtes SPI de manière intelligente, ne pas faire une grosse requête à un endroit car ça voudrait dire qu'on n'utilise pas les données les plus
+  récentes possible pour certains contrôles (introduction d'un délai) mais il faut essayer de grouper intelligement les requêtes. Par exemple ça serait bien
+  de mettre les deux odomètres dans une seule requête pour avoir les deux infos en simultané plutôt que de récupérer une info, et puis l'autre info qui a changé 
+  entre temps et qui introduit donc une erreur dans le calcul de position odo/encodeurs
+  
+  
+Améliorations odo:
+- bien traiter le cas de quand le lidar update la position. Le plus facile c'est de faire en sorte que si le lidar a update une boucle, les odo ne le fassent pas.
+  sinon on peut faire en sorte que le lidar fassent une requête odo pour que les odo puissent update dans la même boucle et avec des informations cohérentes mais
+  c'est pas vraiment utile.
+  
+- calibrer à fond à fond à fond les odomètres, il faut vraiment tout faire pour que les odomètres soient les plus précis possible.
+
+
+Améliorations contrôle bas niveau :
+- tester la back emf compensation avec la vitesse mesurée et avec la vitesse de référence.
+
+- peaufiner à fond les gains
+
+- regarder si il n'y a pas moyen de compenser le délai dû à la discrétisation de la boucle de contrôle
+
