@@ -11,6 +11,8 @@ Général:
   
 - il faut qu'on apprenne tous à bien utiliser git
 
+- se mettre d'accord sur les unités qu'on utilise !!!
+
  
 Répartition du codage (par ordre de longueur estimé de la tâche):
 - quelqu'un qui fait le thread de contrôle

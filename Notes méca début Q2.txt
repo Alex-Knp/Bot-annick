@@ -1,0 +1,10 @@
+- 	on ne va pas mettre de microswitch de démarrage, à la place la ficelle de démarrage libèrera les v, et les microswitch du V
+	qui seront désenclenchés à ce moment là détecterons le démarrage. A la place du microswitch de démarrage on mettra un bouton
+	qu'on peut utiliser comme pour le minibot, pour arrêter la bouche de contrôle quand on a appuie dessus (on peut peut-être 
+	utiliser le bouton d'arrêt d'urgence pour ça
+
+-	pour les LED, je pensais les mettre dans le haut de la plant bay. Elles seraient éclairées en blanc quand la bay ne contient 
+	rien/que des pots, elles passeraient en mauve (en mode lampe UV pour les plantes) quand des plantes seront dans la plant bay.
+	Elles passeraient en rouge quand on appuie sur le bouton d'arrêt d'urgence (pour ça on doit raccorder le bouton d'arrêt d'urgence
+	à RPI, à la place du microswitch de démarrage.
+	
