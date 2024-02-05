@@ -1,0 +1,9 @@
+Notes Rapport 
+
+- Remettre vue complete du robot avant de parler du detail des mecanismes
+
+- Vues éclatées des mécanismes
+- Dim. moteur : considérer le couple rms sur la durée du match et pas juste le couple de mise en mvt
+- Nommer/Montrer toutes les variables
+- Rigueur des raisonnements, aller au bout des justifications
+
