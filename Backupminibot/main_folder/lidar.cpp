@@ -256,9 +256,9 @@ void getFinalBeacon(std::vector<Beacon>& beacons, std::vector<Beacon>& final_bea
                 double distance2 = DistBtwBeacon(beacons[i], beacons[k]);
                 double distance3 = DistBtwBeacon(beacons[j], beacons[k]);
 
-                if (((2600 <= distance1 && distance1 <= 2700) || (2870 <= distance1 && distance1 <= 2970)) &&
-                    ((2600 <= distance2 && distance2 <= 2700) || (2870 <= distance2 && distance2 <= 2970)) &&
-                    ((2600 <= distance3 && distance3 <= 2700) || (2870 <= distance3 && distance3 <= 2970))) {
+                if (((1900 <= distance1 && distance1 <= 2000) || (3230 <= distance1 && distance1 <= 3330)) &&
+                    ((1900 <= distance2 && distance2 <= 2000) || (3230 <= distance2 && distance2 <= 3330)) &&
+                    ((1900 <= distance3 && distance3 <= 2000) || (3230 <= distance3 && distance3 <= 3330))) {
 
                     sum = distance1 + distance2 + distance3;
 
