@@ -244,7 +244,7 @@ void getFinalBeacon(std::vector<Beacon>& beacons, std::vector<Beacon>& final_bea
     // une fois les trois bon beacons trouvés on les ajoute au vecteur final de beacons
     double sum = 0;
     int size = beacons.size();
-    double desired_distance = 8130  ;           // distance cumulée entre les trois beacons
+    double desired_distance = 8510  ;           // distance cumulée entre les trois beacons
     double error = 100;                         // marge d'erreur pour la distance souhaitée
     for (int i = 0; i < size-2; ++i) {
         for (int j = i + 1; j < size-1; ++j) {
