@@ -48,12 +48,12 @@ void ctrlc(int)
 void scanLidar(ILidarDriver* drv){
 
     lidar_data myLidarData;
-    myLidarData.beaconsx[0] = -95;
-    myLidarData.beaconsx[1] = -95;
-    myLidarData.beaconsx[2] = 2095;
-    myLidarData.beaconsy[0] = 73;
-    myLidarData.beaconsy[1] = 2949;
-    myLidarData.beaconsy[2] = 1500;
+    myLidarData.beaconsx[0] = 45;
+    myLidarData.beaconsx[1] = 1995;
+    myLidarData.beaconsx[2] = 1000;
+    myLidarData.beaconsy[0] = -94;
+    myLidarData.beaconsy[1] = -94;
+    myLidarData.beaconsy[2] = 3044;
     myLidarData.theta_lidar_calibration = M_PI;
 
     //float mean = 1/2.0*(sqrt(pow((myLidarData.beaconsx[0]-myLidarData.beaconsx[1]),2.0)+pow(myLidarData.beaconsy[0]-myLidarData.beaconsy[1],2.0))+sqrt(pow((myLidarData.beaconsx[1]-myLidarData.beaconsx[2]),2.0)+pow((myLidarData.beaconsy[1]-myLidarData.beaconsy[2]),2.0)));
