@@ -1,0 +1,21 @@
+
+module odometer (
+    input logic reset,                       // chaque fois qu'on recoit l'adresse de cet odometre on reset le compteur donc ce reset doit valoir 0
+    input logic A,
+    input logic B,
+    output logic [31:0] dist,                // compteur correspondant au nombre de flancs montants de A depuis la dernière fois qu'on a reçu l'adresse de cet odomètre
+);                                           // pour obtenir lal distance parcourue, on fait dist/2048 * 2pi*r avec r le rayon de la roue
+
+logic [31:0] count_odo;
+
+always_ff @(posedge A) begin                           // sur chaque flanc montant de A on on augmente le compteur, 
+
+        if (reset) count_odo <= 0;
+
+        else begin 
+		    if (B == 0) count_odo <= count_odo - 1;        // on recule le compteur si B = 0
+            else count_odo <= count_odo + 1;               // on avance le compteur si B = 1
+        end
+	end 
+assign dist = count_odo;                                 
+endmodule 

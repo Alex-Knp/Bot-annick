@@ -1,0 +1,14 @@
+FPGAnnick : 
+
+
+=====  SENSORS  ======
+- Odometre (2)
+- IR (5)
+- micro-switch (5)
+
+
+===== ACTUATORS ======
+- Servo (4) (position, PWM)
+- Dynamixel (2) (position, UART)
+- Stepper motors (2) (position, stepper language)
+
