@@ -1,7 +1,6 @@
 module Servo_PWM(
-    input logic mclk,
-    input logic [31:0] control,
-//    output [0:0] Led,
+    input logic clk,
+	input logic [31:0] control,
 	output logic servo
     );
 
@@ -21,19 +20,17 @@ module Servo_PWM(
 
 //essential registers
 logic [19:0] counter;
-logic        servo_reg;
 
 ////////////////////////////////////////////////////////////
 //Test Control registers ///////////////////////////////////
 ////////////////////////////////////////////////////////////
-logic [15:0] control_cut; 
-assign control_cut = control[15:0]; //65535 there is wiggle room but you should be careful to not overcontrol
-//reg 		  toggle		=	1;
+
+//reg toggle	=	1;
 ////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////
 
 
-always @(posedge mclk)
+always_ff @(posedge clk)
 begin
 
 //Servo algorithm
@@ -41,33 +38,31 @@ begin
 	if(counter == 'd999999)
 			counter <= 0;
 
-	if(counter < ('d50000 + control_cut))
-			servo_reg <= 1;
+	if(counter < ('d50000 + control))
+			servo	<= 1;
 	else
-			servo_reg <= 0;
+			servo	<= 0;
 
 ////////////////////////////////////////////////////////////
 //Test control algorithm////////////////////////////////////
 ////////////////////////////////////////////////////////////
+/*
+if(control_cut == 'd50000)
+	toggle <= 0;
+if(control_cut == 0)
+	toggle <= 1; 
 
-/*		if(control == 'd50000)
-				toggle <= 0;
-		if(control == 0)
-				toggle <= 1;    */
-
-/*	if(counter == 0)
-		begin
-			if(toggle == 0)
-					control <= control - 1000;
-			if(toggle == 1)
-					control <= control + 1000;
-		end         */
+if(counter == 0)
+	begin
+		if(toggle == 0)
+			control_cut <= control_cut - 1000;
+		if(toggle == 1)
+			control_cut <= control_cut + 1000;
+	end
+	*/  
 ////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////
 
 end
-
-//  assign Led[0] = toggle
-assign servo	= servo_reg;
 
 endmodule

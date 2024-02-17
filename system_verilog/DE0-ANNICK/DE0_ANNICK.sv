@@ -187,29 +187,51 @@ odometer odoR (
 
 
 // ---  Servo  instantation    -----------------------------------------------
-	logic [31:0] Servo_control_LC, Servo_control_LP, Servo_control_RC, Servo_control_RP; 
-	logic servo_LC, servo_LP, servo_RC, servo_RP;
+logic [31:0] Servo_control_LC, Servo_control_LP, Servo_control_RC, Servo_control_RP; 
+logic servo_LC, servo_LP, servo_RC, servo_RP;
 
-	Servo_PWM SERVO_LC (
-		.mclk(clk), 
-		.control(Servo_control_LC), 
-		.servo(servo_LC) 
-	); 
-	Servo_PWM SERVO_LP (
-		.mclk(clk), 
-		.control(Servo_control_LP), 
-		.servo(servo_LP)
-	); 
-	Servo_PWM SERVO_RC (
-		.mclk(clk), 
-		.control(Servo_control_RC), 
-		.servo(servo_RC)
-	); 
-	Servo_PWM SERVO_RP (
-		.mclk(clk), 
-		.control(Servo_control_RP), 
-		.servo(servo_RP)
-	); 
+Servo_PWM SERVO_LC (
+	.clk(CLOCK_50), 
+	.control(Servo_control_LC), 
+	.servo(servo_LC) 
+); 
+Servo_PWM SERVO_LP (
+	.clk(CLOCK_50), 
+	.control(Servo_control_LP), 
+	.servo(servo_LP)
+); 
+Servo_PWM SERVO_RC (
+	.clk(CLOCK_50), 
+	.control(Servo_control_RC), 
+	.servo(servo_RC)
+); 
+Servo_PWM SERVO_RP (
+	.clk(CLOCK_50), 
+	.control(Servo_control_RP), 
+	.servo(servo_RP)
+); 
+
+// TEST servo
+//assign Servo_control_LC = 32'd25000; //0 def;
+
+logic [19:0] counter1;
+logic toggle; 
+always_ff @(posedge CLOCK_50) begin
+	if(Servo_control_LC == 'd50000)
+		toggle <= 0;
+	if(Servo_control_LC == 0)
+		toggle <= 1; 
+
+	counter1 <= counter1 + 1;
+	if(counter1 == 0)
+	begin
+		if(toggle == 0)
+			Servo_control_LC <= Servo_control_LC - 1000;
+		if(toggle == 1)
+			Servo_control_LC <= Servo_control_LC + 1000;
+	end
+
+end 
 
 
 // ---  IR   instantation      -----------------------------------------------
@@ -231,5 +253,10 @@ assign odoLA     = GPIO_0[8];
 assign odoLB     = GPIO_0[9];
 assign odoRA     = GPIO_0[10];
 assign odoRB     = GPIO_0[11];
+
+//---Servo---//
+assign GPIO_0[1]  = servo_LC;
+
+
 
 endmodule
