@@ -136,17 +136,29 @@ input 		     [1:0]		GPIO_1_IN;
 logic [31:0] Odometre_Left, Odometre_Right;
 
 always_comb begin
-	case(AddrFromPi)
-		8'h0f : DataToPI = 32'h0f0f0f0f;		//TEST
-		8'hf0 : DataToPI = 32'hffff00f0;		//TEST
+	case(AddrFromPi[7:4])
+		4'hf : DataToPI = 32'h0f0f0f0f;		//TEST
+		4'he : DataToPI = 32'h1234abcd;		//TEST
 
-		8'h20 : DataToPI = Odometre_Right;  	// Odomètre gauche 	: 0x20
-		8'h21 : DataToPI = Odometre_Left; 		// Odomètre droit 	: 0x21
+		4'h1 : DataToPI = Odometre_Right;  	// Odomètre gauche 	: 1x
+		4'h2 : DataToPI = Odometre_Left; 	// Odomètre droit 	: 2x
 		default : DataToPI = 32'bx; 		
 	endcase
 end
 
 //////// Data assignement for ACTUATORS //////////
+
+logic [31:0] Actuators_RAM[15:0];
+
+always_ff @(posedge CLOCK_50) begin
+	Actuators_RAM[AddrFromPi[3:0]] = DataFromPI;  
+end
+
+assign Servo_control_LC = Actuators_RAM[1];	// Servo pince gauche : x1 
+assign Servo_control_LP = Actuators_RAM[2];	// Servo pince droite : x2
+assign Servo_control_RC = Actuators_RAM[3];	// Servo pince gauche : x3
+assign Servo_control_RP = Actuators_RAM[4];	// Servo pince droite : x4
+
 
 
 // ---  SPI module instantiation ---------------------------------------------
@@ -163,7 +175,7 @@ spi_slave spi_slave_inst (
 	.SPI_MISO(spi_miso),
 	.Data_Addr(AddrFromPi),
 	.Data_Write(DataToPI),
-	.Data_Read(DataFromPI),
+	.Data_Read(DataFromPI), 
 	.Clk(CLOCK_50)
 );
 
@@ -213,7 +225,7 @@ Servo_PWM SERVO_RP (
 
 // TEST servo
 //assign Servo_control_LC = 32'd25000; //0 def;
-
+/*
 logic [19:0] counter1;
 logic toggle; 
 always_ff @(posedge CLOCK_50) begin
@@ -231,7 +243,7 @@ always_ff @(posedge CLOCK_50) begin
 			Servo_control_LC <= Servo_control_LC + 1000;
 	end
 
-end 
+end */
 
 
 // ---  IR   instantation      -----------------------------------------------
@@ -256,7 +268,6 @@ assign odoRB     = GPIO_0[11];
 
 //---Servo---//
 assign GPIO_0[1]  = servo_LC;
-
 
 
 endmodule

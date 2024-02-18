@@ -15,7 +15,8 @@ module spi_slave(
 );
 
 	logic [39:0] SPI_reg;
-	
+
+
 //---SPI Sysnchronization -------------------------------------
 
 	logic SPI_CLK_sync;
