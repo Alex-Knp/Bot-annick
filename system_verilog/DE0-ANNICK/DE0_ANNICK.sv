@@ -97,7 +97,7 @@ input 		          		EPCS_DATA0;
 output		          		EPCS_DCLK;
 output		          		EPCS_NCSO;
 
-//////////// EEPROM //////////
+//////////// EEPROM ////////
 output		          		I2C_SCLK;
 inout 		          		I2C_SDAT;
 
@@ -199,6 +199,7 @@ odometer odoR (
 
 
 // ---  Servo  instantation    -----------------------------------------------
+
 logic [31:0] Servo_control_LC, Servo_control_LP, Servo_control_RC, Servo_control_RP; 
 logic servo_LC, servo_LP, servo_RC, servo_RP;
 
@@ -243,10 +244,21 @@ always_ff @(posedge CLOCK_50) begin
 			Servo_control_LC <= Servo_control_LC + 1000;
 	end
 
-end */
-
+end 
+*/
 
 // ---  IR   instantation      -----------------------------------------------
+// ---  ADC  instantation      -----------------------------------------------
+
+/*
+ADC_interface ADC_interface_inst (
+	.clk(CLOCK_50),
+	.ADC_Dout(ADC_SDAT),
+	.ADC_Din(ADC_SADDR),
+	.ADC_CS(ADC_CS_N),
+	.ADC_clk(ADC_SCLK)
+);
+*/
 // ---  Micro-swith instantation ---------------------------------------------
 // ---  Dynamixels instantation ----------------------------------------------
 // ---  Stepper instantation   -----------------------------------------------
@@ -266,8 +278,7 @@ assign odoLB     = GPIO_0[9];
 assign odoRA     = GPIO_0[10];
 assign odoRB     = GPIO_0[11];
 
-//---Servo---//
-assign GPIO_0[1]  = servo_LC;
-
+//---Servo---//a
+assign GPIO_1[1]  = servo_LC; 
 
 endmodule
