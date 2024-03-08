@@ -121,15 +121,12 @@ input 		     [1:0]		GPIO_1_IN;
 
 
 //=======================================================
-//  REG/WIRE declarations
-//=======================================================
-
-
-
-
-//=======================================================
 //  Structural coding
 //=======================================================
+
+//////// Reset //////////
+
+logic reset;
 
 //////// Stored Data assignement SENSORS //////////
 
@@ -142,6 +139,11 @@ always_comb begin
 
 		4'h1 : DataToPI = Odometre_Right;  	// Odomètre gauche 	: 1x
 		4'h2 : DataToPI = Odometre_Left; 	// Odomètre droit 	: 2x
+		4'h3 : DataToPI = IR1_ext;				// IR1
+		4'h4 : DataToPI = IR2_ext;				// IR2
+		4'h5 : DataToPI = IR3;				// IR3
+		4'h6 : DataToPI = IR4;				// IR4
+
 		default : DataToPI = 32'bx; 		
 	endcase
 end
@@ -154,10 +156,14 @@ always_ff @(posedge CLOCK_50) begin
 	Actuators_RAM[AddrFromPi[3:0]] = DataFromPI;  
 end
 
-assign Servo_control_LC = Actuators_RAM[1];	// Servo pince gauche : x1 
-assign Servo_control_LP = Actuators_RAM[2];	// Servo pince droite : x2
-assign Servo_control_RC = Actuators_RAM[3];	// Servo pince gauche : x3
-assign Servo_control_RP = Actuators_RAM[4];	// Servo pince droite : x4
+assign reset = Actuators_RAM[0][0];	// Reset
+
+assign Servo_control_LC = Actuators_RAM[1];		// Servo pince gauche 	: x1 
+assign Servo_control_LP = Actuators_RAM[2];		// Servo pince droite 	: x2
+assign Servo_control_RC = Actuators_RAM[3];		// Servo pince gauche 	: x3
+assign Servo_control_RP = Actuators_RAM[4];		// Servo pince droite 	: x4
+assign stepper_control_L  = Actuators_RAM[5]; 	// Steppers 	  		: x5
+assign stepper_control_R  = Actuators_RAM[6]; 	// Steppers 	  		: x6
 
 
 
@@ -248,20 +254,62 @@ end
 */
 
 // ---  IR   instantation      -----------------------------------------------
-// ---  ADC  instantation      -----------------------------------------------
 
-/*
+// generating 2.5 MHz ADC clock from 50 MHz clock
+logic [4:0] counter_CLOCK_50;
+always_ff @(posedge CLOCK_50) begin
+		counter_CLOCK_50 <= counter_CLOCK_50 + 1;
+	end
+
+assign clk_1_5 = counter_CLOCK_50[4];
+
+
+
+
+logic [11:0]   IR1, IR2, IR3, IR4;	// IR sensors
+logic [31:0]   IR1_ext, IR2_ext, IR3_ext, IR4_ext;	// IR sensors extended to 32 bits
+
 ADC_interface ADC_interface_inst (
-	.clk(CLOCK_50),
+	.clk(clk_1_5),
 	.ADC_Dout(ADC_SDAT),
 	.ADC_Din(ADC_SADDR),
 	.ADC_CS(ADC_CS_N),
-	.ADC_clk(ADC_SCLK)
+	.ADC_clk(ADC_SCLK),
+	.ADC_0(IR1),
+	.ADC_1(IR2),
+	.ADC_2(IR3),
+	.ADC_3(IR4)
+);
+
+assign IR1_ext = {20'b0, IR1};
+assign IR2_ext = {20'b0, IR2};
+assign IR3_ext = {20'b0, IR3};
+assign IR4_ext = {20'b0, IR4};
+
+
+
+// ---  Micro-swith instantation ---------------------------------------------
+// ---  Stepper instantation   -----------------------------------------------
+/*
+logic stepper_L, stepper_R, dir_L, dir_R;
+logic [31:0] stepper_control_L, stepper_control_R;
+
+stepper stepper_inst_L (
+	.clk(CLOCK_50),
+	.reset(reset),
+	.control(stepper_control_L),
+	.step(stepper_L),
+	.dir(dir_L)
+);
+
+stepper stepper_inst_R (
+	.clk(CLOCK_50),
+	.reset(reset),
+	.control(stepper_control_R),
+	.step(stepper_R),
+	.dir(dir_R)
 );
 */
-// ---  Micro-swith instantation ---------------------------------------------
-// ---  Dynamixels instantation ----------------------------------------------
-// ---  Stepper instantation   -----------------------------------------------
 
 
 //////////// Pin assignment for DE0_ANNICK //////////
@@ -278,7 +326,13 @@ assign odoLB     = GPIO_0[19];
 assign odoRA     = GPIO_0[16];
 assign odoRB     = GPIO_0[18];
 
-//---Servo---//a
+//---Servo---//
 assign GPIO_1[1]  = servo_LC; 
+assign GPIO_1[2]  = servo_LP; 
+assign GPIO_1[3]  = servo_RC; 
+assign GPIO_1[4]  = servo_RP; 
+
+
+
 
 endmodule
