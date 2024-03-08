@@ -1,5 +1,5 @@
 Analysis & Synthesis report for DE0_minibot
-Thu Feb 15 18:46:00 2024
+Fri Mar 01 18:03:11 2024
 Quartus Prime Version 18.1.0 Build 625 09/12/2018 SJ Lite Edition
 
 
@@ -10,26 +10,11 @@ Quartus Prime Version 18.1.0 Build 625 09/12/2018 SJ Lite Edition
   2. Analysis & Synthesis Summary
   3. Analysis & Synthesis Settings
   4. Parallel Compilation
-  5. Analysis & Synthesis Source Files Read
-  6. Analysis & Synthesis Resource Usage Summary
-  7. Analysis & Synthesis Resource Utilization by Entity
-  8. Analysis & Synthesis RAM Summary
-  9. Analysis & Synthesis IP Cores Summary
- 10. State Machine - |DE0_minibot|spi_slave:spi_slave_inst|state
- 11. Registers Removed During Synthesis
- 12. Removed Registers Triggering Further Register Optimizations
- 13. General Register Statistics
- 14. Inverted Register Statistics
- 15. Multiplexer Restructuring Statistics (Restructuring Performed)
- 16. Source assignments for sld_signaltap:auto_signaltap_0
- 17. Parameter Settings for Inferred Entity Instance: sld_signaltap:auto_signaltap_0
- 18. Port Connectivity Checks: "spi_slave:spi_slave_inst"
- 19. Signal Tap Logic Analyzer Settings
- 20. Post-Synthesis Netlist Statistics for Top Partition
- 21. Elapsed Time Per Partition
- 22. Connections to In-System Debugging Instance "auto_signaltap_0"
- 23. Analysis & Synthesis Messages
- 24. Analysis & Synthesis Suppressed Messages
+  5. Source assignments for sld_signaltap:auto_signaltap_0
+  6. Parameter Settings for Inferred Entity Instance: sld_signaltap:auto_signaltap_0
+  7. Port Connectivity Checks: "spi_slave:spi_slave_inst"
+  8. Analysis & Synthesis Messages
+  9. Analysis & Synthesis Suppressed Messages
 
 
 
@@ -55,20 +40,20 @@ refer to the applicable agreement for further details.
 +----------------------------------------------------------------------------------+
 ; Analysis & Synthesis Summary                                                     ;
 +------------------------------------+---------------------------------------------+
-; Analysis & Synthesis Status        ; Successful - Thu Feb 15 18:46:00 2024       ;
+; Analysis & Synthesis Status        ; Failed - Fri Mar 01 18:03:11 2024           ;
 ; Quartus Prime Version              ; 18.1.0 Build 625 09/12/2018 SJ Lite Edition ;
 ; Revision Name                      ; DE0_minibot                                 ;
 ; Top-level Entity Name              ; DE0_minibot                                 ;
 ; Family                             ; Cyclone IV E                                ;
-; Total logic elements               ; 1,533                                       ;
-;     Total combinational functions  ; 1,201                                       ;
-;     Dedicated logic registers      ; 1,026                                       ;
-; Total registers                    ; 1026                                        ;
-; Total pins                         ; 132                                         ;
-; Total virtual pins                 ; 0                                           ;
-; Total memory bits                  ; 49,152                                      ;
-; Embedded Multiplier 9-bit elements ; 0                                           ;
-; Total PLLs                         ; 0                                           ;
+; Total logic elements               ; N/A until Partition Merge                   ;
+;     Total combinational functions  ; N/A until Partition Merge                   ;
+;     Dedicated logic registers      ; N/A until Partition Merge                   ;
+; Total registers                    ; N/A until Partition Merge                   ;
+; Total pins                         ; N/A until Partition Merge                   ;
+; Total virtual pins                 ; N/A until Partition Merge                   ;
+; Total memory bits                  ; N/A until Partition Merge                   ;
+; Embedded Multiplier 9-bit elements ; N/A until Partition Merge                   ;
+; Total PLLs                         ; N/A until Partition Merge                   ;
 +------------------------------------+---------------------------------------------+
 
 
@@ -163,331 +148,15 @@ refer to the applicable agreement for further details.
 +----------------------------+-------------+
 ; Processors                 ; Number      ;
 +----------------------------+-------------+
-; Number detected on machine ; 12          ;
-; Maximum allowed            ; 6           ;
+; Number detected on machine ; 8           ;
+; Maximum allowed            ; 4           ;
 ;                            ;             ;
 ; Average used               ; 1.00        ;
-; Maximum used               ; 6           ;
+; Maximum used               ; 1           ;
 ;                            ;             ;
 ; Usage by Processor         ; % Time Used ;
 ;     Processor 1            ; 100.0%      ;
-;     Processors 2-6         ;   0.0%      ;
 +----------------------------+-------------+
-
-
-+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-; Analysis & Synthesis Source Files Read                                                                                                                                                                                                                                                             ;
-+--------------------------------------------------------------------+-----------------+----------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------+-------------+
-; File Name with User-Entered Path                                   ; Used in Netlist ; File Type                                    ; File Name with Absolute Path                                                                                                                   ; Library     ;
-+--------------------------------------------------------------------+-----------------+----------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------+-------------+
-; spi_slave.sv                                                       ; yes             ; User SystemVerilog HDL File                  ; C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/spi_slave.sv                                                       ;             ;
-; odometer.sv                                                        ; yes             ; User SystemVerilog HDL File                  ; C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/odometer.sv                                                        ;             ;
-; encoder.sv                                                         ; yes             ; User SystemVerilog HDL File                  ; C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/encoder.sv                                                         ;             ;
-; DE0_minibot.sv                                                     ; yes             ; User SystemVerilog HDL File                  ; C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv                                                     ;             ;
-; sld_signaltap.vhd                                                  ; yes             ; Megafunction                                 ; c:/intelfpga_lite/18.1/quartus/libraries/megafunctions/sld_signaltap.vhd                                                                       ;             ;
-; sld_signaltap_impl.vhd                                             ; yes             ; Encrypted Megafunction                       ; c:/intelfpga_lite/18.1/quartus/libraries/megafunctions/sld_signaltap_impl.vhd                                                                  ;             ;
-; sld_ela_control.vhd                                                ; yes             ; Encrypted Megafunction                       ; c:/intelfpga_lite/18.1/quartus/libraries/megafunctions/sld_ela_control.vhd                                                                     ;             ;
-; lpm_shiftreg.tdf                                                   ; yes             ; Megafunction                                 ; c:/intelfpga_lite/18.1/quartus/libraries/megafunctions/lpm_shiftreg.tdf                                                                        ;             ;
-; lpm_constant.inc                                                   ; yes             ; Megafunction                                 ; c:/intelfpga_lite/18.1/quartus/libraries/megafunctions/lpm_constant.inc                                                                        ;             ;
-; dffeea.inc                                                         ; yes             ; Megafunction                                 ; c:/intelfpga_lite/18.1/quartus/libraries/megafunctions/dffeea.inc                                                                              ;             ;
-; aglobal181.inc                                                     ; yes             ; Megafunction                                 ; c:/intelfpga_lite/18.1/quartus/libraries/megafunctions/aglobal181.inc                                                                          ;             ;
-; sld_mbpmg.vhd                                                      ; yes             ; Encrypted Megafunction                       ; c:/intelfpga_lite/18.1/quartus/libraries/megafunctions/sld_mbpmg.vhd                                                                           ;             ;
-; sld_ela_trigger_flow_mgr.vhd                                       ; yes             ; Encrypted Megafunction                       ; c:/intelfpga_lite/18.1/quartus/libraries/megafunctions/sld_ela_trigger_flow_mgr.vhd                                                            ;             ;
-; sld_buffer_manager.vhd                                             ; yes             ; Encrypted Megafunction                       ; c:/intelfpga_lite/18.1/quartus/libraries/megafunctions/sld_buffer_manager.vhd                                                                  ;             ;
-; altsyncram.tdf                                                     ; yes             ; Megafunction                                 ; c:/intelfpga_lite/18.1/quartus/libraries/megafunctions/altsyncram.tdf                                                                          ;             ;
-; stratix_ram_block.inc                                              ; yes             ; Megafunction                                 ; c:/intelfpga_lite/18.1/quartus/libraries/megafunctions/stratix_ram_block.inc                                                                   ;             ;
-; lpm_mux.inc                                                        ; yes             ; Megafunction                                 ; c:/intelfpga_lite/18.1/quartus/libraries/megafunctions/lpm_mux.inc                                                                             ;             ;
-; lpm_decode.inc                                                     ; yes             ; Megafunction                                 ; c:/intelfpga_lite/18.1/quartus/libraries/megafunctions/lpm_decode.inc                                                                          ;             ;
-; a_rdenreg.inc                                                      ; yes             ; Megafunction                                 ; c:/intelfpga_lite/18.1/quartus/libraries/megafunctions/a_rdenreg.inc                                                                           ;             ;
-; altrom.inc                                                         ; yes             ; Megafunction                                 ; c:/intelfpga_lite/18.1/quartus/libraries/megafunctions/altrom.inc                                                                              ;             ;
-; altram.inc                                                         ; yes             ; Megafunction                                 ; c:/intelfpga_lite/18.1/quartus/libraries/megafunctions/altram.inc                                                                              ;             ;
-; altdpram.inc                                                       ; yes             ; Megafunction                                 ; c:/intelfpga_lite/18.1/quartus/libraries/megafunctions/altdpram.inc                                                                            ;             ;
-; db/altsyncram_4b24.tdf                                             ; yes             ; Auto-Generated Megafunction                  ; C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/db/altsyncram_4b24.tdf                                             ;             ;
-; altdpram.tdf                                                       ; yes             ; Megafunction                                 ; c:/intelfpga_lite/18.1/quartus/libraries/megafunctions/altdpram.tdf                                                                            ;             ;
-; memmodes.inc                                                       ; yes             ; Megafunction                                 ; c:/intelfpga_lite/18.1/quartus/libraries/others/maxplus2/memmodes.inc                                                                          ;             ;
-; a_hdffe.inc                                                        ; yes             ; Megafunction                                 ; c:/intelfpga_lite/18.1/quartus/libraries/megafunctions/a_hdffe.inc                                                                             ;             ;
-; alt_le_rden_reg.inc                                                ; yes             ; Megafunction                                 ; c:/intelfpga_lite/18.1/quartus/libraries/megafunctions/alt_le_rden_reg.inc                                                                     ;             ;
-; altsyncram.inc                                                     ; yes             ; Megafunction                                 ; c:/intelfpga_lite/18.1/quartus/libraries/megafunctions/altsyncram.inc                                                                          ;             ;
-; lpm_mux.tdf                                                        ; yes             ; Megafunction                                 ; c:/intelfpga_lite/18.1/quartus/libraries/megafunctions/lpm_mux.tdf                                                                             ;             ;
-; muxlut.inc                                                         ; yes             ; Megafunction                                 ; c:/intelfpga_lite/18.1/quartus/libraries/megafunctions/muxlut.inc                                                                              ;             ;
-; bypassff.inc                                                       ; yes             ; Megafunction                                 ; c:/intelfpga_lite/18.1/quartus/libraries/megafunctions/bypassff.inc                                                                            ;             ;
-; altshift.inc                                                       ; yes             ; Megafunction                                 ; c:/intelfpga_lite/18.1/quartus/libraries/megafunctions/altshift.inc                                                                            ;             ;
-; db/mux_tsc.tdf                                                     ; yes             ; Auto-Generated Megafunction                  ; C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/db/mux_tsc.tdf                                                     ;             ;
-; lpm_decode.tdf                                                     ; yes             ; Megafunction                                 ; c:/intelfpga_lite/18.1/quartus/libraries/megafunctions/lpm_decode.tdf                                                                          ;             ;
-; declut.inc                                                         ; yes             ; Megafunction                                 ; c:/intelfpga_lite/18.1/quartus/libraries/megafunctions/declut.inc                                                                              ;             ;
-; lpm_compare.inc                                                    ; yes             ; Megafunction                                 ; c:/intelfpga_lite/18.1/quartus/libraries/megafunctions/lpm_compare.inc                                                                         ;             ;
-; db/decode_dvf.tdf                                                  ; yes             ; Auto-Generated Megafunction                  ; C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/db/decode_dvf.tdf                                                  ;             ;
-; lpm_counter.tdf                                                    ; yes             ; Megafunction                                 ; c:/intelfpga_lite/18.1/quartus/libraries/megafunctions/lpm_counter.tdf                                                                         ;             ;
-; lpm_add_sub.inc                                                    ; yes             ; Megafunction                                 ; c:/intelfpga_lite/18.1/quartus/libraries/megafunctions/lpm_add_sub.inc                                                                         ;             ;
-; cmpconst.inc                                                       ; yes             ; Megafunction                                 ; c:/intelfpga_lite/18.1/quartus/libraries/megafunctions/cmpconst.inc                                                                            ;             ;
-; lpm_counter.inc                                                    ; yes             ; Megafunction                                 ; c:/intelfpga_lite/18.1/quartus/libraries/megafunctions/lpm_counter.inc                                                                         ;             ;
-; alt_counter_stratix.inc                                            ; yes             ; Megafunction                                 ; c:/intelfpga_lite/18.1/quartus/libraries/megafunctions/alt_counter_stratix.inc                                                                 ;             ;
-; db/cntr_bgi.tdf                                                    ; yes             ; Auto-Generated Megafunction                  ; C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/db/cntr_bgi.tdf                                                    ;             ;
-; db/cmpr_qgc.tdf                                                    ; yes             ; Auto-Generated Megafunction                  ; C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/db/cmpr_qgc.tdf                                                    ;             ;
-; db/cntr_m9j.tdf                                                    ; yes             ; Auto-Generated Megafunction                  ; C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/db/cntr_m9j.tdf                                                    ;             ;
-; db/cntr_ggi.tdf                                                    ; yes             ; Auto-Generated Megafunction                  ; C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/db/cntr_ggi.tdf                                                    ;             ;
-; db/cmpr_rgc.tdf                                                    ; yes             ; Auto-Generated Megafunction                  ; C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/db/cmpr_rgc.tdf                                                    ;             ;
-; db/cntr_23j.tdf                                                    ; yes             ; Auto-Generated Megafunction                  ; C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/db/cntr_23j.tdf                                                    ;             ;
-; db/cmpr_ngc.tdf                                                    ; yes             ; Auto-Generated Megafunction                  ; C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/db/cmpr_ngc.tdf                                                    ;             ;
-; sld_rom_sr.vhd                                                     ; yes             ; Encrypted Megafunction                       ; c:/intelfpga_lite/18.1/quartus/libraries/megafunctions/sld_rom_sr.vhd                                                                          ;             ;
-; sld_jtag_endpoint_adapter.vhd                                      ; yes             ; Encrypted Megafunction                       ; c:/intelfpga_lite/18.1/quartus/libraries/megafunctions/sld_jtag_endpoint_adapter.vhd                                                           ;             ;
-; sld_jtag_endpoint_adapter_impl.sv                                  ; yes             ; Encrypted Megafunction                       ; c:/intelfpga_lite/18.1/quartus/libraries/megafunctions/sld_jtag_endpoint_adapter_impl.sv                                                       ;             ;
-; sld_hub.vhd                                                        ; yes             ; Encrypted Megafunction                       ; c:/intelfpga_lite/18.1/quartus/libraries/megafunctions/sld_hub.vhd                                                                             ; altera_sld  ;
-; db/ip/sld0d4166f7/alt_sld_fab.v                                    ; yes             ; Encrypted Auto-Found Verilog HDL File        ; C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/db/ip/sld0d4166f7/alt_sld_fab.v                                    ; alt_sld_fab ;
-; db/ip/sld0d4166f7/submodules/alt_sld_fab_alt_sld_fab.v             ; yes             ; Encrypted Auto-Found Verilog HDL File        ; C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/db/ip/sld0d4166f7/submodules/alt_sld_fab_alt_sld_fab.v             ; alt_sld_fab ;
-; db/ip/sld0d4166f7/submodules/alt_sld_fab_alt_sld_fab_ident.sv      ; yes             ; Auto-Found SystemVerilog HDL File            ; C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/db/ip/sld0d4166f7/submodules/alt_sld_fab_alt_sld_fab_ident.sv      ; alt_sld_fab ;
-; db/ip/sld0d4166f7/submodules/alt_sld_fab_alt_sld_fab_presplit.sv   ; yes             ; Encrypted Auto-Found SystemVerilog HDL File  ; C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/db/ip/sld0d4166f7/submodules/alt_sld_fab_alt_sld_fab_presplit.sv   ; alt_sld_fab ;
-; db/ip/sld0d4166f7/submodules/alt_sld_fab_alt_sld_fab_sldfabric.vhd ; yes             ; Encrypted Auto-Found VHDL File               ; C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/db/ip/sld0d4166f7/submodules/alt_sld_fab_alt_sld_fab_sldfabric.vhd ; alt_sld_fab ;
-; db/ip/sld0d4166f7/submodules/alt_sld_fab_alt_sld_fab_splitter.sv   ; yes             ; Encrypted Auto-Found SystemVerilog HDL File  ; C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/db/ip/sld0d4166f7/submodules/alt_sld_fab_alt_sld_fab_splitter.sv   ; alt_sld_fab ;
-; sld_jtag_hub.vhd                                                   ; yes             ; Encrypted Megafunction                       ; c:/intelfpga_lite/18.1/quartus/libraries/megafunctions/sld_jtag_hub.vhd                                                                        ;             ;
-+--------------------------------------------------------------------+-----------------+----------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------+-------------+
-
-
-+--------------------------------------------------------------+
-; Analysis & Synthesis Resource Usage Summary                  ;
-+---------------------------------------------+----------------+
-; Resource                                    ; Usage          ;
-+---------------------------------------------+----------------+
-; Estimated Total logic elements              ; 1,533          ;
-;                                             ;                ;
-; Total combinational functions               ; 1201           ;
-; Logic element usage by number of LUT inputs ;                ;
-;     -- 4 input functions                    ; 295            ;
-;     -- 3 input functions                    ; 634            ;
-;     -- <=2 input functions                  ; 272            ;
-;                                             ;                ;
-; Logic elements by mode                      ;                ;
-;     -- normal mode                          ; 607            ;
-;     -- arithmetic mode                      ; 594            ;
-;                                             ;                ;
-; Total registers                             ; 1026           ;
-;     -- Dedicated logic registers            ; 1026           ;
-;     -- I/O registers                        ; 0              ;
-;                                             ;                ;
-; I/O pins                                    ; 132            ;
-; Total memory bits                           ; 49152          ;
-;                                             ;                ;
-; Embedded Multiplier 9-bit elements          ; 0              ;
-;                                             ;                ;
-; Maximum fan-out node                        ; CLOCK_50~input ;
-; Maximum fan-out                             ; 431            ;
-; Total fan-out                               ; 7176           ;
-; Average fan-out                             ; 2.76           ;
-+---------------------------------------------+----------------+
-
-
-+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-; Analysis & Synthesis Resource Utilization by Entity                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ;
-+-----------------------------------------------------------------------------------------------------------------------------------------+---------------------+---------------------------+-------------+--------------+---------+-----------+------+--------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------------------------+--------------+
-; Compilation Hierarchy Node                                                                                                              ; Combinational ALUTs ; Dedicated Logic Registers ; Memory Bits ; DSP Elements ; DSP 9x9 ; DSP 18x18 ; Pins ; Virtual Pins ; Full Hierarchy Name                                                                                                                                                                                                                                                                                                                                     ; Entity Name                       ; Library Name ;
-+-----------------------------------------------------------------------------------------------------------------------------------------+---------------------+---------------------------+-------------+--------------+---------+-----------+------+--------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------------------------+--------------+
-; |DE0_minibot                                                                                                                            ; 1201 (4)            ; 1026 (0)                  ; 49152       ; 0            ; 0       ; 0         ; 132  ; 0            ; |DE0_minibot                                                                                                                                                                                                                                                                                                                                            ; DE0_minibot                       ; work         ;
-;    |encoder:encoder1|                                                                                                                   ; 63 (63)             ; 70 (70)                   ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_minibot|encoder:encoder1                                                                                                                                                                                                                                                                                                                           ; encoder                           ; work         ;
-;    |encoder:encoder2|                                                                                                                   ; 33 (33)             ; 38 (38)                   ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_minibot|encoder:encoder2                                                                                                                                                                                                                                                                                                                           ; encoder                           ; work         ;
-;    |odometer:odo1|                                                                                                                      ; 224 (224)           ; 128 (128)                 ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_minibot|odometer:odo1                                                                                                                                                                                                                                                                                                                              ; odometer                          ; work         ;
-;    |odometer:odo2|                                                                                                                      ; 224 (224)           ; 128 (128)                 ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_minibot|odometer:odo2                                                                                                                                                                                                                                                                                                                              ; odometer                          ; work         ;
-;    |sld_hub:auto_hub|                                                                                                                   ; 124 (1)             ; 91 (0)                    ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_minibot|sld_hub:auto_hub                                                                                                                                                                                                                                                                                                                           ; sld_hub                           ; altera_sld   ;
-;       |alt_sld_fab_with_jtag_input:\instrumentation_fabric_with_node_gen:fabric_gen_new_way:with_jtag_input_gen:instrumentation_fabric| ; 123 (0)             ; 91 (0)                    ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_minibot|sld_hub:auto_hub|alt_sld_fab_with_jtag_input:\instrumentation_fabric_with_node_gen:fabric_gen_new_way:with_jtag_input_gen:instrumentation_fabric                                                                                                                                                                                           ; alt_sld_fab_with_jtag_input       ; altera_sld   ;
-;          |alt_sld_fab:instrumentation_fabric|                                                                                           ; 123 (0)             ; 91 (0)                    ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_minibot|sld_hub:auto_hub|alt_sld_fab_with_jtag_input:\instrumentation_fabric_with_node_gen:fabric_gen_new_way:with_jtag_input_gen:instrumentation_fabric|alt_sld_fab:instrumentation_fabric                                                                                                                                                        ; alt_sld_fab                       ; alt_sld_fab  ;
-;             |alt_sld_fab_alt_sld_fab:alt_sld_fab|                                                                                       ; 123 (1)             ; 91 (5)                    ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_minibot|sld_hub:auto_hub|alt_sld_fab_with_jtag_input:\instrumentation_fabric_with_node_gen:fabric_gen_new_way:with_jtag_input_gen:instrumentation_fabric|alt_sld_fab:instrumentation_fabric|alt_sld_fab_alt_sld_fab:alt_sld_fab                                                                                                                    ; alt_sld_fab_alt_sld_fab           ; alt_sld_fab  ;
-;                |alt_sld_fab_alt_sld_fab_sldfabric:sldfabric|                                                                            ; 122 (0)             ; 86 (0)                    ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_minibot|sld_hub:auto_hub|alt_sld_fab_with_jtag_input:\instrumentation_fabric_with_node_gen:fabric_gen_new_way:with_jtag_input_gen:instrumentation_fabric|alt_sld_fab:instrumentation_fabric|alt_sld_fab_alt_sld_fab:alt_sld_fab|alt_sld_fab_alt_sld_fab_sldfabric:sldfabric                                                                        ; alt_sld_fab_alt_sld_fab_sldfabric ; alt_sld_fab  ;
-;                   |sld_jtag_hub:\jtag_hub_gen:real_sld_jtag_hub|                                                                        ; 122 (83)            ; 86 (58)                   ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_minibot|sld_hub:auto_hub|alt_sld_fab_with_jtag_input:\instrumentation_fabric_with_node_gen:fabric_gen_new_way:with_jtag_input_gen:instrumentation_fabric|alt_sld_fab:instrumentation_fabric|alt_sld_fab_alt_sld_fab:alt_sld_fab|alt_sld_fab_alt_sld_fab_sldfabric:sldfabric|sld_jtag_hub:\jtag_hub_gen:real_sld_jtag_hub                           ; sld_jtag_hub                      ; work         ;
-;                      |sld_rom_sr:hub_info_reg|                                                                                          ; 21 (21)             ; 9 (9)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_minibot|sld_hub:auto_hub|alt_sld_fab_with_jtag_input:\instrumentation_fabric_with_node_gen:fabric_gen_new_way:with_jtag_input_gen:instrumentation_fabric|alt_sld_fab:instrumentation_fabric|alt_sld_fab_alt_sld_fab:alt_sld_fab|alt_sld_fab_alt_sld_fab_sldfabric:sldfabric|sld_jtag_hub:\jtag_hub_gen:real_sld_jtag_hub|sld_rom_sr:hub_info_reg   ; sld_rom_sr                        ; work         ;
-;                      |sld_shadow_jsm:shadow_jsm|                                                                                        ; 18 (18)             ; 19 (19)                   ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_minibot|sld_hub:auto_hub|alt_sld_fab_with_jtag_input:\instrumentation_fabric_with_node_gen:fabric_gen_new_way:with_jtag_input_gen:instrumentation_fabric|alt_sld_fab:instrumentation_fabric|alt_sld_fab_alt_sld_fab:alt_sld_fab|alt_sld_fab_alt_sld_fab_sldfabric:sldfabric|sld_jtag_hub:\jtag_hub_gen:real_sld_jtag_hub|sld_shadow_jsm:shadow_jsm ; sld_shadow_jsm                    ; altera_sld   ;
-;    |sld_signaltap:auto_signaltap_0|                                                                                                     ; 400 (2)             ; 511 (24)                  ; 49152       ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_minibot|sld_signaltap:auto_signaltap_0                                                                                                                                                                                                                                                                                                             ; sld_signaltap                     ; work         ;
-;       |sld_signaltap_impl:sld_signaltap_body|                                                                                           ; 398 (0)             ; 487 (0)                   ; 49152       ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_minibot|sld_signaltap:auto_signaltap_0|sld_signaltap_impl:sld_signaltap_body                                                                                                                                                                                                                                                                       ; sld_signaltap_impl                ; work         ;
-;          |sld_signaltap_implb:sld_signaltap_body|                                                                                       ; 398 (88)            ; 487 (132)                 ; 49152       ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_minibot|sld_signaltap:auto_signaltap_0|sld_signaltap_impl:sld_signaltap_body|sld_signaltap_implb:sld_signaltap_body                                                                                                                                                                                                                                ; sld_signaltap_implb               ; work         ;
-;             |altdpram:\stp_non_zero_ram_gen:attribute_mem_gen:attribute_mem|                                                            ; 27 (0)              ; 76 (76)                   ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_minibot|sld_signaltap:auto_signaltap_0|sld_signaltap_impl:sld_signaltap_body|sld_signaltap_implb:sld_signaltap_body|altdpram:\stp_non_zero_ram_gen:attribute_mem_gen:attribute_mem                                                                                                                                                                 ; altdpram                          ; work         ;
-;                |lpm_decode:wdecoder|                                                                                                    ; 2 (0)               ; 0 (0)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_minibot|sld_signaltap:auto_signaltap_0|sld_signaltap_impl:sld_signaltap_body|sld_signaltap_implb:sld_signaltap_body|altdpram:\stp_non_zero_ram_gen:attribute_mem_gen:attribute_mem|lpm_decode:wdecoder                                                                                                                                             ; lpm_decode                        ; work         ;
-;                   |decode_dvf:auto_generated|                                                                                           ; 2 (2)               ; 0 (0)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_minibot|sld_signaltap:auto_signaltap_0|sld_signaltap_impl:sld_signaltap_body|sld_signaltap_implb:sld_signaltap_body|altdpram:\stp_non_zero_ram_gen:attribute_mem_gen:attribute_mem|lpm_decode:wdecoder|decode_dvf:auto_generated                                                                                                                   ; decode_dvf                        ; work         ;
-;                |lpm_mux:mux|                                                                                                            ; 25 (0)              ; 0 (0)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_minibot|sld_signaltap:auto_signaltap_0|sld_signaltap_impl:sld_signaltap_body|sld_signaltap_implb:sld_signaltap_body|altdpram:\stp_non_zero_ram_gen:attribute_mem_gen:attribute_mem|lpm_mux:mux                                                                                                                                                     ; lpm_mux                           ; work         ;
-;                   |mux_tsc:auto_generated|                                                                                              ; 25 (25)             ; 0 (0)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_minibot|sld_signaltap:auto_signaltap_0|sld_signaltap_impl:sld_signaltap_body|sld_signaltap_implb:sld_signaltap_body|altdpram:\stp_non_zero_ram_gen:attribute_mem_gen:attribute_mem|lpm_mux:mux|mux_tsc:auto_generated                                                                                                                              ; mux_tsc                           ; work         ;
-;             |altsyncram:\stp_non_zero_ram_gen:stp_buffer_ram|                                                                           ; 0 (0)               ; 0 (0)                     ; 49152       ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_minibot|sld_signaltap:auto_signaltap_0|sld_signaltap_impl:sld_signaltap_body|sld_signaltap_implb:sld_signaltap_body|altsyncram:\stp_non_zero_ram_gen:stp_buffer_ram                                                                                                                                                                                ; altsyncram                        ; work         ;
-;                |altsyncram_4b24:auto_generated|                                                                                         ; 0 (0)               ; 0 (0)                     ; 49152       ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_minibot|sld_signaltap:auto_signaltap_0|sld_signaltap_impl:sld_signaltap_body|sld_signaltap_implb:sld_signaltap_body|altsyncram:\stp_non_zero_ram_gen:stp_buffer_ram|altsyncram_4b24:auto_generated                                                                                                                                                 ; altsyncram_4b24                   ; work         ;
-;             |lpm_shiftreg:segment_offset_config_deserialize|                                                                            ; 0 (0)               ; 12 (12)                   ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_minibot|sld_signaltap:auto_signaltap_0|sld_signaltap_impl:sld_signaltap_body|sld_signaltap_implb:sld_signaltap_body|lpm_shiftreg:segment_offset_config_deserialize                                                                                                                                                                                 ; lpm_shiftreg                      ; work         ;
-;             |lpm_shiftreg:status_register|                                                                                              ; 17 (17)             ; 17 (17)                   ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_minibot|sld_signaltap:auto_signaltap_0|sld_signaltap_impl:sld_signaltap_body|sld_signaltap_implb:sld_signaltap_body|lpm_shiftreg:status_register                                                                                                                                                                                                   ; lpm_shiftreg                      ; work         ;
-;             |serial_crc_16:\tdo_crc_gen:tdo_crc_calc|                                                                                   ; 14 (14)             ; 13 (13)                   ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_minibot|sld_signaltap:auto_signaltap_0|sld_signaltap_impl:sld_signaltap_body|sld_signaltap_implb:sld_signaltap_body|serial_crc_16:\tdo_crc_gen:tdo_crc_calc                                                                                                                                                                                        ; serial_crc_16                     ; work         ;
-;             |sld_buffer_manager:sld_buffer_manager_inst|                                                                                ; 93 (93)             ; 69 (69)                   ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_minibot|sld_signaltap:auto_signaltap_0|sld_signaltap_impl:sld_signaltap_body|sld_signaltap_implb:sld_signaltap_body|sld_buffer_manager:sld_buffer_manager_inst                                                                                                                                                                                     ; sld_buffer_manager                ; work         ;
-;             |sld_ela_control:ela_control|                                                                                               ; 30 (1)              ; 76 (1)                    ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_minibot|sld_signaltap:auto_signaltap_0|sld_signaltap_impl:sld_signaltap_body|sld_signaltap_implb:sld_signaltap_body|sld_ela_control:ela_control                                                                                                                                                                                                    ; sld_ela_control                   ; work         ;
-;                |lpm_shiftreg:trigger_config_deserialize|                                                                                ; 0 (0)               ; 4 (4)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_minibot|sld_signaltap:auto_signaltap_0|sld_signaltap_impl:sld_signaltap_body|sld_signaltap_implb:sld_signaltap_body|sld_ela_control:ela_control|lpm_shiftreg:trigger_config_deserialize                                                                                                                                                            ; lpm_shiftreg                      ; work         ;
-;                |sld_ela_basic_multi_level_trigger:\basic_multi_level_mbpm_trigger_gen:multi_level_mbpm|                                 ; 24 (0)              ; 60 (0)                    ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_minibot|sld_signaltap:auto_signaltap_0|sld_signaltap_impl:sld_signaltap_body|sld_signaltap_implb:sld_signaltap_body|sld_ela_control:ela_control|sld_ela_basic_multi_level_trigger:\basic_multi_level_mbpm_trigger_gen:multi_level_mbpm                                                                                                             ; sld_ela_basic_multi_level_trigger ; work         ;
-;                   |lpm_shiftreg:trigger_condition_deserialize|                                                                          ; 0 (0)               ; 36 (36)                   ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_minibot|sld_signaltap:auto_signaltap_0|sld_signaltap_impl:sld_signaltap_body|sld_signaltap_implb:sld_signaltap_body|sld_ela_control:ela_control|sld_ela_basic_multi_level_trigger:\basic_multi_level_mbpm_trigger_gen:multi_level_mbpm|lpm_shiftreg:trigger_condition_deserialize                                                                  ; lpm_shiftreg                      ; work         ;
-;                   |sld_mbpmg:\trigger_modules_gen:0:trigger_match|                                                                      ; 24 (0)              ; 24 (0)                    ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_minibot|sld_signaltap:auto_signaltap_0|sld_signaltap_impl:sld_signaltap_body|sld_signaltap_implb:sld_signaltap_body|sld_ela_control:ela_control|sld_ela_basic_multi_level_trigger:\basic_multi_level_mbpm_trigger_gen:multi_level_mbpm|sld_mbpmg:\trigger_modules_gen:0:trigger_match                                                              ; sld_mbpmg                         ; work         ;
-;                      |sld_sbpmg:\gen_sbpmg_pipeline_less_than_two:sm0:0:sm1|                                                            ; 2 (2)               ; 2 (2)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_minibot|sld_signaltap:auto_signaltap_0|sld_signaltap_impl:sld_signaltap_body|sld_signaltap_implb:sld_signaltap_body|sld_ela_control:ela_control|sld_ela_basic_multi_level_trigger:\basic_multi_level_mbpm_trigger_gen:multi_level_mbpm|sld_mbpmg:\trigger_modules_gen:0:trigger_match|sld_sbpmg:\gen_sbpmg_pipeline_less_than_two:sm0:0:sm1        ; sld_sbpmg                         ; work         ;
-;                      |sld_sbpmg:\gen_sbpmg_pipeline_less_than_two:sm0:10:sm1|                                                           ; 2 (2)               ; 2 (2)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_minibot|sld_signaltap:auto_signaltap_0|sld_signaltap_impl:sld_signaltap_body|sld_signaltap_implb:sld_signaltap_body|sld_ela_control:ela_control|sld_ela_basic_multi_level_trigger:\basic_multi_level_mbpm_trigger_gen:multi_level_mbpm|sld_mbpmg:\trigger_modules_gen:0:trigger_match|sld_sbpmg:\gen_sbpmg_pipeline_less_than_two:sm0:10:sm1       ; sld_sbpmg                         ; work         ;
-;                      |sld_sbpmg:\gen_sbpmg_pipeline_less_than_two:sm0:11:sm1|                                                           ; 2 (2)               ; 2 (2)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_minibot|sld_signaltap:auto_signaltap_0|sld_signaltap_impl:sld_signaltap_body|sld_signaltap_implb:sld_signaltap_body|sld_ela_control:ela_control|sld_ela_basic_multi_level_trigger:\basic_multi_level_mbpm_trigger_gen:multi_level_mbpm|sld_mbpmg:\trigger_modules_gen:0:trigger_match|sld_sbpmg:\gen_sbpmg_pipeline_less_than_two:sm0:11:sm1       ; sld_sbpmg                         ; work         ;
-;                      |sld_sbpmg:\gen_sbpmg_pipeline_less_than_two:sm0:1:sm1|                                                            ; 2 (2)               ; 2 (2)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_minibot|sld_signaltap:auto_signaltap_0|sld_signaltap_impl:sld_signaltap_body|sld_signaltap_implb:sld_signaltap_body|sld_ela_control:ela_control|sld_ela_basic_multi_level_trigger:\basic_multi_level_mbpm_trigger_gen:multi_level_mbpm|sld_mbpmg:\trigger_modules_gen:0:trigger_match|sld_sbpmg:\gen_sbpmg_pipeline_less_than_two:sm0:1:sm1        ; sld_sbpmg                         ; work         ;
-;                      |sld_sbpmg:\gen_sbpmg_pipeline_less_than_two:sm0:2:sm1|                                                            ; 2 (2)               ; 2 (2)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_minibot|sld_signaltap:auto_signaltap_0|sld_signaltap_impl:sld_signaltap_body|sld_signaltap_implb:sld_signaltap_body|sld_ela_control:ela_control|sld_ela_basic_multi_level_trigger:\basic_multi_level_mbpm_trigger_gen:multi_level_mbpm|sld_mbpmg:\trigger_modules_gen:0:trigger_match|sld_sbpmg:\gen_sbpmg_pipeline_less_than_two:sm0:2:sm1        ; sld_sbpmg                         ; work         ;
-;                      |sld_sbpmg:\gen_sbpmg_pipeline_less_than_two:sm0:3:sm1|                                                            ; 2 (2)               ; 2 (2)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_minibot|sld_signaltap:auto_signaltap_0|sld_signaltap_impl:sld_signaltap_body|sld_signaltap_implb:sld_signaltap_body|sld_ela_control:ela_control|sld_ela_basic_multi_level_trigger:\basic_multi_level_mbpm_trigger_gen:multi_level_mbpm|sld_mbpmg:\trigger_modules_gen:0:trigger_match|sld_sbpmg:\gen_sbpmg_pipeline_less_than_two:sm0:3:sm1        ; sld_sbpmg                         ; work         ;
-;                      |sld_sbpmg:\gen_sbpmg_pipeline_less_than_two:sm0:4:sm1|                                                            ; 2 (2)               ; 2 (2)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_minibot|sld_signaltap:auto_signaltap_0|sld_signaltap_impl:sld_signaltap_body|sld_signaltap_implb:sld_signaltap_body|sld_ela_control:ela_control|sld_ela_basic_multi_level_trigger:\basic_multi_level_mbpm_trigger_gen:multi_level_mbpm|sld_mbpmg:\trigger_modules_gen:0:trigger_match|sld_sbpmg:\gen_sbpmg_pipeline_less_than_two:sm0:4:sm1        ; sld_sbpmg                         ; work         ;
-;                      |sld_sbpmg:\gen_sbpmg_pipeline_less_than_two:sm0:5:sm1|                                                            ; 2 (2)               ; 2 (2)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_minibot|sld_signaltap:auto_signaltap_0|sld_signaltap_impl:sld_signaltap_body|sld_signaltap_implb:sld_signaltap_body|sld_ela_control:ela_control|sld_ela_basic_multi_level_trigger:\basic_multi_level_mbpm_trigger_gen:multi_level_mbpm|sld_mbpmg:\trigger_modules_gen:0:trigger_match|sld_sbpmg:\gen_sbpmg_pipeline_less_than_two:sm0:5:sm1        ; sld_sbpmg                         ; work         ;
-;                      |sld_sbpmg:\gen_sbpmg_pipeline_less_than_two:sm0:6:sm1|                                                            ; 2 (2)               ; 2 (2)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_minibot|sld_signaltap:auto_signaltap_0|sld_signaltap_impl:sld_signaltap_body|sld_signaltap_implb:sld_signaltap_body|sld_ela_control:ela_control|sld_ela_basic_multi_level_trigger:\basic_multi_level_mbpm_trigger_gen:multi_level_mbpm|sld_mbpmg:\trigger_modules_gen:0:trigger_match|sld_sbpmg:\gen_sbpmg_pipeline_less_than_two:sm0:6:sm1        ; sld_sbpmg                         ; work         ;
-;                      |sld_sbpmg:\gen_sbpmg_pipeline_less_than_two:sm0:7:sm1|                                                            ; 2 (2)               ; 2 (2)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_minibot|sld_signaltap:auto_signaltap_0|sld_signaltap_impl:sld_signaltap_body|sld_signaltap_implb:sld_signaltap_body|sld_ela_control:ela_control|sld_ela_basic_multi_level_trigger:\basic_multi_level_mbpm_trigger_gen:multi_level_mbpm|sld_mbpmg:\trigger_modules_gen:0:trigger_match|sld_sbpmg:\gen_sbpmg_pipeline_less_than_two:sm0:7:sm1        ; sld_sbpmg                         ; work         ;
-;                      |sld_sbpmg:\gen_sbpmg_pipeline_less_than_two:sm0:8:sm1|                                                            ; 2 (2)               ; 2 (2)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_minibot|sld_signaltap:auto_signaltap_0|sld_signaltap_impl:sld_signaltap_body|sld_signaltap_implb:sld_signaltap_body|sld_ela_control:ela_control|sld_ela_basic_multi_level_trigger:\basic_multi_level_mbpm_trigger_gen:multi_level_mbpm|sld_mbpmg:\trigger_modules_gen:0:trigger_match|sld_sbpmg:\gen_sbpmg_pipeline_less_than_two:sm0:8:sm1        ; sld_sbpmg                         ; work         ;
-;                      |sld_sbpmg:\gen_sbpmg_pipeline_less_than_two:sm0:9:sm1|                                                            ; 2 (2)               ; 2 (2)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_minibot|sld_signaltap:auto_signaltap_0|sld_signaltap_impl:sld_signaltap_body|sld_signaltap_implb:sld_signaltap_body|sld_ela_control:ela_control|sld_ela_basic_multi_level_trigger:\basic_multi_level_mbpm_trigger_gen:multi_level_mbpm|sld_mbpmg:\trigger_modules_gen:0:trigger_match|sld_sbpmg:\gen_sbpmg_pipeline_less_than_two:sm0:9:sm1        ; sld_sbpmg                         ; work         ;
-;                |sld_ela_trigger_flow_mgr:\builtin:ela_trigger_flow_mgr_entity|                                                          ; 5 (5)               ; 11 (1)                    ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_minibot|sld_signaltap:auto_signaltap_0|sld_signaltap_impl:sld_signaltap_body|sld_signaltap_implb:sld_signaltap_body|sld_ela_control:ela_control|sld_ela_trigger_flow_mgr:\builtin:ela_trigger_flow_mgr_entity                                                                                                                                      ; sld_ela_trigger_flow_mgr          ; work         ;
-;                   |lpm_shiftreg:trigger_config_deserialize|                                                                             ; 0 (0)               ; 10 (10)                   ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_minibot|sld_signaltap:auto_signaltap_0|sld_signaltap_impl:sld_signaltap_body|sld_signaltap_implb:sld_signaltap_body|sld_ela_control:ela_control|sld_ela_trigger_flow_mgr:\builtin:ela_trigger_flow_mgr_entity|lpm_shiftreg:trigger_config_deserialize                                                                                              ; lpm_shiftreg                      ; work         ;
-;             |sld_offload_buffer_mgr:\stp_non_zero_depth_offload_gen:stp_offload_buff_mgr_inst|                                          ; 99 (9)              ; 84 (0)                    ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_minibot|sld_signaltap:auto_signaltap_0|sld_signaltap_impl:sld_signaltap_body|sld_signaltap_implb:sld_signaltap_body|sld_offload_buffer_mgr:\stp_non_zero_depth_offload_gen:stp_offload_buff_mgr_inst                                                                                                                                               ; sld_offload_buffer_mgr            ; work         ;
-;                |lpm_counter:\adv_point_3_and_more:advance_pointer_counter|                                                              ; 6 (0)               ; 4 (0)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_minibot|sld_signaltap:auto_signaltap_0|sld_signaltap_impl:sld_signaltap_body|sld_signaltap_implb:sld_signaltap_body|sld_offload_buffer_mgr:\stp_non_zero_depth_offload_gen:stp_offload_buff_mgr_inst|lpm_counter:\adv_point_3_and_more:advance_pointer_counter                                                                                     ; lpm_counter                       ; work         ;
-;                   |cntr_bgi:auto_generated|                                                                                             ; 6 (6)               ; 4 (4)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_minibot|sld_signaltap:auto_signaltap_0|sld_signaltap_impl:sld_signaltap_body|sld_signaltap_implb:sld_signaltap_body|sld_offload_buffer_mgr:\stp_non_zero_depth_offload_gen:stp_offload_buff_mgr_inst|lpm_counter:\adv_point_3_and_more:advance_pointer_counter|cntr_bgi:auto_generated                                                             ; cntr_bgi                          ; work         ;
-;                |lpm_counter:read_pointer_counter|                                                                                       ; 12 (0)              ; 12 (0)                    ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_minibot|sld_signaltap:auto_signaltap_0|sld_signaltap_impl:sld_signaltap_body|sld_signaltap_implb:sld_signaltap_body|sld_offload_buffer_mgr:\stp_non_zero_depth_offload_gen:stp_offload_buff_mgr_inst|lpm_counter:read_pointer_counter                                                                                                              ; lpm_counter                       ; work         ;
-;                   |cntr_m9j:auto_generated|                                                                                             ; 12 (12)             ; 12 (12)                   ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_minibot|sld_signaltap:auto_signaltap_0|sld_signaltap_impl:sld_signaltap_body|sld_signaltap_implb:sld_signaltap_body|sld_offload_buffer_mgr:\stp_non_zero_depth_offload_gen:stp_offload_buff_mgr_inst|lpm_counter:read_pointer_counter|cntr_m9j:auto_generated                                                                                      ; cntr_m9j                          ; work         ;
-;                |lpm_counter:status_advance_pointer_counter|                                                                             ; 7 (0)               ; 5 (0)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_minibot|sld_signaltap:auto_signaltap_0|sld_signaltap_impl:sld_signaltap_body|sld_signaltap_implb:sld_signaltap_body|sld_offload_buffer_mgr:\stp_non_zero_depth_offload_gen:stp_offload_buff_mgr_inst|lpm_counter:status_advance_pointer_counter                                                                                                    ; lpm_counter                       ; work         ;
-;                   |cntr_ggi:auto_generated|                                                                                             ; 7 (7)               ; 5 (5)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_minibot|sld_signaltap:auto_signaltap_0|sld_signaltap_impl:sld_signaltap_body|sld_signaltap_implb:sld_signaltap_body|sld_offload_buffer_mgr:\stp_non_zero_depth_offload_gen:stp_offload_buff_mgr_inst|lpm_counter:status_advance_pointer_counter|cntr_ggi:auto_generated                                                                            ; cntr_ggi                          ; work         ;
-;                |lpm_counter:status_read_pointer_counter|                                                                                ; 3 (0)               ; 1 (0)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_minibot|sld_signaltap:auto_signaltap_0|sld_signaltap_impl:sld_signaltap_body|sld_signaltap_implb:sld_signaltap_body|sld_offload_buffer_mgr:\stp_non_zero_depth_offload_gen:stp_offload_buff_mgr_inst|lpm_counter:status_read_pointer_counter                                                                                                       ; lpm_counter                       ; work         ;
-;                   |cntr_23j:auto_generated|                                                                                             ; 3 (3)               ; 1 (1)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_minibot|sld_signaltap:auto_signaltap_0|sld_signaltap_impl:sld_signaltap_body|sld_signaltap_implb:sld_signaltap_body|sld_offload_buffer_mgr:\stp_non_zero_depth_offload_gen:stp_offload_buff_mgr_inst|lpm_counter:status_read_pointer_counter|cntr_23j:auto_generated                                                                               ; cntr_23j                          ; work         ;
-;                |lpm_shiftreg:info_data_shift_out|                                                                                       ; 25 (25)             ; 25 (25)                   ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_minibot|sld_signaltap:auto_signaltap_0|sld_signaltap_impl:sld_signaltap_body|sld_signaltap_implb:sld_signaltap_body|sld_offload_buffer_mgr:\stp_non_zero_depth_offload_gen:stp_offload_buff_mgr_inst|lpm_shiftreg:info_data_shift_out                                                                                                              ; lpm_shiftreg                      ; work         ;
-;                |lpm_shiftreg:ram_data_shift_out|                                                                                        ; 12 (12)             ; 12 (12)                   ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_minibot|sld_signaltap:auto_signaltap_0|sld_signaltap_impl:sld_signaltap_body|sld_signaltap_implb:sld_signaltap_body|sld_offload_buffer_mgr:\stp_non_zero_depth_offload_gen:stp_offload_buff_mgr_inst|lpm_shiftreg:ram_data_shift_out                                                                                                               ; lpm_shiftreg                      ; work         ;
-;                |lpm_shiftreg:status_data_shift_out|                                                                                     ; 25 (25)             ; 25 (25)                   ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_minibot|sld_signaltap:auto_signaltap_0|sld_signaltap_impl:sld_signaltap_body|sld_signaltap_implb:sld_signaltap_body|sld_offload_buffer_mgr:\stp_non_zero_depth_offload_gen:stp_offload_buff_mgr_inst|lpm_shiftreg:status_data_shift_out                                                                                                            ; lpm_shiftreg                      ; work         ;
-;             |sld_rom_sr:crc_rom_sr|                                                                                                     ; 30 (30)             ; 8 (8)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_minibot|sld_signaltap:auto_signaltap_0|sld_signaltap_impl:sld_signaltap_body|sld_signaltap_implb:sld_signaltap_body|sld_rom_sr:crc_rom_sr                                                                                                                                                                                                          ; sld_rom_sr                        ; work         ;
-;    |spi_slave:spi_slave_inst|                                                                                                           ; 129 (129)           ; 60 (60)                   ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE0_minibot|spi_slave:spi_slave_inst                                                                                                                                                                                                                                                                                                                   ; spi_slave                         ; work         ;
-+-----------------------------------------------------------------------------------------------------------------------------------------+---------------------+---------------------------+-------------+--------------+---------+-----------+------+--------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------------------------+--------------+
-Note: For table entries with two numbers listed, the numbers in parentheses indicate the number of resources of the given type used by the specific entity alone. The numbers listed outside of parentheses indicate the total resources of the given type used by the specific entity and all of its sub-entities in the hierarchy.
-
-
-+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-; Analysis & Synthesis RAM Summary                                                                                                                                                                                                                                                                           ;
-+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------+------------------+--------------+--------------+--------------+--------------+-------+------+
-; Name                                                                                                                                                                                                  ; Type ; Mode             ; Port A Depth ; Port A Width ; Port B Depth ; Port B Width ; Size  ; MIF  ;
-+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------+------------------+--------------+--------------+--------------+--------------+-------+------+
-; sld_signaltap:auto_signaltap_0|sld_signaltap_impl:sld_signaltap_body|sld_signaltap_implb:sld_signaltap_body|altsyncram:\stp_non_zero_ram_gen:stp_buffer_ram|altsyncram_4b24:auto_generated|ALTSYNCRAM ; AUTO ; Simple Dual Port ; 4096         ; 12           ; 4096         ; 12           ; 49152 ; None ;
-+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------+------------------+--------------+--------------+--------------+--------------+-------+------+
-
-
-+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-; Analysis & Synthesis IP Cores Summary                                                                                                                                                                                                                                                                                                                              ;
-+--------+--------------+---------+--------------+--------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------+
-; Vendor ; IP Core Name ; Version ; Release Date ; License Type ; Entity Instance                                                                                                                                                                                                                                                                  ; IP Include File ;
-+--------+--------------+---------+--------------+--------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------+
-; Altera ; Signal Tap   ; N/A     ; N/A          ; Licensed     ; |DE0_minibot|sld_hub:auto_hub|alt_sld_fab_with_jtag_input:\instrumentation_fabric_with_node_gen:fabric_gen_new_way:with_jtag_input_gen:instrumentation_fabric|alt_sld_fab:instrumentation_fabric                                                                                 ;                 ;
-; Altera ; Signal Tap   ; N/A     ; N/A          ; Licensed     ; |DE0_minibot|sld_hub:auto_hub|alt_sld_fab_with_jtag_input:\instrumentation_fabric_with_node_gen:fabric_gen_new_way:with_jtag_input_gen:instrumentation_fabric|alt_sld_fab:instrumentation_fabric|alt_sld_fab_alt_sld_fab:alt_sld_fab                                             ;                 ;
-; Altera ; Signal Tap   ; N/A     ; N/A          ; Licensed     ; |DE0_minibot|sld_hub:auto_hub|alt_sld_fab_with_jtag_input:\instrumentation_fabric_with_node_gen:fabric_gen_new_way:with_jtag_input_gen:instrumentation_fabric|alt_sld_fab:instrumentation_fabric|alt_sld_fab_alt_sld_fab:alt_sld_fab|alt_sld_fab_alt_sld_fab_presplit:presplit   ;                 ;
-; Altera ; Signal Tap   ; N/A     ; N/A          ; Licensed     ; |DE0_minibot|sld_hub:auto_hub|alt_sld_fab_with_jtag_input:\instrumentation_fabric_with_node_gen:fabric_gen_new_way:with_jtag_input_gen:instrumentation_fabric|alt_sld_fab:instrumentation_fabric|alt_sld_fab_alt_sld_fab:alt_sld_fab|alt_sld_fab_alt_sld_fab_sldfabric:sldfabric ;                 ;
-; Altera ; Signal Tap   ; N/A     ; N/A          ; Licensed     ; |DE0_minibot|sld_hub:auto_hub|alt_sld_fab_with_jtag_input:\instrumentation_fabric_with_node_gen:fabric_gen_new_way:with_jtag_input_gen:instrumentation_fabric|alt_sld_fab:instrumentation_fabric|alt_sld_fab_alt_sld_fab:alt_sld_fab|alt_sld_fab_alt_sld_fab_splitter:splitter   ;                 ;
-+--------+--------------+---------+--------------+--------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------+
-
-
-Encoding Type:  One-Hot
-+-------------------------------------------------------------+
-; State Machine - |DE0_minibot|spi_slave:spi_slave_inst|state ;
-+----------+----------+----------+----------+-----------------+
-; Name     ; state.S3 ; state.S2 ; state.S1 ; state.S0        ;
-+----------+----------+----------+----------+-----------------+
-; state.S0 ; 0        ; 0        ; 0        ; 0               ;
-; state.S1 ; 0        ; 0        ; 1        ; 1               ;
-; state.S2 ; 0        ; 1        ; 0        ; 1               ;
-; state.S3 ; 1        ; 0        ; 0        ; 1               ;
-+----------+----------+----------+----------+-----------------+
-
-
-+---------------------------------------------------------------------------------------+
-; Registers Removed During Synthesis                                                    ;
-+----------------------------------------+----------------------------------------------+
-; Register name                          ; Reason for Removal                           ;
-+----------------------------------------+----------------------------------------------+
-; encoder:encoder2|direction_out[1..15]  ; Stuck at GND due to stuck port data_in       ;
-; encoder:encoder1|direction_out[1..15]  ; Stuck at GND due to stuck port data_in       ;
-; encoder:encoder2|counter_clk[17]       ; Merged with encoder:encoder1|counter_clk[17] ;
-; encoder:encoder2|counter_clk[16]       ; Merged with encoder:encoder1|counter_clk[16] ;
-; encoder:encoder2|counter_clk[15]       ; Merged with encoder:encoder1|counter_clk[15] ;
-; encoder:encoder2|counter_clk[14]       ; Merged with encoder:encoder1|counter_clk[14] ;
-; encoder:encoder2|counter_clk[12]       ; Merged with encoder:encoder1|counter_clk[12] ;
-; encoder:encoder2|counter_clk[7]        ; Merged with encoder:encoder1|counter_clk[7]  ;
-; encoder:encoder2|counter_clk[4]        ; Merged with encoder:encoder1|counter_clk[4]  ;
-; encoder:encoder2|counter_clk[31]       ; Merged with encoder:encoder1|counter_clk[31] ;
-; encoder:encoder2|counter_clk[30]       ; Merged with encoder:encoder1|counter_clk[30] ;
-; encoder:encoder2|counter_clk[29]       ; Merged with encoder:encoder1|counter_clk[29] ;
-; encoder:encoder2|counter_clk[28]       ; Merged with encoder:encoder1|counter_clk[28] ;
-; encoder:encoder2|counter_clk[27]       ; Merged with encoder:encoder1|counter_clk[27] ;
-; encoder:encoder2|counter_clk[26]       ; Merged with encoder:encoder1|counter_clk[26] ;
-; encoder:encoder2|counter_clk[25]       ; Merged with encoder:encoder1|counter_clk[25] ;
-; encoder:encoder2|counter_clk[24]       ; Merged with encoder:encoder1|counter_clk[24] ;
-; encoder:encoder2|counter_clk[23]       ; Merged with encoder:encoder1|counter_clk[23] ;
-; encoder:encoder2|counter_clk[22]       ; Merged with encoder:encoder1|counter_clk[22] ;
-; encoder:encoder2|counter_clk[21]       ; Merged with encoder:encoder1|counter_clk[21] ;
-; encoder:encoder2|counter_clk[20]       ; Merged with encoder:encoder1|counter_clk[20] ;
-; encoder:encoder2|counter_clk[19]       ; Merged with encoder:encoder1|counter_clk[19] ;
-; encoder:encoder2|counter_clk[18]       ; Merged with encoder:encoder1|counter_clk[18] ;
-; encoder:encoder2|counter_clk[13]       ; Merged with encoder:encoder1|counter_clk[13] ;
-; encoder:encoder2|counter_clk[11]       ; Merged with encoder:encoder1|counter_clk[11] ;
-; encoder:encoder2|counter_clk[10]       ; Merged with encoder:encoder1|counter_clk[10] ;
-; encoder:encoder2|counter_clk[9]        ; Merged with encoder:encoder1|counter_clk[9]  ;
-; encoder:encoder2|counter_clk[8]        ; Merged with encoder:encoder1|counter_clk[8]  ;
-; encoder:encoder2|counter_clk[6]        ; Merged with encoder:encoder1|counter_clk[6]  ;
-; encoder:encoder2|counter_clk[5]        ; Merged with encoder:encoder1|counter_clk[5]  ;
-; encoder:encoder2|counter_clk[3]        ; Merged with encoder:encoder1|counter_clk[3]  ;
-; encoder:encoder2|counter_clk[2]        ; Merged with encoder:encoder1|counter_clk[2]  ;
-; encoder:encoder2|counter_clk[1]        ; Merged with encoder:encoder1|counter_clk[1]  ;
-; encoder:encoder2|counter_clk[0]        ; Merged with encoder:encoder1|counter_clk[0]  ;
-; spi_slave:spi_slave_inst|state~2       ; Lost fanout                                  ;
-; spi_slave:spi_slave_inst|state~3       ; Lost fanout                                  ;
-; spi_slave:spi_slave_inst|state.S3      ; Lost fanout                                  ;
-; Total Number of Removed Registers = 65 ;                                              ;
-+----------------------------------------+----------------------------------------------+
-
-
-+------------------------------------------------------------------------------------------------+
-; Removed Registers Triggering Further Register Optimizations                                    ;
-+----------------------------------+--------------------+----------------------------------------+
-; Register name                    ; Reason for Removal ; Registers Removed due to This Register ;
-+----------------------------------+--------------------+----------------------------------------+
-; spi_slave:spi_slave_inst|state~2 ; Lost Fanouts       ; spi_slave:spi_slave_inst|state.S3      ;
-+----------------------------------+--------------------+----------------------------------------+
-
-
-+------------------------------------------------------+
-; General Register Statistics                          ;
-+----------------------------------------------+-------+
-; Statistic                                    ; Value ;
-+----------------------------------------------+-------+
-; Total registers                              ; 1026  ;
-; Number of registers using Synchronous Clear  ; 102   ;
-; Number of registers using Synchronous Load   ; 84    ;
-; Number of registers using Asynchronous Clear ; 222   ;
-; Number of registers using Asynchronous Load  ; 0     ;
-; Number of registers using Clock Enable       ; 488   ;
-; Number of registers using Preset             ; 0     ;
-+----------------------------------------------+-------+
-
-
-+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-; Inverted Register Statistics                                                                                                                                                                                                                                                                                                              ;
-+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------+
-; Inverted Register                                                                                                                                                                                                                                                                                                               ; Fan out ;
-+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------+
-; sld_hub:auto_hub|alt_sld_fab_with_jtag_input:\instrumentation_fabric_with_node_gen:fabric_gen_new_way:with_jtag_input_gen:instrumentation_fabric|alt_sld_fab:instrumentation_fabric|alt_sld_fab_alt_sld_fab:alt_sld_fab|alt_sld_fab_alt_sld_fab_sldfabric:sldfabric|sld_jtag_hub:\jtag_hub_gen:real_sld_jtag_hub|jtag_ir_reg[2] ; 2       ;
-; sld_hub:auto_hub|alt_sld_fab_with_jtag_input:\instrumentation_fabric_with_node_gen:fabric_gen_new_way:with_jtag_input_gen:instrumentation_fabric|alt_sld_fab:instrumentation_fabric|alt_sld_fab_alt_sld_fab:alt_sld_fab|alt_sld_fab_alt_sld_fab_sldfabric:sldfabric|sld_jtag_hub:\jtag_hub_gen:real_sld_jtag_hub|jtag_ir_reg[1] ; 3       ;
-; sld_signaltap:auto_signaltap_0|sld_signaltap_impl:sld_signaltap_body|sld_signaltap_implb:sld_signaltap_body|sld_buffer_manager:sld_buffer_manager_inst|modified_post_count[1]                                                                                                                                                   ; 1       ;
-; sld_signaltap:auto_signaltap_0|sld_signaltap_impl:sld_signaltap_body|sld_signaltap_implb:sld_signaltap_body|sld_buffer_manager:sld_buffer_manager_inst|modified_post_count[2]                                                                                                                                                   ; 1       ;
-; sld_signaltap:auto_signaltap_0|sld_signaltap_impl:sld_signaltap_body|sld_signaltap_implb:sld_signaltap_body|sld_buffer_manager:sld_buffer_manager_inst|modified_post_count[3]                                                                                                                                                   ; 1       ;
-; sld_signaltap:auto_signaltap_0|sld_signaltap_impl:sld_signaltap_body|sld_signaltap_implb:sld_signaltap_body|sld_buffer_manager:sld_buffer_manager_inst|modified_post_count[4]                                                                                                                                                   ; 1       ;
-; sld_signaltap:auto_signaltap_0|sld_signaltap_impl:sld_signaltap_body|sld_signaltap_implb:sld_signaltap_body|sld_buffer_manager:sld_buffer_manager_inst|modified_post_count[5]                                                                                                                                                   ; 1       ;
-; sld_signaltap:auto_signaltap_0|sld_signaltap_impl:sld_signaltap_body|sld_signaltap_implb:sld_signaltap_body|sld_buffer_manager:sld_buffer_manager_inst|modified_post_count[6]                                                                                                                                                   ; 1       ;
-; sld_signaltap:auto_signaltap_0|sld_signaltap_impl:sld_signaltap_body|sld_signaltap_implb:sld_signaltap_body|sld_buffer_manager:sld_buffer_manager_inst|modified_post_count[7]                                                                                                                                                   ; 1       ;
-; sld_signaltap:auto_signaltap_0|sld_signaltap_impl:sld_signaltap_body|sld_signaltap_implb:sld_signaltap_body|sld_buffer_manager:sld_buffer_manager_inst|modified_post_count[8]                                                                                                                                                   ; 1       ;
-; sld_signaltap:auto_signaltap_0|sld_signaltap_impl:sld_signaltap_body|sld_signaltap_implb:sld_signaltap_body|sld_buffer_manager:sld_buffer_manager_inst|modified_post_count[9]                                                                                                                                                   ; 1       ;
-; sld_signaltap:auto_signaltap_0|sld_signaltap_impl:sld_signaltap_body|sld_signaltap_implb:sld_signaltap_body|sld_buffer_manager:sld_buffer_manager_inst|modified_post_count[10]                                                                                                                                                  ; 1       ;
-; sld_signaltap:auto_signaltap_0|sld_signaltap_impl:sld_signaltap_body|sld_signaltap_implb:sld_signaltap_body|sld_buffer_manager:sld_buffer_manager_inst|modified_post_count[11]                                                                                                                                                  ; 1       ;
-; sld_signaltap:auto_signaltap_0|sld_signaltap_impl:sld_signaltap_body|sld_signaltap_implb:sld_signaltap_body|sld_buffer_manager:sld_buffer_manager_inst|modified_post_count[12]                                                                                                                                                  ; 1       ;
-; sld_signaltap:auto_signaltap_0|sld_signaltap_impl:sld_signaltap_body|sld_signaltap_implb:sld_signaltap_body|sld_buffer_manager:sld_buffer_manager_inst|modified_post_count[0]                                                                                                                                                   ; 1       ;
-; Total number of inverted registers = 15                                                                                                                                                                                                                                                                                         ;         ;
-+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------+
-
-
-+------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-; Multiplexer Restructuring Statistics (Restructuring Performed)                                                                                                   ;
-+--------------------+-----------+---------------+----------------------+------------------------+------------+----------------------------------------------------+
-; Multiplexer Inputs ; Bus Width ; Baseline Area ; Area if Restructured ; Saving if Restructured ; Registered ; Example Multiplexer Output                         ;
-+--------------------+-----------+---------------+----------------------+------------------------+------------+----------------------------------------------------+
-; 3:1                ; 8 bits    ; 16 LEs        ; 8 LEs                ; 8 LEs                  ; Yes        ; |DE0_minibot|spi_slave:spi_slave_inst|Data_Addr[0] ;
-; 3:1                ; 14 bits   ; 28 LEs        ; 14 LEs               ; 14 LEs                 ; Yes        ; |DE0_minibot|spi_slave:spi_slave_inst|SPI_reg[4]   ;
-; 3:1                ; 16 bits   ; 32 LEs        ; 16 LEs               ; 16 LEs                 ; Yes        ; |DE0_minibot|encoder:encoder2|counter[2]           ;
-; 3:1                ; 16 bits   ; 32 LEs        ; 16 LEs               ; 16 LEs                 ; Yes        ; |DE0_minibot|encoder:encoder1|counter[15]          ;
-; 9:1                ; 14 bits   ; 84 LEs        ; 56 LEs               ; 28 LEs                 ; Yes        ; |DE0_minibot|spi_slave:spi_slave_inst|SPI_reg[28]  ;
-; 9:1                ; 17 bits   ; 102 LEs       ; 85 LEs               ; 17 LEs                 ; Yes        ; |DE0_minibot|spi_slave:spi_slave_inst|SPI_reg[22]  ;
-; 9:1                ; 2 bits    ; 12 LEs        ; 6 LEs                ; 6 LEs                  ; No         ; |DE0_minibot|spi_slave:spi_slave_inst|state        ;
-; 9:1                ; 2 bits    ; 12 LEs        ; 6 LEs                ; 6 LEs                  ; No         ; |DE0_minibot|spi_slave:spi_slave_inst|state        ;
-+--------------------+-----------+---------------+----------------------+------------------------+------------+----------------------------------------------------+
 
 
 +-------------------------------------------------------+
@@ -574,368 +243,102 @@ Note: In order to hide this table in the UI and the text report file, please set
 +-----------+--------+----------+-------------------------------------------------------------------------------------+
 
 
-+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-; Signal Tap Logic Analyzer Settings                                                                                                                                                                                                                                      ;
-+----------------+------------------+---------------------+------------------+--------------+----------+------------------------+----------------------+--------------------+-----------------------------+-----------------+------------------+--------------------------+
-; Instance Index ; Instance Name    ; Trigger Input Width ; Data Input Width ; Sample Depth ; Segments ; Storage Qualifier Type ; Trigger Flow Control ; Trigger Conditions ; Advanced Trigger Conditions ; Trigger In Used ; Trigger Out Used ; Power-Up Trigger Enabled ;
-+----------------+------------------+---------------------+------------------+--------------+----------+------------------------+----------------------+--------------------+-----------------------------+-----------------+------------------+--------------------------+
-; 0              ; auto_signaltap_0 ; 12                  ; 12               ; 4096         ; 1        ; continuous             ; sequential           ; 1                  ; 0                           ; no              ; no               ; no                       ;
-+----------------+------------------+---------------------+------------------+--------------+----------+------------------------+----------------------+--------------------+-----------------------------+-----------------+------------------+--------------------------+
-
-
-+-----------------------------------------------------+
-; Post-Synthesis Netlist Statistics for Top Partition ;
-+-----------------------+-----------------------------+
-; Type                  ; Count                       ;
-+-----------------------+-----------------------------+
-; boundary_port         ; 144                         ;
-; cycloneiii_ff         ; 424                         ;
-;     ENA               ; 66                          ;
-;     ENA SCLR          ; 38                          ;
-;     ENA SCLR SLD      ; 15                          ;
-;     SCLR SLD          ; 1                           ;
-;     plain             ; 304                         ;
-; cycloneiii_io_obuf    ; 85                          ;
-; cycloneiii_lcell_comb ; 678                         ;
-;     arith             ; 500                         ;
-;         2 data inputs ; 74                          ;
-;         3 data inputs ; 426                         ;
-;     normal            ; 178                         ;
-;         0 data inputs ; 1                           ;
-;         1 data inputs ; 4                           ;
-;         2 data inputs ; 28                          ;
-;         3 data inputs ; 49                          ;
-;         4 data inputs ; 96                          ;
-;                       ;                             ;
-; Max LUT depth         ; 8.10                        ;
-; Average LUT depth     ; 4.60                        ;
-+-----------------------+-----------------------------+
-
-
-+-------------------------------+
-; Elapsed Time Per Partition    ;
-+----------------+--------------+
-; Partition Name ; Elapsed Time ;
-+----------------+--------------+
-; Top            ; 00:00:01     ;
-+----------------+--------------+
-
-
-+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-; Connections to In-System Debugging Instance "auto_signaltap_0"                                                                                                           ;
-+---------------------------------------+---------------+-----------+--------------------------------+-------------------+---------------------------------------+---------+
-; Name                                  ; Type          ; Status    ; Partition Name                 ; Netlist Type Used ; Actual Connection                     ; Details ;
-+---------------------------------------+---------------+-----------+--------------------------------+-------------------+---------------------------------------+---------+
-; CLOCK_50                              ; pre-synthesis ; connected ; Top                            ; post-synthesis    ; CLOCK_50                              ; N/A     ;
-; spi_clk                               ; pre-synthesis ; connected ; Top                            ; post-synthesis    ; GPIO_0[11]                            ; N/A     ;
-; spi_clk                               ; pre-synthesis ; connected ; Top                            ; post-synthesis    ; GPIO_0[11]                            ; N/A     ;
-; spi_cs                                ; pre-synthesis ; connected ; Top                            ; post-synthesis    ; GPIO_0[9]                             ; N/A     ;
-; spi_cs                                ; pre-synthesis ; connected ; Top                            ; post-synthesis    ; GPIO_0[9]                             ; N/A     ;
-; spi_mosi                              ; pre-synthesis ; connected ; Top                            ; post-synthesis    ; GPIO_0[15]                            ; N/A     ;
-; spi_mosi                              ; pre-synthesis ; connected ; Top                            ; post-synthesis    ; GPIO_0[15]                            ; N/A     ;
-; spi_slave:spi_slave_inst|Data_Addr[0] ; pre-synthesis ; connected ; Top                            ; post-synthesis    ; spi_slave:spi_slave_inst|Data_Addr[0] ; N/A     ;
-; spi_slave:spi_slave_inst|Data_Addr[0] ; pre-synthesis ; connected ; Top                            ; post-synthesis    ; spi_slave:spi_slave_inst|Data_Addr[0] ; N/A     ;
-; spi_slave:spi_slave_inst|Data_Addr[1] ; pre-synthesis ; connected ; Top                            ; post-synthesis    ; spi_slave:spi_slave_inst|Data_Addr[1] ; N/A     ;
-; spi_slave:spi_slave_inst|Data_Addr[1] ; pre-synthesis ; connected ; Top                            ; post-synthesis    ; spi_slave:spi_slave_inst|Data_Addr[1] ; N/A     ;
-; spi_slave:spi_slave_inst|Data_Addr[2] ; pre-synthesis ; connected ; Top                            ; post-synthesis    ; spi_slave:spi_slave_inst|Data_Addr[2] ; N/A     ;
-; spi_slave:spi_slave_inst|Data_Addr[2] ; pre-synthesis ; connected ; Top                            ; post-synthesis    ; spi_slave:spi_slave_inst|Data_Addr[2] ; N/A     ;
-; spi_slave:spi_slave_inst|Data_Addr[3] ; pre-synthesis ; connected ; Top                            ; post-synthesis    ; spi_slave:spi_slave_inst|Data_Addr[3] ; N/A     ;
-; spi_slave:spi_slave_inst|Data_Addr[3] ; pre-synthesis ; connected ; Top                            ; post-synthesis    ; spi_slave:spi_slave_inst|Data_Addr[3] ; N/A     ;
-; spi_slave:spi_slave_inst|Data_Addr[4] ; pre-synthesis ; connected ; Top                            ; post-synthesis    ; spi_slave:spi_slave_inst|Data_Addr[4] ; N/A     ;
-; spi_slave:spi_slave_inst|Data_Addr[4] ; pre-synthesis ; connected ; Top                            ; post-synthesis    ; spi_slave:spi_slave_inst|Data_Addr[4] ; N/A     ;
-; spi_slave:spi_slave_inst|Data_Addr[5] ; pre-synthesis ; connected ; Top                            ; post-synthesis    ; spi_slave:spi_slave_inst|Data_Addr[5] ; N/A     ;
-; spi_slave:spi_slave_inst|Data_Addr[5] ; pre-synthesis ; connected ; Top                            ; post-synthesis    ; spi_slave:spi_slave_inst|Data_Addr[5] ; N/A     ;
-; spi_slave:spi_slave_inst|Data_Addr[6] ; pre-synthesis ; connected ; Top                            ; post-synthesis    ; spi_slave:spi_slave_inst|Data_Addr[6] ; N/A     ;
-; spi_slave:spi_slave_inst|Data_Addr[6] ; pre-synthesis ; connected ; Top                            ; post-synthesis    ; spi_slave:spi_slave_inst|Data_Addr[6] ; N/A     ;
-; spi_slave:spi_slave_inst|Data_Addr[7] ; pre-synthesis ; connected ; Top                            ; post-synthesis    ; spi_slave:spi_slave_inst|Data_Addr[7] ; N/A     ;
-; spi_slave:spi_slave_inst|Data_Addr[7] ; pre-synthesis ; connected ; Top                            ; post-synthesis    ; spi_slave:spi_slave_inst|Data_Addr[7] ; N/A     ;
-; spi_slave:spi_slave_inst|SPI_MISO     ; pre-synthesis ; connected ; Top                            ; post-synthesis    ; spi_slave:spi_slave_inst|SPI_MISO     ; N/A     ;
-; spi_slave:spi_slave_inst|SPI_MISO     ; pre-synthesis ; connected ; Top                            ; post-synthesis    ; spi_slave:spi_slave_inst|SPI_MISO     ; N/A     ;
-; auto_signaltap_0|gnd                  ; post-fitting  ; connected ; sld_signaltap:auto_signaltap_0 ; post-synthesis    ; sld_signaltap:auto_signaltap_0|~GND   ; N/A     ;
-; auto_signaltap_0|gnd                  ; post-fitting  ; connected ; sld_signaltap:auto_signaltap_0 ; post-synthesis    ; sld_signaltap:auto_signaltap_0|~GND   ; N/A     ;
-; auto_signaltap_0|gnd                  ; post-fitting  ; connected ; sld_signaltap:auto_signaltap_0 ; post-synthesis    ; sld_signaltap:auto_signaltap_0|~GND   ; N/A     ;
-; auto_signaltap_0|gnd                  ; post-fitting  ; connected ; sld_signaltap:auto_signaltap_0 ; post-synthesis    ; sld_signaltap:auto_signaltap_0|~GND   ; N/A     ;
-; auto_signaltap_0|gnd                  ; post-fitting  ; connected ; sld_signaltap:auto_signaltap_0 ; post-synthesis    ; sld_signaltap:auto_signaltap_0|~GND   ; N/A     ;
-; auto_signaltap_0|gnd                  ; post-fitting  ; connected ; sld_signaltap:auto_signaltap_0 ; post-synthesis    ; sld_signaltap:auto_signaltap_0|~GND   ; N/A     ;
-; auto_signaltap_0|gnd                  ; post-fitting  ; connected ; sld_signaltap:auto_signaltap_0 ; post-synthesis    ; sld_signaltap:auto_signaltap_0|~GND   ; N/A     ;
-; auto_signaltap_0|gnd                  ; post-fitting  ; connected ; sld_signaltap:auto_signaltap_0 ; post-synthesis    ; sld_signaltap:auto_signaltap_0|~GND   ; N/A     ;
-; auto_signaltap_0|gnd                  ; post-fitting  ; connected ; sld_signaltap:auto_signaltap_0 ; post-synthesis    ; sld_signaltap:auto_signaltap_0|~GND   ; N/A     ;
-; auto_signaltap_0|gnd                  ; post-fitting  ; connected ; sld_signaltap:auto_signaltap_0 ; post-synthesis    ; sld_signaltap:auto_signaltap_0|~GND   ; N/A     ;
-; auto_signaltap_0|gnd                  ; post-fitting  ; connected ; sld_signaltap:auto_signaltap_0 ; post-synthesis    ; sld_signaltap:auto_signaltap_0|~GND   ; N/A     ;
-; auto_signaltap_0|gnd                  ; post-fitting  ; connected ; sld_signaltap:auto_signaltap_0 ; post-synthesis    ; sld_signaltap:auto_signaltap_0|~GND   ; N/A     ;
-; auto_signaltap_0|gnd                  ; post-fitting  ; connected ; sld_signaltap:auto_signaltap_0 ; post-synthesis    ; sld_signaltap:auto_signaltap_0|~GND   ; N/A     ;
-; auto_signaltap_0|gnd                  ; post-fitting  ; connected ; sld_signaltap:auto_signaltap_0 ; post-synthesis    ; sld_signaltap:auto_signaltap_0|~GND   ; N/A     ;
-; auto_signaltap_0|gnd                  ; post-fitting  ; connected ; sld_signaltap:auto_signaltap_0 ; post-synthesis    ; sld_signaltap:auto_signaltap_0|~GND   ; N/A     ;
-; auto_signaltap_0|gnd                  ; post-fitting  ; connected ; sld_signaltap:auto_signaltap_0 ; post-synthesis    ; sld_signaltap:auto_signaltap_0|~GND   ; N/A     ;
-; auto_signaltap_0|gnd                  ; post-fitting  ; connected ; sld_signaltap:auto_signaltap_0 ; post-synthesis    ; sld_signaltap:auto_signaltap_0|~GND   ; N/A     ;
-; auto_signaltap_0|gnd                  ; post-fitting  ; connected ; sld_signaltap:auto_signaltap_0 ; post-synthesis    ; sld_signaltap:auto_signaltap_0|~GND   ; N/A     ;
-; auto_signaltap_0|gnd                  ; post-fitting  ; connected ; sld_signaltap:auto_signaltap_0 ; post-synthesis    ; sld_signaltap:auto_signaltap_0|~GND   ; N/A     ;
-; auto_signaltap_0|gnd                  ; post-fitting  ; connected ; sld_signaltap:auto_signaltap_0 ; post-synthesis    ; sld_signaltap:auto_signaltap_0|~GND   ; N/A     ;
-; auto_signaltap_0|gnd                  ; post-fitting  ; connected ; sld_signaltap:auto_signaltap_0 ; post-synthesis    ; sld_signaltap:auto_signaltap_0|~GND   ; N/A     ;
-; auto_signaltap_0|gnd                  ; post-fitting  ; connected ; sld_signaltap:auto_signaltap_0 ; post-synthesis    ; sld_signaltap:auto_signaltap_0|~GND   ; N/A     ;
-; auto_signaltap_0|vcc                  ; post-fitting  ; connected ; sld_signaltap:auto_signaltap_0 ; post-synthesis    ; sld_signaltap:auto_signaltap_0|~VCC   ; N/A     ;
-; auto_signaltap_0|vcc                  ; post-fitting  ; connected ; sld_signaltap:auto_signaltap_0 ; post-synthesis    ; sld_signaltap:auto_signaltap_0|~VCC   ; N/A     ;
-; auto_signaltap_0|vcc                  ; post-fitting  ; connected ; sld_signaltap:auto_signaltap_0 ; post-synthesis    ; sld_signaltap:auto_signaltap_0|~VCC   ; N/A     ;
-; auto_signaltap_0|vcc                  ; post-fitting  ; connected ; sld_signaltap:auto_signaltap_0 ; post-synthesis    ; sld_signaltap:auto_signaltap_0|~VCC   ; N/A     ;
-; auto_signaltap_0|vcc                  ; post-fitting  ; connected ; sld_signaltap:auto_signaltap_0 ; post-synthesis    ; sld_signaltap:auto_signaltap_0|~VCC   ; N/A     ;
-; auto_signaltap_0|vcc                  ; post-fitting  ; connected ; sld_signaltap:auto_signaltap_0 ; post-synthesis    ; sld_signaltap:auto_signaltap_0|~VCC   ; N/A     ;
-; auto_signaltap_0|vcc                  ; post-fitting  ; connected ; sld_signaltap:auto_signaltap_0 ; post-synthesis    ; sld_signaltap:auto_signaltap_0|~VCC   ; N/A     ;
-; auto_signaltap_0|vcc                  ; post-fitting  ; connected ; sld_signaltap:auto_signaltap_0 ; post-synthesis    ; sld_signaltap:auto_signaltap_0|~VCC   ; N/A     ;
-; auto_signaltap_0|vcc                  ; post-fitting  ; connected ; sld_signaltap:auto_signaltap_0 ; post-synthesis    ; sld_signaltap:auto_signaltap_0|~VCC   ; N/A     ;
-; auto_signaltap_0|vcc                  ; post-fitting  ; connected ; sld_signaltap:auto_signaltap_0 ; post-synthesis    ; sld_signaltap:auto_signaltap_0|~VCC   ; N/A     ;
-+---------------------------------------+---------------+-----------+--------------------------------+-------------------+---------------------------------------+---------+
-
-
 +-------------------------------+
 ; Analysis & Synthesis Messages ;
 +-------------------------------+
 Info: *******************************************************************
 Info: Running Quartus Prime Analysis & Synthesis
     Info: Version 18.1.0 Build 625 09/12/2018 SJ Lite Edition
-    Info: Processing started: Thu Feb 15 18:45:33 2024
+    Info: Processing started: Fri Mar 01 18:02:51 2024
 Info: Command: quartus_map --read_settings_files=on --write_settings_files=off DE0_minibot -c DE0_minibot
 Warning (18236): Number of processors has not been specified which may cause overloading on shared machines.  Set the global assignment NUM_PARALLEL_PROCESSORS in your QSF to an appropriate value for best performance.
-Info (20030): Parallel compilation is enabled and will use 6 of the 6 processors detected
+Info (20030): Parallel compilation is enabled and will use 4 of the 4 processors detected
 Info (12021): Found 1 design units, including 1 entities, in source file spi_slave.sv
-    Info (12023): Found entity 1: spi_slave File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/spi_slave.sv Line: 6
+    Info (12023): Found entity 1: spi_slave File: C:/Users/kneip/OneDrive/Bureau/Cours/Projet Mécatro/Code/Bot_annick/system_verilog/DE0-minibot/DEO/spi_slave.sv Line: 6
 Info (12021): Found 1 design units, including 1 entities, in source file odometer.sv
-    Info (12023): Found entity 1: odometer File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/odometer.sv Line: 2
+    Info (12023): Found entity 1: odometer File: C:/Users/kneip/OneDrive/Bureau/Cours/Projet Mécatro/Code/Bot_annick/system_verilog/DE0-minibot/DEO/odometer.sv Line: 2
 Info (12021): Found 1 design units, including 1 entities, in source file encoder.sv
-    Info (12023): Found entity 1: encoder File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/encoder.sv Line: 1
+    Info (12023): Found entity 1: encoder File: C:/Users/kneip/OneDrive/Bureau/Cours/Projet Mécatro/Code/Bot_annick/system_verilog/DE0-minibot/DEO/encoder.sv Line: 1
 Info (12021): Found 1 design units, including 1 entities, in source file de0_minibot.sv
-    Info (12023): Found entity 1: DE0_minibot File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 7
+    Info (12023): Found entity 1: DE0_minibot File: C:/Users/kneip/OneDrive/Bureau/Cours/Projet Mécatro/Code/Bot_annick/system_verilog/DE0-minibot/DEO/DE0_minibot.sv Line: 7
 Info (12127): Elaborating entity "DE0_minibot" for the top level hierarchy
-Warning (10034): Output port "LED" at DE0_minibot.sv(68) has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 68
-Warning (10034): Output port "DRAM_ADDR" at DE0_minibot.sv(74) has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 74
-Warning (10034): Output port "DRAM_BA" at DE0_minibot.sv(75) has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 75
-Warning (10034): Output port "DRAM_DQM" at DE0_minibot.sv(81) has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 81
-Warning (10034): Output port "DRAM_CAS_N" at DE0_minibot.sv(76) has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 76
-Warning (10034): Output port "DRAM_CKE" at DE0_minibot.sv(77) has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 77
-Warning (10034): Output port "DRAM_CLK" at DE0_minibot.sv(78) has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 78
-Warning (10034): Output port "DRAM_CS_N" at DE0_minibot.sv(79) has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 79
-Warning (10034): Output port "DRAM_RAS_N" at DE0_minibot.sv(82) has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 82
-Warning (10034): Output port "DRAM_WE_N" at DE0_minibot.sv(83) has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 83
-Warning (10034): Output port "EPCS_ASDO" at DE0_minibot.sv(86) has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 86
-Warning (10034): Output port "EPCS_DCLK" at DE0_minibot.sv(88) has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 88
-Warning (10034): Output port "EPCS_NCSO" at DE0_minibot.sv(89) has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 89
-Warning (10034): Output port "I2C_SCLK" at DE0_minibot.sv(92) has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 92
-Warning (10034): Output port "ADC_CS_N" at DE0_minibot.sv(96) has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 96
-Warning (10034): Output port "ADC_SADDR" at DE0_minibot.sv(97) has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 97
-Warning (10034): Output port "ADC_SCLK" at DE0_minibot.sv(98) has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 98
-Info (12128): Elaborating entity "spi_slave" for hierarchy "spi_slave:spi_slave_inst" File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 130
-Info (12128): Elaborating entity "encoder" for hierarchy "encoder:encoder1" File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 168
-Warning (10230): Verilog HDL assignment warning at encoder.sv(41): truncated value with size 32 to match size of target (16) File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/encoder.sv Line: 41
-Warning (10230): Verilog HDL assignment warning at encoder.sv(46): truncated value with size 32 to match size of target (16) File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/encoder.sv Line: 46
-Warning (10230): Verilog HDL assignment warning at encoder.sv(51): truncated value with size 32 to match size of target (16) File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/encoder.sv Line: 51
-Warning (10230): Verilog HDL assignment warning at encoder.sv(56): truncated value with size 32 to match size of target (16) File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/encoder.sv Line: 56
-Info (12128): Elaborating entity "odometer" for hierarchy "odometer:odo1" File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 199
+Warning (10034): Output port "LED" at DE0_minibot.sv(68) has no driver File: C:/Users/kneip/OneDrive/Bureau/Cours/Projet Mécatro/Code/Bot_annick/system_verilog/DE0-minibot/DEO/DE0_minibot.sv Line: 68
+Warning (10034): Output port "DRAM_ADDR" at DE0_minibot.sv(74) has no driver File: C:/Users/kneip/OneDrive/Bureau/Cours/Projet Mécatro/Code/Bot_annick/system_verilog/DE0-minibot/DEO/DE0_minibot.sv Line: 74
+Warning (10034): Output port "DRAM_BA" at DE0_minibot.sv(75) has no driver File: C:/Users/kneip/OneDrive/Bureau/Cours/Projet Mécatro/Code/Bot_annick/system_verilog/DE0-minibot/DEO/DE0_minibot.sv Line: 75
+Warning (10034): Output port "DRAM_DQM" at DE0_minibot.sv(81) has no driver File: C:/Users/kneip/OneDrive/Bureau/Cours/Projet Mécatro/Code/Bot_annick/system_verilog/DE0-minibot/DEO/DE0_minibot.sv Line: 81
+Warning (10034): Output port "DRAM_CAS_N" at DE0_minibot.sv(76) has no driver File: C:/Users/kneip/OneDrive/Bureau/Cours/Projet Mécatro/Code/Bot_annick/system_verilog/DE0-minibot/DEO/DE0_minibot.sv Line: 76
+Warning (10034): Output port "DRAM_CKE" at DE0_minibot.sv(77) has no driver File: C:/Users/kneip/OneDrive/Bureau/Cours/Projet Mécatro/Code/Bot_annick/system_verilog/DE0-minibot/DEO/DE0_minibot.sv Line: 77
+Warning (10034): Output port "DRAM_CLK" at DE0_minibot.sv(78) has no driver File: C:/Users/kneip/OneDrive/Bureau/Cours/Projet Mécatro/Code/Bot_annick/system_verilog/DE0-minibot/DEO/DE0_minibot.sv Line: 78
+Warning (10034): Output port "DRAM_CS_N" at DE0_minibot.sv(79) has no driver File: C:/Users/kneip/OneDrive/Bureau/Cours/Projet Mécatro/Code/Bot_annick/system_verilog/DE0-minibot/DEO/DE0_minibot.sv Line: 79
+Warning (10034): Output port "DRAM_RAS_N" at DE0_minibot.sv(82) has no driver File: C:/Users/kneip/OneDrive/Bureau/Cours/Projet Mécatro/Code/Bot_annick/system_verilog/DE0-minibot/DEO/DE0_minibot.sv Line: 82
+Warning (10034): Output port "DRAM_WE_N" at DE0_minibot.sv(83) has no driver File: C:/Users/kneip/OneDrive/Bureau/Cours/Projet Mécatro/Code/Bot_annick/system_verilog/DE0-minibot/DEO/DE0_minibot.sv Line: 83
+Warning (10034): Output port "EPCS_ASDO" at DE0_minibot.sv(86) has no driver File: C:/Users/kneip/OneDrive/Bureau/Cours/Projet Mécatro/Code/Bot_annick/system_verilog/DE0-minibot/DEO/DE0_minibot.sv Line: 86
+Warning (10034): Output port "EPCS_DCLK" at DE0_minibot.sv(88) has no driver File: C:/Users/kneip/OneDrive/Bureau/Cours/Projet Mécatro/Code/Bot_annick/system_verilog/DE0-minibot/DEO/DE0_minibot.sv Line: 88
+Warning (10034): Output port "EPCS_NCSO" at DE0_minibot.sv(89) has no driver File: C:/Users/kneip/OneDrive/Bureau/Cours/Projet Mécatro/Code/Bot_annick/system_verilog/DE0-minibot/DEO/DE0_minibot.sv Line: 89
+Warning (10034): Output port "I2C_SCLK" at DE0_minibot.sv(92) has no driver File: C:/Users/kneip/OneDrive/Bureau/Cours/Projet Mécatro/Code/Bot_annick/system_verilog/DE0-minibot/DEO/DE0_minibot.sv Line: 92
+Warning (10034): Output port "ADC_CS_N" at DE0_minibot.sv(96) has no driver File: C:/Users/kneip/OneDrive/Bureau/Cours/Projet Mécatro/Code/Bot_annick/system_verilog/DE0-minibot/DEO/DE0_minibot.sv Line: 96
+Warning (10034): Output port "ADC_SADDR" at DE0_minibot.sv(97) has no driver File: C:/Users/kneip/OneDrive/Bureau/Cours/Projet Mécatro/Code/Bot_annick/system_verilog/DE0-minibot/DEO/DE0_minibot.sv Line: 97
+Warning (10034): Output port "ADC_SCLK" at DE0_minibot.sv(98) has no driver File: C:/Users/kneip/OneDrive/Bureau/Cours/Projet Mécatro/Code/Bot_annick/system_verilog/DE0-minibot/DEO/DE0_minibot.sv Line: 98
+Info (12128): Elaborating entity "spi_slave" for hierarchy "spi_slave:spi_slave_inst" File: C:/Users/kneip/OneDrive/Bureau/Cours/Projet Mécatro/Code/Bot_annick/system_verilog/DE0-minibot/DEO/DE0_minibot.sv Line: 130
+Info (12128): Elaborating entity "encoder" for hierarchy "encoder:encoder1" File: C:/Users/kneip/OneDrive/Bureau/Cours/Projet Mécatro/Code/Bot_annick/system_verilog/DE0-minibot/DEO/DE0_minibot.sv Line: 168
+Warning (10230): Verilog HDL assignment warning at encoder.sv(41): truncated value with size 32 to match size of target (16) File: C:/Users/kneip/OneDrive/Bureau/Cours/Projet Mécatro/Code/Bot_annick/system_verilog/DE0-minibot/DEO/encoder.sv Line: 41
+Warning (10230): Verilog HDL assignment warning at encoder.sv(46): truncated value with size 32 to match size of target (16) File: C:/Users/kneip/OneDrive/Bureau/Cours/Projet Mécatro/Code/Bot_annick/system_verilog/DE0-minibot/DEO/encoder.sv Line: 46
+Warning (10230): Verilog HDL assignment warning at encoder.sv(51): truncated value with size 32 to match size of target (16) File: C:/Users/kneip/OneDrive/Bureau/Cours/Projet Mécatro/Code/Bot_annick/system_verilog/DE0-minibot/DEO/encoder.sv Line: 51
+Warning (10230): Verilog HDL assignment warning at encoder.sv(56): truncated value with size 32 to match size of target (16) File: C:/Users/kneip/OneDrive/Bureau/Cours/Projet Mécatro/Code/Bot_annick/system_verilog/DE0-minibot/DEO/encoder.sv Line: 56
+Info (12128): Elaborating entity "odometer" for hierarchy "odometer:odo1" File: C:/Users/kneip/OneDrive/Bureau/Cours/Projet Mécatro/Code/Bot_annick/system_verilog/DE0-minibot/DEO/DE0_minibot.sv Line: 199
 Warning (12011): Net is missing source, defaulting to GND
-    Warning (12110): Net "reset" is missing source, defaulting to GND File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 112
+    Warning (12110): Net "reset" is missing source, defaulting to GND File: C:/Users/kneip/OneDrive/Bureau/Cours/Projet Mécatro/Code/Bot_annick/system_verilog/DE0-minibot/DEO/DE0_minibot.sv Line: 112
 Warning (12011): Net is missing source, defaulting to GND
-    Warning (12110): Net "reset" is missing source, defaulting to GND File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 112
+    Warning (12110): Net "reset" is missing source, defaulting to GND File: C:/Users/kneip/OneDrive/Bureau/Cours/Projet Mécatro/Code/Bot_annick/system_verilog/DE0-minibot/DEO/DE0_minibot.sv Line: 112
 Info (12021): Found 1 design units, including 1 entities, in source file db/altsyncram_4b24.tdf
-    Info (12023): Found entity 1: altsyncram_4b24 File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/db/altsyncram_4b24.tdf Line: 27
+    Info (12023): Found entity 1: altsyncram_4b24 File: C:/Users/kneip/OneDrive/Bureau/Cours/Projet Mécatro/Code/Bot_annick/system_verilog/DE0-minibot/DEO/db/altsyncram_4b24.tdf Line: 27
 Info (12021): Found 1 design units, including 1 entities, in source file db/mux_tsc.tdf
-    Info (12023): Found entity 1: mux_tsc File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/db/mux_tsc.tdf Line: 22
+    Info (12023): Found entity 1: mux_tsc File: C:/Users/kneip/OneDrive/Bureau/Cours/Projet Mécatro/Code/Bot_annick/system_verilog/DE0-minibot/DEO/db/mux_tsc.tdf Line: 22
 Info (12021): Found 1 design units, including 1 entities, in source file db/decode_dvf.tdf
-    Info (12023): Found entity 1: decode_dvf File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/db/decode_dvf.tdf Line: 22
+    Info (12023): Found entity 1: decode_dvf File: C:/Users/kneip/OneDrive/Bureau/Cours/Projet Mécatro/Code/Bot_annick/system_verilog/DE0-minibot/DEO/db/decode_dvf.tdf Line: 22
 Info (12021): Found 1 design units, including 1 entities, in source file db/cntr_bgi.tdf
-    Info (12023): Found entity 1: cntr_bgi File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/db/cntr_bgi.tdf Line: 27
+    Info (12023): Found entity 1: cntr_bgi File: C:/Users/kneip/OneDrive/Bureau/Cours/Projet Mécatro/Code/Bot_annick/system_verilog/DE0-minibot/DEO/db/cntr_bgi.tdf Line: 27
 Info (12021): Found 1 design units, including 1 entities, in source file db/cmpr_qgc.tdf
-    Info (12023): Found entity 1: cmpr_qgc File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/db/cmpr_qgc.tdf Line: 22
+    Info (12023): Found entity 1: cmpr_qgc File: C:/Users/kneip/OneDrive/Bureau/Cours/Projet Mécatro/Code/Bot_annick/system_verilog/DE0-minibot/DEO/db/cmpr_qgc.tdf Line: 22
 Info (12021): Found 1 design units, including 1 entities, in source file db/cntr_m9j.tdf
-    Info (12023): Found entity 1: cntr_m9j File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/db/cntr_m9j.tdf Line: 25
+    Info (12023): Found entity 1: cntr_m9j File: C:/Users/kneip/OneDrive/Bureau/Cours/Projet Mécatro/Code/Bot_annick/system_verilog/DE0-minibot/DEO/db/cntr_m9j.tdf Line: 25
 Info (12021): Found 1 design units, including 1 entities, in source file db/cntr_ggi.tdf
-    Info (12023): Found entity 1: cntr_ggi File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/db/cntr_ggi.tdf Line: 27
+    Info (12023): Found entity 1: cntr_ggi File: C:/Users/kneip/OneDrive/Bureau/Cours/Projet Mécatro/Code/Bot_annick/system_verilog/DE0-minibot/DEO/db/cntr_ggi.tdf Line: 27
 Info (12021): Found 1 design units, including 1 entities, in source file db/cmpr_rgc.tdf
-    Info (12023): Found entity 1: cmpr_rgc File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/db/cmpr_rgc.tdf Line: 22
+    Info (12023): Found entity 1: cmpr_rgc File: C:/Users/kneip/OneDrive/Bureau/Cours/Projet Mécatro/Code/Bot_annick/system_verilog/DE0-minibot/DEO/db/cmpr_rgc.tdf Line: 22
 Info (12021): Found 1 design units, including 1 entities, in source file db/cntr_23j.tdf
-    Info (12023): Found entity 1: cntr_23j File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/db/cntr_23j.tdf Line: 27
+    Info (12023): Found entity 1: cntr_23j File: C:/Users/kneip/OneDrive/Bureau/Cours/Projet Mécatro/Code/Bot_annick/system_verilog/DE0-minibot/DEO/db/cntr_23j.tdf Line: 27
 Info (12021): Found 1 design units, including 1 entities, in source file db/cmpr_ngc.tdf
-    Info (12023): Found entity 1: cmpr_ngc File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/db/cmpr_ngc.tdf Line: 22
+    Info (12023): Found entity 1: cmpr_ngc File: C:/Users/kneip/OneDrive/Bureau/Cours/Projet Mécatro/Code/Bot_annick/system_verilog/DE0-minibot/DEO/db/cmpr_ngc.tdf Line: 22
 Info (12033): Analysis and Synthesis generated Signal Tap or debug node instance "auto_signaltap_0"
 Info (11170): Starting IP generation for the debug fabric: alt_sld_fab.
-Info (11172): 2024.02.15.18:45:49 Progress: Loading sld0d4166f7/alt_sld_fab_wrapper_hw.tcl
-Info (11172): Alt_sld_fab.alt_sld_fab: SLD fabric agents which did not specify prefer_host were connected to JTAG
-Info (11172): Alt_sld_fab: Generating alt_sld_fab "alt_sld_fab" for QUARTUS_SYNTH
-Info (11172): Alt_sld_fab: "alt_sld_fab" instantiated alt_sld_fab "alt_sld_fab"
-Info (11172): Presplit: "alt_sld_fab" instantiated altera_super_splitter "presplit"
-Info (11172): Splitter: "alt_sld_fab" instantiated altera_sld_splitter "splitter"
-Info (11172): Sldfabric: "alt_sld_fab" instantiated altera_sld_jtag_hub "sldfabric"
-Info (11172): Ident: "alt_sld_fab" instantiated altera_connection_identification_hub "ident"
-Info (11172): Alt_sld_fab: Done "alt_sld_fab" with 6 modules, 6 files
+Info (11172): 2024.03.01.18:03:10 Progress: Loading sld0d4166f7/alt_sld_fab_wrapper_hw.tcl
+Error (11176): Factory com.altera.sopcmodel.components.tclmodule.TclModuleFactory reading C:/Users/kneip/OneDrive/Bureau/Cours/Projet Mécatro/Code/Bot_annick/system_verilog/DE0-minibot/DEO/db/ip/sld0d4166f7/alt_sld_fab_wrapper_hw.tcl exception com.altera.utilities.FileUtilities$AlteraIpException: C:\Users\kneip\OneDrive\Bureau\Cours\Projet Mécatro\Code\Bot_annick\system_verilog\DE0-minibot\DEO\db\ip\sld0d4166f7\alt_sld_fab_wrapper_hw.tcl
+Error (11176): No component alt_sld_fab in C:/Users/kneip/OneDrive/Bureau/Cours/Projet Mécatro/Code/Bot_annick/system_verilog/DE0-minibot/DEO/db/ip/sld0d4166f7/alt_sld_fab_wrapper_hw.tcl
 Info (11171): Finished IP generation for the debug fabric: alt_sld_fab.
-Info (12021): Found 1 design units, including 1 entities, in source file db/ip/sld0d4166f7/alt_sld_fab.v
-    Info (12023): Found entity 1: alt_sld_fab File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/db/ip/sld0d4166f7/alt_sld_fab.v Line: 9
-Info (12021): Found 1 design units, including 1 entities, in source file db/ip/sld0d4166f7/submodules/alt_sld_fab_alt_sld_fab.v
-    Info (12023): Found entity 1: alt_sld_fab_alt_sld_fab File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/db/ip/sld0d4166f7/submodules/alt_sld_fab_alt_sld_fab.v Line: 9
-Info (12021): Found 1 design units, including 1 entities, in source file db/ip/sld0d4166f7/submodules/alt_sld_fab_alt_sld_fab_ident.sv
-    Info (12023): Found entity 1: alt_sld_fab_alt_sld_fab_ident File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/db/ip/sld0d4166f7/submodules/alt_sld_fab_alt_sld_fab_ident.sv Line: 33
-Info (12021): Found 1 design units, including 1 entities, in source file db/ip/sld0d4166f7/submodules/alt_sld_fab_alt_sld_fab_presplit.sv
-    Info (12023): Found entity 1: alt_sld_fab_alt_sld_fab_presplit File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/db/ip/sld0d4166f7/submodules/alt_sld_fab_alt_sld_fab_presplit.sv Line: 3
-Info (12021): Found 2 design units, including 1 entities, in source file db/ip/sld0d4166f7/submodules/alt_sld_fab_alt_sld_fab_sldfabric.vhd
-    Info (12022): Found design unit 1: alt_sld_fab_alt_sld_fab_sldfabric-rtl File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/db/ip/sld0d4166f7/submodules/alt_sld_fab_alt_sld_fab_sldfabric.vhd Line: 102
-    Info (12023): Found entity 1: alt_sld_fab_alt_sld_fab_sldfabric File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/db/ip/sld0d4166f7/submodules/alt_sld_fab_alt_sld_fab_sldfabric.vhd Line: 11
-Info (12021): Found 1 design units, including 1 entities, in source file db/ip/sld0d4166f7/submodules/alt_sld_fab_alt_sld_fab_splitter.sv
-    Info (12023): Found entity 1: alt_sld_fab_alt_sld_fab_splitter File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/db/ip/sld0d4166f7/submodules/alt_sld_fab_alt_sld_fab_splitter.sv Line: 3
-Warning (13039): The following bidirectional pins have no drivers
-    Warning (13040): bidirectional pin "GPIO_0[1]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 102
-    Warning (13040): bidirectional pin "GPIO_0[2]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 102
-    Warning (13040): bidirectional pin "GPIO_0[3]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 102
-    Warning (13040): bidirectional pin "GPIO_0[5]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 102
-    Warning (13040): bidirectional pin "GPIO_0[8]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 102
-    Warning (13040): bidirectional pin "GPIO_0[9]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 102
-    Warning (13040): bidirectional pin "GPIO_0[10]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 102
-    Warning (13040): bidirectional pin "GPIO_0[11]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 102
-    Warning (13040): bidirectional pin "GPIO_0[15]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 102
-    Warning (13040): bidirectional pin "DRAM_DQ[0]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 80
-    Warning (13040): bidirectional pin "DRAM_DQ[1]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 80
-    Warning (13040): bidirectional pin "DRAM_DQ[2]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 80
-    Warning (13040): bidirectional pin "DRAM_DQ[3]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 80
-    Warning (13040): bidirectional pin "DRAM_DQ[4]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 80
-    Warning (13040): bidirectional pin "DRAM_DQ[5]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 80
-    Warning (13040): bidirectional pin "DRAM_DQ[6]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 80
-    Warning (13040): bidirectional pin "DRAM_DQ[7]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 80
-    Warning (13040): bidirectional pin "DRAM_DQ[8]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 80
-    Warning (13040): bidirectional pin "DRAM_DQ[9]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 80
-    Warning (13040): bidirectional pin "DRAM_DQ[10]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 80
-    Warning (13040): bidirectional pin "DRAM_DQ[11]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 80
-    Warning (13040): bidirectional pin "DRAM_DQ[12]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 80
-    Warning (13040): bidirectional pin "DRAM_DQ[13]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 80
-    Warning (13040): bidirectional pin "DRAM_DQ[14]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 80
-    Warning (13040): bidirectional pin "DRAM_DQ[15]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 80
-    Warning (13040): bidirectional pin "I2C_SDAT" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 93
-    Warning (13040): bidirectional pin "GPIO_0[0]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 102
-    Warning (13040): bidirectional pin "GPIO_0[4]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 102
-    Warning (13040): bidirectional pin "GPIO_0[6]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 102
-    Warning (13040): bidirectional pin "GPIO_0[7]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 102
-    Warning (13040): bidirectional pin "GPIO_0[12]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 102
-    Warning (13040): bidirectional pin "GPIO_0[14]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 102
-    Warning (13040): bidirectional pin "GPIO_0[16]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 102
-    Warning (13040): bidirectional pin "GPIO_0[17]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 102
-    Warning (13040): bidirectional pin "GPIO_0[18]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 102
-    Warning (13040): bidirectional pin "GPIO_0[19]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 102
-    Warning (13040): bidirectional pin "GPIO_0[20]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 102
-    Warning (13040): bidirectional pin "GPIO_0[21]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 102
-    Warning (13040): bidirectional pin "GPIO_0[22]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 102
-    Warning (13040): bidirectional pin "GPIO_0[23]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 102
-    Warning (13040): bidirectional pin "GPIO_0[24]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 102
-    Warning (13040): bidirectional pin "GPIO_0[25]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 102
-    Warning (13040): bidirectional pin "GPIO_0[26]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 102
-    Warning (13040): bidirectional pin "GPIO_0[27]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 102
-    Warning (13040): bidirectional pin "GPIO_0[28]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 102
-    Warning (13040): bidirectional pin "GPIO_0[29]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 102
-    Warning (13040): bidirectional pin "GPIO_0[30]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 102
-    Warning (13040): bidirectional pin "GPIO_0[31]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 102
-    Warning (13040): bidirectional pin "GPIO_0[32]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 102
-    Warning (13040): bidirectional pin "GPIO_0[33]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 102
-    Warning (13040): bidirectional pin "GPIO_1[0]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 106
-    Warning (13040): bidirectional pin "GPIO_1[1]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 106
-    Warning (13040): bidirectional pin "GPIO_1[2]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 106
-    Warning (13040): bidirectional pin "GPIO_1[3]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 106
-    Warning (13040): bidirectional pin "GPIO_1[4]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 106
-    Warning (13040): bidirectional pin "GPIO_1[5]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 106
-    Warning (13040): bidirectional pin "GPIO_1[6]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 106
-    Warning (13040): bidirectional pin "GPIO_1[7]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 106
-    Warning (13040): bidirectional pin "GPIO_1[8]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 106
-    Warning (13040): bidirectional pin "GPIO_1[9]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 106
-    Warning (13040): bidirectional pin "GPIO_1[10]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 106
-    Warning (13040): bidirectional pin "GPIO_1[11]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 106
-    Warning (13040): bidirectional pin "GPIO_1[12]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 106
-    Warning (13040): bidirectional pin "GPIO_1[13]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 106
-    Warning (13040): bidirectional pin "GPIO_1[14]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 106
-    Warning (13040): bidirectional pin "GPIO_1[15]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 106
-    Warning (13040): bidirectional pin "GPIO_1[16]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 106
-    Warning (13040): bidirectional pin "GPIO_1[17]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 106
-    Warning (13040): bidirectional pin "GPIO_1[18]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 106
-    Warning (13040): bidirectional pin "GPIO_1[19]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 106
-    Warning (13040): bidirectional pin "GPIO_1[20]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 106
-    Warning (13040): bidirectional pin "GPIO_1[21]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 106
-    Warning (13040): bidirectional pin "GPIO_1[22]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 106
-    Warning (13040): bidirectional pin "GPIO_1[23]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 106
-    Warning (13040): bidirectional pin "GPIO_1[24]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 106
-    Warning (13040): bidirectional pin "GPIO_1[25]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 106
-    Warning (13040): bidirectional pin "GPIO_1[26]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 106
-    Warning (13040): bidirectional pin "GPIO_1[27]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 106
-    Warning (13040): bidirectional pin "GPIO_1[28]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 106
-    Warning (13040): bidirectional pin "GPIO_1[29]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 106
-    Warning (13040): bidirectional pin "GPIO_1[30]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 106
-    Warning (13040): bidirectional pin "GPIO_1[31]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 106
-    Warning (13040): bidirectional pin "GPIO_1[32]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 106
-    Warning (13040): bidirectional pin "GPIO_1[33]" has no driver File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 106
-Warning (13024): Output pins are stuck at VCC or GND
-    Warning (13410): Pin "LED[0]" is stuck at GND File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 68
-    Warning (13410): Pin "LED[1]" is stuck at GND File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 68
-    Warning (13410): Pin "LED[2]" is stuck at GND File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 68
-    Warning (13410): Pin "LED[3]" is stuck at GND File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 68
-    Warning (13410): Pin "LED[4]" is stuck at GND File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 68
-    Warning (13410): Pin "LED[5]" is stuck at GND File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 68
-    Warning (13410): Pin "LED[6]" is stuck at GND File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 68
-    Warning (13410): Pin "LED[7]" is stuck at GND File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 68
-    Warning (13410): Pin "DRAM_ADDR[0]" is stuck at GND File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 74
-    Warning (13410): Pin "DRAM_ADDR[1]" is stuck at GND File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 74
-    Warning (13410): Pin "DRAM_ADDR[2]" is stuck at GND File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 74
-    Warning (13410): Pin "DRAM_ADDR[3]" is stuck at GND File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 74
-    Warning (13410): Pin "DRAM_ADDR[4]" is stuck at GND File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 74
-    Warning (13410): Pin "DRAM_ADDR[5]" is stuck at GND File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 74
-    Warning (13410): Pin "DRAM_ADDR[6]" is stuck at GND File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 74
-    Warning (13410): Pin "DRAM_ADDR[7]" is stuck at GND File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 74
-    Warning (13410): Pin "DRAM_ADDR[8]" is stuck at GND File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 74
-    Warning (13410): Pin "DRAM_ADDR[9]" is stuck at GND File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 74
-    Warning (13410): Pin "DRAM_ADDR[10]" is stuck at GND File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 74
-    Warning (13410): Pin "DRAM_ADDR[11]" is stuck at GND File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 74
-    Warning (13410): Pin "DRAM_ADDR[12]" is stuck at GND File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 74
-    Warning (13410): Pin "DRAM_BA[0]" is stuck at GND File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 75
-    Warning (13410): Pin "DRAM_BA[1]" is stuck at GND File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 75
-    Warning (13410): Pin "DRAM_CAS_N" is stuck at GND File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 76
-    Warning (13410): Pin "DRAM_CKE" is stuck at GND File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 77
-    Warning (13410): Pin "DRAM_CLK" is stuck at GND File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 78
-    Warning (13410): Pin "DRAM_CS_N" is stuck at GND File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 79
-    Warning (13410): Pin "DRAM_DQM[0]" is stuck at GND File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 81
-    Warning (13410): Pin "DRAM_DQM[1]" is stuck at GND File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 81
-    Warning (13410): Pin "DRAM_RAS_N" is stuck at GND File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 82
-    Warning (13410): Pin "DRAM_WE_N" is stuck at GND File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 83
-    Warning (13410): Pin "EPCS_ASDO" is stuck at GND File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 86
-    Warning (13410): Pin "EPCS_DCLK" is stuck at GND File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 88
-    Warning (13410): Pin "EPCS_NCSO" is stuck at GND File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 89
-    Warning (13410): Pin "I2C_SCLK" is stuck at GND File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 92
-    Warning (13410): Pin "ADC_CS_N" is stuck at GND File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 96
-    Warning (13410): Pin "ADC_SADDR" is stuck at GND File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 97
-    Warning (13410): Pin "ADC_SCLK" is stuck at GND File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 98
-Info (286031): Timing-Driven Synthesis is running on partition "Top"
-Warning (14632): Output pin "pre_syn.bp.spi_cs" driven by bidirectional pin "GPIO_0[9]" cannot be tri-stated File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 102
-Warning (14632): Output pin "pre_syn.bp.spi_clk" driven by bidirectional pin "GPIO_0[11]" cannot be tri-stated File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 102
-Warning (14632): Output pin "pre_syn.bp.spi_mosi" driven by bidirectional pin "GPIO_0[15]" cannot be tri-stated File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 102
-Info (17049): 3 registers lost all their fanouts during netlist optimizations.
-Info (144001): Generated suppressed messages file C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.map.smsg
-Info (35024): Successfully connected in-system debug instance "auto_signaltap_0" to all 57 required data inputs, trigger inputs, acquisition clocks, and dynamic pins
-Info (16010): Generating hard_block partition "hard_block:auto_generated_inst"
-    Info (16011): Adding 0 node(s), including 0 DDIO, 0 PLL, 0 transceiver and 0 LCELL
-Warning (21074): Design contains 8 input pin(s) that do not drive logic
-    Warning (15610): No output dependent on input pin "KEY[0]" File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 71
-    Warning (15610): No output dependent on input pin "KEY[1]" File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 71
-    Warning (15610): No output dependent on input pin "EPCS_DATA0" File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 87
-    Warning (15610): No output dependent on input pin "ADC_SDAT" File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 99
-    Warning (15610): No output dependent on input pin "GPIO_0_IN[0]" File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 103
-    Warning (15610): No output dependent on input pin "GPIO_0_IN[1]" File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 103
-    Warning (15610): No output dependent on input pin "GPIO_1_IN[0]" File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 107
-    Warning (15610): No output dependent on input pin "GPIO_1_IN[1]" File: C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.sv Line: 107
-Info (21057): Implemented 1707 device resources after synthesis - the final resource count might be different
-    Info (21058): Implemented 12 input pins
-    Info (21059): Implemented 39 output pins
-    Info (21060): Implemented 85 bidirectional pins
-    Info (21061): Implemented 1558 logic cells
-    Info (21064): Implemented 12 RAM segments
-Info: Quartus Prime Analysis & Synthesis was successful. 0 errors, 162 warnings
-    Info: Peak virtual memory: 4851 megabytes
-    Info: Processing ended: Thu Feb 15 18:46:00 2024
-    Info: Elapsed time: 00:00:27
-    Info: Total CPU time (on all processors): 00:00:25
+Error (10002): Can't open VHDL or Verilog HDL file "C:/Users/kneip/OneDrive/Bureau/Cours/Projet Mécatro/Code/Bot_annick/system_verilog/DE0-minibot/DEO/"
+Info (12021): Found 0 design units, including 0 entities, in source file 
+Info (15248): File "C:/Users/kneip/OneDrive/Bureau/Cours/Projet Mécatro/Code/Bot_annick/system_verilog/DE0-minibot/DEO/" is a duplicate of already analyzed file "C:/Users/kneip/OneDrive/Bureau/Cours/Projet Mécatro/Code/Bot_annick/system_verilog/DE0-minibot/DEO/" (same filename, same library name and same md5 digest). Skipping analysis of this file.
+Info (12021): Found 0 design units, including 0 entities, in source file 
+Info (15248): File "C:/Users/kneip/OneDrive/Bureau/Cours/Projet Mécatro/Code/Bot_annick/system_verilog/DE0-minibot/DEO/" is a duplicate of already analyzed file "C:/Users/kneip/OneDrive/Bureau/Cours/Projet Mécatro/Code/Bot_annick/system_verilog/DE0-minibot/DEO/" (same filename, same library name and same md5 digest). Skipping analysis of this file.
+Info (12021): Found 0 design units, including 0 entities, in source file 
+Info (15248): File "C:/Users/kneip/OneDrive/Bureau/Cours/Projet Mécatro/Code/Bot_annick/system_verilog/DE0-minibot/DEO/" is a duplicate of already analyzed file "C:/Users/kneip/OneDrive/Bureau/Cours/Projet Mécatro/Code/Bot_annick/system_verilog/DE0-minibot/DEO/" (same filename, same library name and same md5 digest). Skipping analysis of this file.
+Info (12021): Found 0 design units, including 0 entities, in source file 
+Info (15248): File "C:/Users/kneip/OneDrive/Bureau/Cours/Projet Mécatro/Code/Bot_annick/system_verilog/DE0-minibot/DEO/" is a duplicate of already analyzed file "C:/Users/kneip/OneDrive/Bureau/Cours/Projet Mécatro/Code/Bot_annick/system_verilog/DE0-minibot/DEO/" (same filename, same library name and same md5 digest). Skipping analysis of this file.
+Info (12021): Found 0 design units, including 0 entities, in source file 
+Info (15248): File "C:/Users/kneip/OneDrive/Bureau/Cours/Projet Mécatro/Code/Bot_annick/system_verilog/DE0-minibot/DEO/" is a duplicate of already analyzed file "C:/Users/kneip/OneDrive/Bureau/Cours/Projet Mécatro/Code/Bot_annick/system_verilog/DE0-minibot/DEO/" (same filename, same library name and same md5 digest). Skipping analysis of this file.
+Info (12021): Found 0 design units, including 0 entities, in source file 
+Info (144001): Generated suppressed messages file C:/Users/kneip/OneDrive/Bureau/Cours/Projet Mécatro/Code/Bot_annick/system_verilog/DE0-minibot/DEO/DE0_minibot.map.smsg
+Error: Quartus Prime Analysis & Synthesis was unsuccessful. 3 errors, 26 warnings
+    Error: Peak virtual memory: 4821 megabytes
+    Error: Processing ended: Fri Mar 01 18:03:11 2024
+    Error: Elapsed time: 00:00:20
+    Error: Total CPU time (on all processors): 00:00:41
 
 
 +------------------------------------------+
 ; Analysis & Synthesis Suppressed Messages ;
 +------------------------------------------+
-The suppressed messages can be found in C:/Users/samue/OneDrive/Documents/UClouvain/Q7/Eurobot/FPGA/DE0-minibot/DEO/DE0_minibot.map.smsg.
+The suppressed messages can be found in C:/Users/kneip/OneDrive/Bureau/Cours/Projet Mécatro/Code/Bot_annick/system_verilog/DE0-minibot/DEO/DE0_minibot.map.smsg.
 
 

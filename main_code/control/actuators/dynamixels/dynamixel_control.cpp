@@ -1,5 +1,6 @@
 #include <iostream>
-#include "dynamixel_sdk.h"
+#include "SDK/dynamixel_sdk.h"
+
 
 // Control table addresses for XL320
 #define ADDR_GOAL_POSITION   30
@@ -9,7 +10,7 @@
 #define ADDR_TORQUE_ENABLE  24
 #define ADDR_PRESENT_LOAD   40
 #define ADDR_ID              7
-#define PROTOCOL_VERSION    1.0     // Dynamixel protocol version 1.0
+#define PROTOCOL_VERSION    2.0     // Dynamixel protocol version 1.0
 
 // Default settings
 #define BAUDRATE            1000000 // Dynamixel baudrate
@@ -26,6 +27,8 @@ dynamixel::PortHandler *portHandler = dynamixel::PortHandler::getPortHandler(DEV
 // Set the protocol version
 // Get methods and members of Protocol1PacketHandler or Protocol2PacketHandler
 dynamixel::PacketHandler *packetHandler = dynamixel::PacketHandler::getPacketHandler(PROTOCOL_VERSION);
+
+float current_angle;
 
 bool initialize() {
     // Open port
@@ -172,10 +175,27 @@ void disableTorque(uint8_t id) {
 }
 
 int homing(uint8_t id) {
+    int homing_speed = 20;//% of max speed
+    int homing_torque_detection = 5;//% of max torque
+
+    int speed = (int) homing_speed * 1023 / 100;
     // Set moving speed
-    setSpeed(100);
+    if(id ==1){
+        setSpeed(speed, id); //turning CCW
+    }
+    else{
+        setSpeed(1024 + speed, id); // turning CW
+    }
+
+    while(readPresentTorque(id) < homing_torque_detection){
+        //wait for torque to be detected
+    }
 
 
+    setSpeed(0, id);
+    setPosition(0, id);
+
+    current_angle = 0;
 
     return 0;
 }

@@ -211,9 +211,9 @@ odometer odo2 (
 
 // link with pins encoder
 
-assign odo1A     = GPIO_0[8];	
-assign odo1B     = GPIO_0[9]; 
-assign odo2A     = GPIO_0[10];
-assign odo2B     = GPIO_0[11];
+assign odo1A     = GPIO_0[17]; //on minibot: 8
+assign odo1B     = GPIO_0[19]; //9
+assign odo2A     = GPIO_0[16]; //10
+assign odo2B     = GPIO_0[18]; //11
 
 endmodule

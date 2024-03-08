@@ -273,10 +273,10 @@ assign spi_mosi     	= GPIO_0[15];			//  15 (EDS Setup)
 assign GPIO_0[13] = spi_cs ? 1'bz : spi_miso ;  //  13 (EDS Setup)
 
 //---Odomètre---//
-assign odoLA     = GPIO_0[8];
-assign odoLB     = GPIO_0[9];
-assign odoRA     = GPIO_0[10];
-assign odoRB     = GPIO_0[11];
+assign odoLA     = GPIO_0[17];
+assign odoLB     = GPIO_0[19];
+assign odoRA     = GPIO_0[16];
+assign odoRB     = GPIO_0[18];
 
 //---Servo---//a
 assign GPIO_1[1]  = servo_LC; 
