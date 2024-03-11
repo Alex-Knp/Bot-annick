@@ -86,18 +86,23 @@ module ADC_interface(
     always_ff @(negedge clk) begin
 
         case(counter_clk)
+
+            //  Adress IR1 = 1
             2 :     ADC_Din <= 0;
             3 :     ADC_Din <= 0;  
             4 :     ADC_Din <= 1;
 
+            //  Adress IR2 = 4
             34 :    ADC_Din <= 1; 
             35 :    ADC_Din <= 0; 
             36 :    ADC_Din <= 0;
 
+            //  Adress IR3 = 3
             66 :    ADC_Din <= 1;
             67 :    ADC_Din <= 1;
             68 :    ADC_Din <= 0;
 
+            //  Adress IR3 = 6
             98 :    ADC_Din <= 0;
             99 :    ADC_Din <= 1;
             100:    ADC_Din <= 1;

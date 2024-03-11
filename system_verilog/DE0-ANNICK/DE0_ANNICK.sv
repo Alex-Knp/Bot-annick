@@ -127,6 +127,12 @@ input 		     [1:0]		GPIO_1_IN;
 //////// Reset //////////
 
 logic reset;
+logic reset_stepper_R; 		// Reset du stepper droit
+logic reset_stepper_L; 		// Reset du stepper gauche
+
+
+//assign reset_stepper_R = GPIO_0[16];	// Pin : ? GPIO_0 : ? 
+//assign reset_stepper_L = GPIO_0[17];	// Pin : ? GPIO_0 : ?
 
 //////// Stored Data assignement SENSORS //////////
 
@@ -137,12 +143,12 @@ always_comb begin
 		4'hf : DataToPI = 32'h0f0f0f0f;		//TEST
 		4'he : DataToPI = 32'h1234abcd;		//TEST
 
-		4'h1 : DataToPI = Odometre_Right;  	// Odomètre gauche 	: 1x
-		4'h2 : DataToPI = Odometre_Left; 	// Odomètre droit 	: 2x
+		4'h1 : DataToPI = Odometre_Left;  		// Odomètre gauche 	: 1x
+		4'h2 : DataToPI = Odometre_Right; 		// Odomètre droit 	: 2x
 		4'h3 : DataToPI = IR1_ext;				// IR1
 		4'h4 : DataToPI = IR2_ext;				// IR2
-		4'h5 : DataToPI = IR3;				// IR3
-		4'h6 : DataToPI = IR4;				// IR4
+		4'h5 : DataToPI = IR3_ext;				// IR3
+		4'h6 : DataToPI = IR4_ext;				// IR4
 
 		default : DataToPI = 32'bx; 		
 	endcase
@@ -157,17 +163,18 @@ always_ff @(posedge CLOCK_50) begin
 end
 
 assign reset = Actuators_RAM[0][0];	// Reset
+assign reset_stepper_R = Actuators_RAM[0][1];	// Reset du stepper droit
+assign reset_stepper_L = Actuators_RAM[0][2];
 
-assign Servo_control_LC = Actuators_RAM[1];		// Servo pince gauche 	: x1 
-assign Servo_control_LP = Actuators_RAM[2];		// Servo pince droite 	: x2
-assign Servo_control_RC = Actuators_RAM[3];		// Servo pince gauche 	: x3
-assign Servo_control_RP = Actuators_RAM[4];		// Servo pince droite 	: x4
-assign stepper_control_L  = Actuators_RAM[5]; 	// Steppers 	  		: x5
-assign stepper_control_R  = Actuators_RAM[6]; 	// Steppers 	  		: x6
+assign Servo_control_LC   = Actuators_RAM[1];		// Servo pince gauche 	: x1 
+assign Servo_control_LP   = Actuators_RAM[2];		// Servo pento gauche 	: x2
+assign Servo_control_RC   = Actuators_RAM[3];		// Servo pince droite 	: x3
+assign Servo_control_RP   = Actuators_RAM[4];		// Servo pince gauche 	: x4
+assign stepper_control_L  = Actuators_RAM[5]; 		// Steppers 	  		: x5
+assign stepper_control_R  = Actuators_RAM[6]; 		// Steppers 	  		: x6
 
 
-
-// ---  SPI module instantiation ---------------------------------------------
+// ---   SPI module instantiation   ------------------------------------------
 
 logic spi_clk, spi_cs, spi_mosi, spi_miso;
 logic [31:0] DataFromPI;
@@ -186,7 +193,7 @@ spi_slave spi_slave_inst (
 );
 
 
-// ---  odometer module instantiation  ---------------------------------------
+// ---   odometers instantiation   -------------------------------------------
 
 logic odoLA, odoLB, odoRA, odoRB;
 
@@ -204,7 +211,7 @@ odometer odoR (
 );
 
 
-// ---  Servo  instantation    -----------------------------------------------
+// ---   Servo  instantation    ----------------------------------------------
 
 logic [31:0] Servo_control_LC, Servo_control_LP, Servo_control_RC, Servo_control_RP; 
 logic servo_LC, servo_LP, servo_RC, servo_RP;
@@ -236,26 +243,60 @@ Servo_PWM SERVO_RP (
 logic [19:0] counter1;
 logic toggle; 
 always_ff @(posedge CLOCK_50) begin
-	if(Servo_control_LC == 'd50000)
+	if(Servo_control_RP == 'd90000)
 		toggle <= 0;
-	if(Servo_control_LC == 0)
+	if(Servo_control_RP == 0)
 		toggle <= 1; 
 
 	counter1 <= counter1 + 1;
 	if(counter1 == 0)
 	begin
 		if(toggle == 0)
-			Servo_control_LC <= Servo_control_LC - 1000;
+			Servo_control_RP <= Servo_control_RP - 1000;
 		if(toggle == 1)
-			Servo_control_LC <= Servo_control_LC + 1000;
+			Servo_control_RP <= Servo_control_RP + 1000;
 	end
 
 end 
+assign Servo_control_RC = Servo_control_RP;  
 */
 
-// ---  IR   instantation      -----------------------------------------------
 
-// generating 2.5 MHz ADC clock from 50 MHz clock
+//TEST STEPPER
+/*
+logic [26:0] counterstepper; 
+
+always_ff @(posedge CLOCK_50) begin
+	counterstepper <= counterstepper + 1;
+	if(counterstepper[24]) begin 
+		stepper_control_L[31:24] <= 8'd1;
+		stepper_control_L[23:0] <= 24'b0000_0000_0000_1111_1010_0000;
+	end
+	else begin
+		stepper_control_L[31:24] <= 8'd1;
+		stepper_control_L[23:0] <= 24'b0000_0000_0000_0000_0000_0000;
+	end		
+end
+*/
+/*
+logic [18:0] counter_delay;   
+
+always_ff @(posedge CLOCK_50) begin
+	counter_delay <= counter_delay + 1;
+end
+always_ff @(posedge stepper_R) begin
+	counter_step = counter_step + 1; 
+end 
+assign stepper_R = counter_delay[18];
+assign dir_R = counter_step[11];
+
+assign stepper_L = stepper_R; 
+assign dir_L = stepper_L; 
+*/
+
+// ---   IR's   instantation   -------------------------------------------------
+
+// Generating 2.5 MHz ADC clock from 50 MHz clock
 logic [4:0] counter_CLOCK_50;
 always_ff @(posedge CLOCK_50) begin
 		counter_CLOCK_50 <= counter_CLOCK_50 + 1;
@@ -264,8 +305,7 @@ always_ff @(posedge CLOCK_50) begin
 assign clk_1_5 = counter_CLOCK_50[4];
 
 
-
-
+// Interfacing ADC. 
 logic [11:0]   IR1, IR2, IR3, IR4;	// IR sensors
 logic [31:0]   IR1_ext, IR2_ext, IR3_ext, IR4_ext;	// IR sensors extended to 32 bits
 
@@ -288,51 +328,71 @@ assign IR4_ext = {20'b0, IR4};
 
 
 
-// ---  Micro-swith instantation ---------------------------------------------
-// ---  Stepper instantation   -----------------------------------------------
-/*
+// ---   Micro-swithes instantation   ------------------------------------------
+
+logic micro_switch_1, micro_switch_2, micro_switch_3, micro_switch_4;
+logic [31:0] micro_switch_data;
+
+assign micro_switch_data = {28'b0, micro_switch_1, micro_switch_2, micro_switch_3, micro_switch_4};
+
+
+// ---   Stepper-motors instantation   -----------------------------------------
+
 logic stepper_L, stepper_R, dir_L, dir_R;
 logic [31:0] stepper_control_L, stepper_control_R;
 
 stepper stepper_inst_L (
 	.clk(CLOCK_50),
-	.reset(reset),
+	.reset(reset_stepper_L),
 	.control(stepper_control_L),
 	.step(stepper_L),
 	.dir(dir_L)
 );
 
+
 stepper stepper_inst_R (
 	.clk(CLOCK_50),
-	.reset(reset),
+	.reset(reset_stepper_R),
 	.control(stepper_control_R),
 	.step(stepper_R),
 	.dir(dir_R)
 );
-*/
+
+
+
 
 
 //////////// Pin assignment for DE0_ANNICK //////////
 
-//---SPI---//
-assign spi_clk  		= GPIO_0[11];			//  11 (EDS Setup)
-assign spi_cs   		= GPIO_0[9];			//  9  (EDS Setuo)
-assign spi_mosi     	= GPIO_0[15];			//  15 (EDS Setup)
-assign GPIO_0[13] = spi_cs ? 1'bz : spi_miso ;  //  13 (EDS Setup)
+//--- SPI ---//
+assign spi_clk  		= GPIO_0[2];			//  11 (EDS Setup)	Pin : ? GPIO : 2
+assign spi_cs   		= GPIO_0[4];			//  9  (EDS Setuo)  Pin : ? GPIO : 4
+assign spi_mosi     	= GPIO_0_IN[1];			//  15 (EDS Setup)  Pin : ? GPIO : IN1
+assign GPIO_0[0] = spi_cs ? 1'bz : spi_miso ;   //  13 (EDS Setup)  Pin : ? GPIO : 0
 
 //---Odomètre---//
-assign odoLA     = GPIO_0[8];
-assign odoLB     = GPIO_0[9];
-assign odoRA     = GPIO_0[10];
-assign odoRB     = GPIO_0[11];
+assign odoLA     = GPIO_0[16];	//Pin : 21 GPIO : 16
+assign odoLB     = GPIO_0[18];	//Pin : 23 GPIO : 18
+assign odoRA     = GPIO_0[17];	//Pin : 22 GPIO : 17
+assign odoRB     = GPIO_0[19];	//Pin : 24 GPIO : 19
 
-//---Servo---//
-assign GPIO_1[1]  = servo_LC; 
-assign GPIO_1[2]  = servo_LP; 
-assign GPIO_1[3]  = servo_RC; 
-assign GPIO_1[4]  = servo_RP; 
+//--- Servo ---//
+assign GPIO_0[28]  = servo_LC; 	//Pin : ? GPIO : ?
+assign GPIO_0[26]  = servo_LP; 	//Pin : ? GPIO : ?
+assign GPIO_0[30]  = servo_RC; 	//Pin : ? GPIO : ?
+assign GPIO_0[32]  = servo_RP; 	//Pin : ? GPIO : ?
 
+//---Stepper-motors---//
 
+assign GPIO_0[27] = stepper_R;	// Pin : 34 GPIO : 27 
+assign GPIO_0[23] = stepper_L; 	// Pin : 28 GPIO : 23 
+assign GPIO_0[25] = dir_R;		// Pin : 32 GPIO : 25
+assign GPIO_0[21] = dir_L;		// Pin : 26 GPIO : 21 
 
+//--- IR ---//
+//	IR1 => PIN : 3-25   GPIO : ANALOG_in_1
+//  IR2 => PIN : 3-23 	GPIO : ANALOG_in_4	
+//  IR3 => PIN : 3-21   GPIO : ANALOG_in_3
+//  IR4 => PIN : 3-19   GPIO : ANALOG_in_6
 
 endmodule
