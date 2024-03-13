@@ -125,14 +125,18 @@ input 		     [1:0]		GPIO_1_IN;
 //=======================================================
 
 //////// Reset //////////
+logic [31:0] State_control;
 
 logic reset;
 logic reset_stepper_R; 		// Reset du stepper droit
 logic reset_stepper_L; 		// Reset du stepper gauche
 
+assign reset 			= State_control[0]; 
+assign reset_stepper_L 	= State_control[4];		// reset current known position to 0
+assign reset_stepper_R 	= State_control[8];		// reset current known position to 0
+assign homing_L 		= State_control[12]; 	// activate homing mode of left stepper
+assign homing_R 		= State_control[16];	// activate homing mode of left stepper
 
-//assign reset_stepper_R = GPIO_0[16];	// Pin : ? GPIO_0 : ? 
-//assign reset_stepper_L = GPIO_0[17];	// Pin : ? GPIO_0 : ?
 
 //////// Stored Data assignement SENSORS //////////
 
@@ -149,6 +153,7 @@ always_comb begin
 		4'h4 : DataToPI = IR2_ext;				// IR2
 		4'h5 : DataToPI = IR3_ext;				// IR3
 		4'h6 : DataToPI = IR4_ext;				// IR4
+		4'h7 : DataToPI = micro_switch_data;	// Micro-switches
 
 		default : DataToPI = 32'bx; 		
 	endcase
@@ -162,16 +167,14 @@ always_ff @(posedge CLOCK_50) begin
 	Actuators_RAM[AddrFromPi[3:0]] = DataFromPI;  
 end
 
-assign reset = Actuators_RAM[0][0];	// Reset
-assign reset_stepper_R = Actuators_RAM[0][1];	// Reset du stepper droit
-assign reset_stepper_L = Actuators_RAM[0][2];
+assign State_control 	  = Actuators_RAM[0];		// State control
 
 assign Servo_control_LC   = Actuators_RAM[1];		// Servo pince gauche 	: x1 
 assign Servo_control_LP   = Actuators_RAM[2];		// Servo pento gauche 	: x2
 assign Servo_control_RC   = Actuators_RAM[3];		// Servo pince droite 	: x3
 assign Servo_control_RP   = Actuators_RAM[4];		// Servo pince gauche 	: x4
-assign stepper_control_L  = Actuators_RAM[5]; 		// Steppers 	  		: x5
-assign stepper_control_R  = Actuators_RAM[6]; 		// Steppers 	  		: x6
+assign stepper_control_L  = Actuators_RAM[5]; 		// Steppers gauche		: x5
+assign stepper_control_R  = Actuators_RAM[6]; 		// Steppers droit  		: x6
 
 
 // ---   SPI module instantiation   ------------------------------------------
@@ -278,20 +281,19 @@ always_ff @(posedge CLOCK_50) begin
 	end		
 end
 */
+
 /*
-logic [18:0] counter_delay;   
+logic [19:0] counter_delay; 
+logic [19:0] counter_step;  
 
 always_ff @(posedge CLOCK_50) begin
 	counter_delay <= counter_delay + 1;
 end
-always_ff @(posedge stepper_R) begin
+always_ff @(posedge stepper_L) begin
 	counter_step = counter_step + 1; 
 end 
-assign stepper_R = counter_delay[18];
-assign dir_R = counter_step[11];
-
-assign stepper_L = stepper_R; 
-assign dir_L = stepper_L; 
+assign stepper_L = counter_delay[11];
+assign dir_L = counter_step[15];
 */
 
 // ---   IR's   instantation   -------------------------------------------------
@@ -333,18 +335,23 @@ assign IR4_ext = {20'b0, IR4};
 logic micro_switch_1, micro_switch_2, micro_switch_3, micro_switch_4;
 logic [31:0] micro_switch_data;
 
-assign micro_switch_data = {28'b0, micro_switch_1, micro_switch_2, micro_switch_3, micro_switch_4};
+assign micro_switch_data[0]  = micro_switch_1;	// reset left stepper
+assign micro_switch_data[8]  = micro_switch_5;	// reset right stepper
+assign micro_switch_data[16] = micro_switch_3;
+assign micro_switch_data[24] = micro_switch_4;
+assign micro_switch_data[31] = micro_switch_2;
 
 
 // ---   Stepper-motors instantation   -----------------------------------------
 
-logic stepper_L, stepper_R, dir_L, dir_R;
+logic stepper_L, stepper_R, dir_L, dir_R, homing_L, homing_R;
 logic [31:0] stepper_control_L, stepper_control_R;
 
 stepper stepper_inst_L (
 	.clk(CLOCK_50),
 	.reset(reset_stepper_L),
 	.control(stepper_control_L),
+	.homing_enable(homing_L),
 	.step(stepper_L),
 	.dir(dir_L)
 );
@@ -354,13 +361,13 @@ stepper stepper_inst_R (
 	.clk(CLOCK_50),
 	.reset(reset_stepper_R),
 	.control(stepper_control_R),
+	.homing_enable(homing_R),
 	.step(stepper_R),
 	.dir(dir_R)
 );
 
-
-
-
+//assign homing_L = State_control[12];
+//assign homing_R = State_control[16];
 
 //////////// Pin assignment for DE0_ANNICK //////////
 
@@ -388,6 +395,15 @@ assign GPIO_0[27] = stepper_R;	// Pin : 34 GPIO : 27
 assign GPIO_0[23] = stepper_L; 	// Pin : 28 GPIO : 23 
 assign GPIO_0[25] = dir_R;		// Pin : 32 GPIO : 25
 assign GPIO_0[21] = dir_L;		// Pin : 26 GPIO : 21 
+
+//---Micro-Swich---//
+
+assign micro_switch_1 =  GPIO_0[5]; 	// Pin : 8  GPIO : 5
+assign micro_switch_2 =  GPIO_0[7];		// Pin : 10 GPIO : 7
+assign micro_switch_3 =  GPIO_0[6];		// Pin : 9  GPIO : 6
+assign micro_switch_4 =  GPIO_0[9];		// Pin : 14 GPIO : 9
+assign micro_switch_5 =  GPIO_0[8];		// Pin : 13 GPIO : 8
+
 
 //--- IR ---//
 //	IR1 => PIN : 3-25   GPIO : ANALOG_in_1
