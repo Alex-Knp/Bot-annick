@@ -1,220 +1,113 @@
-#include <iostream>
-#include "SDK/dynamixel_sdk.h"
+#include "dynamixel_control.h"
 
-
-// Control table addresses for XL320
-#define ADDR_GOAL_POSITION   30
-#define ADDR_PRESENT_POSITION   36
-#define ADDR_MOVING_SPEED    32
-#define ADDR_PRESENT_SPEED   38
-#define ADDR_TORQUE_ENABLE  24
-#define ADDR_PRESENT_LOAD   40
-#define ADDR_ID              7
-#define PROTOCOL_VERSION    2.0     // Dynamixel protocol version 1.0
-
-// Default settings
-#define BAUDRATE            1000000 // Dynamixel baudrate
-#define DEVICENAME          "/dev/ttyUSB0" // Check your device name
-#define TORQUE_ENABLE       1       // Value for enabling the torque
-#define TORQUE_DISABLE      0       // Value for disabling the torque
-
-// Initialize PortHandler instance
-// Set the port path
-// Get methods and members of PortHandlerLinux or PortHandlerWindows
-dynamixel::PortHandler *portHandler = dynamixel::PortHandler::getPortHandler(DEVICENAME);
-
-// Initialize PacketHandler instance
-// Set the protocol version
-// Get methods and members of Protocol1PacketHandler or Protocol2PacketHandler
-dynamixel::PacketHandler *packetHandler = dynamixel::PacketHandler::getPacketHandler(PROTOCOL_VERSION);
-
-float current_angle;
-
-bool initialize() {
-    // Open port
-    if (!portHandler->openPort()) {
-        std::cout << "Failed to open the port!" << std::endl;
+bool DynamixelControl::setID(uint8_t id, uint8_t new_id) {
+    uint8_t error = 0;
+    packetHandler->write1ByteTxRx(portHandler, id, ADDR_ID, new_id, &error);
+    if (error != 0) {
+        std::cerr << "Failed to set ID!" << std::endl;
         return false;
     }
-
-    // Set port baudrate
-    if (!portHandler->setBaudRate(BAUDRATE)) {
-        std::cout << "Failed to set the baudrate!" << std::endl;
-        return false;
-    }
-
     return true;
 }
 
-void setID(uint8_t new_id, uint8_t old_id) {
-    uint8_t dxl_error = 0;
-    int dxl_comm_result = COMM_TX_FAIL;  // Communication result
-
-    // Write new ID
-    dxl_comm_result = packetHandler->write1ByteTxRx(portHandler, old_id, ADDR_ID, new_id, &dxl_error);
-    if (dxl_comm_result != COMM_SUCCESS) {
-        std::cout << "Failed to set ID: " << packetHandler->getTxRxResult(dxl_comm_result) << std::endl;
-    } else if (dxl_error != 0) {
-        std::cout << "Dynamixel error: " << packetHandler->getRxPacketError(dxl_error) << std::endl;
+bool DynamixelControl::setWheelMode(uint8_t id) {
+    uint8_t error = 0;
+    error = torqueDisable(id);
+    if(error != 0) {
+        std::cerr << "Failed to disable torque!" << std::endl;
+        return false;
     }
+    packetHandler->write1ByteTxRx(portHandler, id, ADDR_CONTROL_MODE, 1, &error);
+    error = torqueEnable(id);
+    if(error != 0) {
+        std::cerr << "Failed to enable torque!" << std::endl;
+        return false;
+    }
+    if (error != 0) {
+        std::cerr << "Failed to set wheel mode!" << std::endl;
+        return false;
+    }
+    
+    return true;
 }
 
-void setPosition(int goal_position, uint8_t id) {
-    uint8_t dxl_error = 0;
-    int dxl_comm_result = COMM_TX_FAIL;  // Communication result
-
-    // Switch to position control mode (assuming the control mode address is ADDR_CONTROL_MODE)
-    dxl_comm_result = packetHandler->write1ByteTxRx(portHandler, id, ADDR_CONTROL_MODE, POSITION_CONTROL_MODE, &dxl_error);
-    if (dxl_comm_result != COMM_SUCCESS) {
-        std::cout << "Failed to switch to position control mode: " << packetHandler->getTxRxResult(dxl_comm_result) << std::endl;
-        return;
-    } else if (dxl_error != 0) {
-        std::cout << "Dynamixel error: " << packetHandler->getRxPacketError(dxl_error) << std::endl;
-        return;
+bool DynamixelControl::setJointMode(uint8_t id) {
+    uint8_t error = 0;
+    error = torqueDisable(id);
+    if(error != 0) {
+        std::cerr << "Failed to disable torque!" << std::endl;
+        return false;
     }
-
-    // Write goal position
-    dxl_comm_result = packetHandler->write2ByteTxRx(portHandler, id, ADDR_GOAL_POSITION, goal_position, &dxl_error);
-    if (dxl_comm_result != COMM_SUCCESS) {
-        std::cout << "Failed to write goal position: " << packetHandler->getTxRxResult(dxl_comm_result) << std::endl;
-    } else if (dxl_error != 0) {
-        std::cout << "Dynamixel error: " << packetHandler->getRxPacketError(dxl_error) << std::endl;
+    packetHandler->write1ByteTxRx(portHandler, id, ADDR_CONTROL_MODE, 2, &error);
+    error = torqueEnable(id);
+    if(error != 0) {
+        std::cerr << "Failed to enable torque!" << std::endl;
+        return false;
     }
+    if (error != 0) {
+        std::cerr << "Failed to set joint mode!" << std::endl;
+        return false;
+    }
+    return true;
 }
 
-void setSpeed(uint16_t moving_speed, uint8_t id) {
-    uint8_t dxl_error = 0;
-    int dxl_comm_result = COMM_TX_FAIL;  // Communication result
-
-    // Switch to speed control mode (assuming the control mode address is ADDR_CONTROL_MODE)
-    dxl_comm_result = packetHandler->write1ByteTxRx(portHandler, id, ADDR_CONTROL_MODE, SPEED_CONTROL_MODE, &dxl_error);
-    if (dxl_comm_result != COMM_SUCCESS) {
-        std::cout << "Failed to switch to speed control mode: " << packetHandler->getTxRxResult(dxl_comm_result) << std::endl;
-        return;
-    } else if (dxl_error != 0) {
-        std::cout << "Dynamixel error: " << packetHandler->getRxPacketError(dxl_error) << std::endl;
-        return;
+bool DynamixelControl::setSpeed(uint8_t id, int speed) {
+    uint8_t error = 0;
+    packetHandler->write2ByteTxRx(portHandler, id, ADDR_MOVING_SPEED, speed, &error);
+    if (error != 0) {
+        std::cerr << "Failed to set speed!" << std::endl;
+        return false;
     }
-
-    // Write moving speed
-    dxl_comm_result = packetHandler->write2ByteTxRx(portHandler, id, ADDR_MOVING_SPEED, moving_speed, &dxl_error);
-    if (dxl_comm_result != COMM_SUCCESS) {
-        std::cout << "Failed to write moving speed: " << packetHandler->getTxRxResult(dxl_comm_result) << std::endl;
-    } else if (dxl_error != 0) {
-        std::cout << "Dynamixel error: " << packetHandler->getRxPacketError(dxl_error) << std::endl;
-    }
+    return true;
 }
 
-int32_t readPresentPosition(uint8_t id) {
-    uint8_t dxl_error = 0;
-    int dxl_comm_result = COMM_TX_FAIL;  // Communication result
-    int32_t present_position = 0;
-
-    // Read present position
-    dxl_comm_result = packetHandler->read2ByteTxRx(portHandler, id, ADDR_PRESENT_POSITION, (uint16_t*)&present_position, &dxl_error);
-    if (dxl_comm_result != COMM_SUCCESS) {
-        std::cout << "Failed to read present position: " << packetHandler->getTxRxResult(dxl_comm_result) << std::endl;
-        return -1;
-    } else if (dxl_error != 0) {
-        std::cout << "Dynamixel error: " << packetHandler->getRxPacketError(dxl_error) << std::endl;
-        return -1;
+bool DynamixelControl::setAngle(uint8_t id, int angle) {
+    uint8_t error = 0;
+    packetHandler->write2ByteTxRx(portHandler, id, ADDR_GOAL_POSITION, angle, &error);
+    if (error != 0) {
+        std::cerr << "Failed to set angle!" << std::endl;
+        return false;
     }
-
-    return present_position;
+    return true;
 }
 
-int16_t readPresentSpeed(uint8_t id) {
-    uint8_t dxl_error = 0;
-    int dxl_comm_result = COMM_TX_FAIL;  // Communication result
-    int16_t present_speed = 0;
-
-    // Read present speed
-    dxl_comm_result = packetHandler->read2ByteTxRx(portHandler, id, ADDR_PRESENT_SPEED, (uint16_t*)&present_speed, &dxl_error);
-    if (dxl_comm_result != COMM_SUCCESS) {
-        std::cout << "Failed to read present speed: " << packetHandler->getTxRxResult(dxl_comm_result) << std::endl;
-        return -1;
-    } else if (dxl_error != 0) {
-        std::cout << "Dynamixel error: " << packetHandler->getRxPacketError(dxl_error) << std::endl;
-        return -1;
+bool DynamixelControl::getTorque(uint8_t id, int16_t &present_load) {
+    uint8_t error = 0;
+    packetHandler->read2ByteTxRx(portHandler, id, ADDR_PRESENT_LOAD, (uint16_t *)&present_load, &error);
+    if (error != 0) {
+        std::cerr << "Failed to get present load!" << std::endl;
+        return false;
     }
-
-    return present_speed;
+    return true;
 }
 
-int16_t readPresentTorque(uint8_t id) {
-    uint8_t dxl_error = 0;
-    int dxl_comm_result = COMM_TX_FAIL;  // Communication result
-    int16_t present_torque = 0;
-
-    // Read present torque
-    dxl_comm_result = packetHandler->read2ByteTxRx(portHandler, id, ADDR_PRESENT_LOAD, (uint16_t*)&present_torque, &dxl_error);
-    if (dxl_comm_result != COMM_SUCCESS) {
-        std::cout << "Failed to read present torque: " << packetHandler->getTxRxResult(dxl_comm_result) << std::endl;
-        return -1;
-    } else if (dxl_error != 0) {
-        std::cout << "Dynamixel error: " << packetHandler->getRxPacketError(dxl_error) << std::endl;
-        return -1;
+bool DynamixelControl::torqueEnable(uint8_t id) {
+    uint8_t error = 0;
+    packetHandler->write1ByteTxRx(portHandler, id, ADDR_TORQUE_ENABLE, 1, &error);
+    if (error != 0) {
+        std::cerr << "Failed to enable torque!" << std::endl;
+        return false;
     }
-
-    return present_torque;
+    return true;
 }
 
-void disableTorque(uint8_t id) {
-    uint8_t dxl_error = 0;
-    int dxl_comm_result = COMM_TX_FAIL;  // Communication result
-
-    // Disable Dynamixel Torque
-    dxl_comm_result = packetHandler->write1ByteTxRx(portHandler, id, ADDR_TORQUE_ENABLE, TORQUE_DISABLE, &dxl_error);
-    if (dxl_comm_result != COMM_SUCCESS) {
-        std::cout << "Failed to disable Dynamixel torque: " << packetHandler->getTxRxResult(dxl_comm_result) << std::endl;
-    } else if (dxl_error != 0) {
-        std::cout << "Dynamixel error: " << packetHandler->getRxPacketError(dxl_error) << std::endl;
-    } else {
-        std::cout << "Dynamixel torque disabled!" << std::endl;
+bool DynamixelControl::torqueDisable(uint8_t id) {
+    uint8_t error = 0;
+    packetHandler->write1ByteTxRx(portHandler, id, ADDR_TORQUE_ENABLE, 0, &error);
+    if (error != 0) {
+        std::cerr << "Failed to disable torque!" << std::endl;
+        return false;
     }
+    return true;
 }
 
-int homing(uint8_t id) {
-    int homing_speed = 20;//% of max speed
-    int homing_torque_detection = 5;//% of max torque
-
-    int speed = (int) homing_speed * 1023 / 100;
-    // Set moving speed
-    if(id ==1){
-        setSpeed(speed, id); //turning CCW
+bool DynamixelControl::isMoving(uint8_t id) {
+    uint8_t moving = 0;
+    uint8_t error = 0;
+    packetHandler->read1ByteTxRx(portHandler, id, ADDR_MOVING, &moving, &error);
+    if (error != 0) {
+        std::cerr << "Failed to check movement!" << std::endl;
+        return false;
     }
-    else{
-        setSpeed(1024 + speed, id); // turning CW
-    }
-
-    while(readPresentTorque(id) < homing_torque_detection){
-        //wait for torque to be detected
-    }
-
-
-    setSpeed(0, id);
-    setPosition(0, id);
-
-    current_angle = 0;
-
-    return 0;
-}
-
-int main() {
-    if (!initialize()) {
-        return 1;
-    }
-
-    // Example usage:
-    // setID(2);
-    // setPosition(512);
-    // setSpeed(100);
-    // int32_t position = readPresentPosition(2);
-    // int16_t speed = readPresentSpeed(2);
-    // int16_t torque = readPresentTorque(2);
-    // disableTorque(2);
-
-    // Your code logic here...
-
-    return 0;
+    return (moving != 0);
 }
