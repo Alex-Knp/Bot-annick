@@ -10,9 +10,11 @@
 #include <errno.h> // Error integer and strerror() function
 #include <unistd.h> // write(), read(), close()
 #include <sys/ioctl.h>
+#include <linux/spi/spidev.h>
+#include <gpiod.h> 
 
 #include <termios.h> // Contains POSIX terminal control definitions
-#include <wiringPi.h>
+//#include <wiringPi.h>
 
 #include <iostream>
 #include <iomanip>

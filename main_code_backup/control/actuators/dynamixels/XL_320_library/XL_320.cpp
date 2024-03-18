@@ -16,13 +16,8 @@ using namespace std;
 //
 // --------------------------------------------------------------------------
 
-XL_320 :: XL_320() : errorcode(0), pEnable(11), id(0x01), model(0), version(0), verbose(false)
+XL_320 :: XL_320() : errorcode(0), pEnable(4), id(0x01), model(0), version(0), verbose(false)
 {
-
-    // Setup wiring Pi
-    wiringPiSetup();
-    pinMode(pEnable, OUTPUT);
-
     // Open UART2 serial port
     serial_port = open("/dev/ttyAMA0", O_RDWR);
 
@@ -171,10 +166,27 @@ int XL_320 :: send(unsigned char Instruction, vector<int> param, bool receive)
 
     // === WRITE INSTRUCTION ================================================
 
-    digitalWrite(pEnable,HIGH);
+    // Open GPIO chip
+    gpiod_chip *chip = gpiod_chip_open("/dev/gpiochip0");
+
+    // Get the line
+    gpiod_line *line = gpiod_chip_get_line(chip, 4); // GPIO 4
+
+    // Set the line state to HIGH
+    gpiod_line_set_value(line, 1);
+
+    // Write to serial port
     write(serial_port, msg, sizeof(msg));
+
+    // Sleep for a short duration
     usleep(100);
-    digitalWrite(pEnable,LOW);
+
+    // Set the line state to LOW
+    gpiod_line_set_value(line, 0);
+
+    // Release the chip
+    gpiod_line_release(line);
+    gpiod_chip_close(chip);
 
     // === READ STATUS ======================================================
 
