@@ -36,23 +36,23 @@ int stepper_homing(int fd, int stepper_id) {
     while(true){
 
         // MICRO-SWITCH TRACKING
-        spi_ask(fd, MS_message, response, 4);
+        spi_transfer(fd, MS_message, response, )5;
         //printf("Micro-switch tracking : %u, %u, %u, %u \n", response[1], response[2], response[3], response[4]);
 
         if(response[micro_switch] == 1){
 
             // RESET STEPPER
-            spi_ask(fd, Reset_message, response, 5);
+            spi_transfer(fd, Reset_message, response, 5);
 
             // RESET TARGET POSITION
-            spi_ask(fd, Reset_position_message, response, 5);
+            spi_transfer(fd, Reset_position_message, response, 5);
 
             // UNRESET STEPPER
-            spi_ask(0xf0, UnReset_message, response, 5);
+            spi_transfer(0xf0, UnReset_message, response, 5);
 
-            return 1; // fin de la procédure
+            return 1;
         }
-        delay(10);
+        delay(1); 
     }
 }
 
