@@ -169,7 +169,7 @@ end
 
 assign State_control 	  = Actuators_RAM[0];		// State control
 
-assign Servo_control_LC   = Actuators_RAM[1];		// Servo pince gauche 	: x1 
+assign Servo_control_LC   = Actuators_RAM[1];		// Servo pince gauche 	: x1
 assign Servo_control_LP   = Actuators_RAM[2];		// Servo pento gauche 	: x2
 assign Servo_control_RC   = Actuators_RAM[3];		// Servo pince droite 	: x3
 assign Servo_control_RP   = Actuators_RAM[4];		// Servo pince gauche 	: x4
@@ -378,21 +378,6 @@ assign spi_mosi     	= GPIO_0_IN[1];			//  15 (EDS Setup)  Pin : ? GPIO : IN1
 assign GPIO_0[0] = spi_cs ? 1'bz : spi_miso ;   //  13 (EDS Setup)  Pin : ? GPIO : 0
 
 //---Odomètre---//
-<<<<<<< HEAD
-assign odoLA     = GPIO_0[17];
-assign odoLB     = GPIO_0[19];
-assign odoRA     = GPIO_0[16];
-assign odoRB     = GPIO_0[18];
-
-//---Servo---//
-assign GPIO_1[1]  = servo_LC; 
-assign GPIO_1[2]  = servo_LP; 
-assign GPIO_1[3]  = servo_RC; 
-assign GPIO_1[4]  = servo_RP; 
-
-
-
-=======
 assign odoLA     = GPIO_0[16];	//Pin : 21 GPIO : 16
 assign odoLB     = GPIO_0[18];	//Pin : 23 GPIO : 18
 assign odoRA     = GPIO_0[17];	//Pin : 22 GPIO : 17
@@ -425,6 +410,5 @@ assign micro_switch_5 =  GPIO_0[8];		// Pin : 13 GPIO : 8
 //  IR2 => PIN : 3-23 	GPIO : ANALOG_in_4	
 //  IR3 => PIN : 3-21   GPIO : ANALOG_in_3
 //  IR4 => PIN : 3-19   GPIO : ANALOG_in_6
->>>>>>> 0f69134571873cde15c0b24dfd43b563f92fb133
 
 endmodule
