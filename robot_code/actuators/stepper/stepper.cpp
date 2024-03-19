@@ -2,14 +2,13 @@
 
 
 int stepper_homing(int stepper_id) {
-    
     // initialise le stepper "stepper_id" (id 0 = stepper gauche; id 1 = stepper droit)
-    unsigned char stepper_adress; 
+    
     int micro_switch;
     uint8_t response[5];
-    uint8_t Homing_enable[4];
-    uint8_t Reset_signal[4];
-    uint8_t zero_message[4] = {0x00, 0x00, 0x00, 0x00};
+    uint8_t Homing_enable[5];
+    uint8_t Reset_signal[5];
+    uint8_t zero_message[5] = {0x00, 0x00, 0x00, 0x00, 0x00};
 
     if(stepper_id == 1) {
         stepper_adress = 0xf5;
