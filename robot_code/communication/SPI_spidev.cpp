@@ -1,7 +1,7 @@
 #include "SPI_spidev.hh"
 
 uint8_t mode = 0;
-uint32_t speed = 500000;
+uint32_t speed = 5000000;
 uint8_t bits = 8;  // amount of bits that we want to write or read on every spi access
 
 /**
@@ -97,17 +97,22 @@ int main() {
 
 	// teensy test
     int fd0 = spi_init_0();
-	uint8_t data[4] = {0x00, 0x00, 0x00, 0x00};    // adresse
+	uint8_t data[4] = {0x00, 0x0A, 0x00, 0x0A};    // adresse
 	spi_transfer(fd0, data, 4);
 
 	close(fd0);
-
+/*
 	// de0 test
 	int fd1 = spi_init_1();
 
-	uint8_t adr1 = 0x00;
+	uint8_t adr1 = 0xE0;
 	uint8_t data1[5] = {adr1, 0x00, 0x00, 0x00, 0x00};    // adresse
 	spi_transfer(fd1, data1, 5);
+	*/
+	for (int i = 0; i < 4; i++) {
+        printf("%02X ", data[i]);
+    }
+	printf("\n");
 	
 	return 0;
 }

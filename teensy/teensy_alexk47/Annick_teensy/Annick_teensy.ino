@@ -31,7 +31,7 @@ float K_v = 1.0 / 252.0 * 60.0 / (2.0 * PI);
 float J_r = mass / 2.0 * wheel_radius * wheel_radius / (19.0 * 19.0);
 float tau_m = J_r / K_v;
 
-float controller_time_constant = 0.000005;
+float controller_time_constant = 0.00001;
 
 float Ki = (R_a * K_v) / (k_phi * controller_time_constant);
 float Kp = tau_m * Ki;
@@ -73,6 +73,8 @@ void setup() {
   previous_time = micros();
   previous_encoder_left = encl.read();
   previous_encoder_right = encr.read();
+
+  digitalWrite(AMBER_LED, HIGH);
 }
 
 void loop() {
@@ -86,12 +88,17 @@ void loop() {
     int right_encoder = encr.read();
     float right_measured_speed = static_cast<float>(right_encoder - previous_encoder_right) / cpr * 2.0 * PI / time_interval;
 
-    float left_voltage = PI_motor_controller(left_measured_speed, 19.0*left_reference_speed, &left_integral_term, time_interval);
-    float right_voltage = PI_motor_controller(right_measured_speed, 19.0*right_reference_speed, &right_integral_term, time_interval);
+    // float left_voltage = PI_motor_controller(left_measured_speed, 19.0*left_reference_speed, &left_integral_term, time_interval);
+    // float right_voltage = PI_motor_controller(right_measured_speed, 19.0*right_reference_speed, &right_integral_term, time_interval);
 
     Serial.print(left_measured_speed);
     Serial.print(" ");
     Serial.println(right_measured_speed);
+
+    float test_ref = 0.0;//15.0*(1.0 + sin(static_cast<float>(current_time)*1e-6*3.1415));
+
+    float left_voltage = PI_motor_controller(left_measured_speed, 19.0*test_ref, &left_integral_term, time_interval);
+    float right_voltage = PI_motor_controller(right_measured_speed, 19.0*test_ref, &right_integral_term, time_interval);
 
     float left_PWM = min(255, left_voltage / max_voltage * 255);
     float right_PWM = min(255, right_voltage / max_voltage * 255);
