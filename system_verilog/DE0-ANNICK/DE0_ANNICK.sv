@@ -132,10 +132,10 @@ logic reset_stepper_R; 		// Reset du stepper droit
 logic reset_stepper_L; 		// Reset du stepper gauche
 
 assign reset 			= State_control[0]; 
-assign reset_stepper_L 	= State_control[4];		// reset current known position to 0
-assign reset_stepper_R 	= State_control[8];		// reset current known position to 0
-assign homing_L 		= State_control[12]; 	// activate homing mode of left stepper
-assign homing_R 		= State_control[16];	// activate homing mode of left stepper
+assign reset_stepper_L 	= State_control[8];		// reset current known position to 0
+assign reset_stepper_R 	= State_control[12];		// reset current known position to 0
+assign homing_L 		= State_control[16]; 	// activate homing mode of left stepper
+assign homing_R 		= State_control[20];	// activate homing mode of left stepper
 
 
 //////// Stored Data assignement SENSORS //////////
