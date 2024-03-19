@@ -1,7 +1,4 @@
-#pragma one
 #include <stepper.hh>
-#include <../../communication/SPI_spidev.hh>
-#include <../../communication/SPI_spidev.cpp>
 #include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
