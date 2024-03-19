@@ -132,10 +132,10 @@ logic reset_stepper_R; 		// Reset du stepper droit
 logic reset_stepper_L; 		// Reset du stepper gauche
 
 assign reset 			= State_control[0]; 
-assign reset_stepper_L 	= State_control[4];		// reset current known position to 0
-assign reset_stepper_R 	= State_control[8];		// reset current known position to 0
-assign homing_L 		= State_control[12]; 	// activate homing mode of left stepper
-assign homing_R 		= State_control[16];	// activate homing mode of left stepper
+assign reset_stepper_L 	= State_control[8];		// reset current known position to 0
+assign reset_stepper_R 	= State_control[12];		// reset current known position to 0
+assign homing_L 		= State_control[16]; 	// activate homing mode of left stepper
+assign homing_R 		= State_control[20];	// activate homing mode of left stepper
 
 
 //////// Stored Data assignement SENSORS //////////
@@ -144,8 +144,8 @@ logic [31:0] Odometre_Left, Odometre_Right;
 
 always_comb begin
 	case(AddrFromPi[7:4])
-		4'hf : DataToPI = 32'h0f0f0f0f;		//TEST
-		4'he : DataToPI = 32'h1234abcd;		//TEST
+		4'hf : DataToPI = 32'h0f0f0f0f;			//TEST
+		4'he : DataToPI = 32'h1234abcd;			//TEST
 
 		4'h1 : DataToPI = Odometre_Left;  		// Odomètre gauche 	: 1x
 		4'h2 : DataToPI = Odometre_Right; 		// Odomètre droit 	: 2x
@@ -169,7 +169,7 @@ end
 
 assign State_control 	  = Actuators_RAM[0];		// State control
 
-assign Servo_control_LC   = Actuators_RAM[1];		// Servo pince gauche 	: x1 
+assign Servo_control_LC   = Actuators_RAM[1];		// Servo pince gauche 	: x1
 assign Servo_control_LP   = Actuators_RAM[2];		// Servo pento gauche 	: x2
 assign Servo_control_RC   = Actuators_RAM[3];		// Servo pince droite 	: x3
 assign Servo_control_RP   = Actuators_RAM[4];		// Servo pince gauche 	: x4
@@ -240,7 +240,7 @@ Servo_PWM SERVO_RP (
 	.servo(servo_RP)
 ); 
 
-// TEST servo
+// TEST SERVO
 //assign Servo_control_LC = 32'd25000; //0 def;
 /*
 logic [19:0] counter1;
@@ -378,25 +378,10 @@ assign spi_mosi     	= GPIO_0_IN[1];			//  15 (EDS Setup)  Pin : ? GPIO : IN1
 assign GPIO_0[0] = spi_cs ? 1'bz : spi_miso ;   //  13 (EDS Setup)  Pin : ? GPIO : 0
 
 //---Odomètre---//
-<<<<<<< HEAD
-assign odoLA     = GPIO_0[17];
-assign odoLB     = GPIO_0[19];
-assign odoRA     = GPIO_0[16];
-assign odoRB     = GPIO_0[18];
-
-//---Servo---//
-assign GPIO_1[1]  = servo_LC; 
-assign GPIO_1[2]  = servo_LP; 
-assign GPIO_1[3]  = servo_RC; 
-assign GPIO_1[4]  = servo_RP; 
-
-
-
-=======
-assign odoLA     = GPIO_0[16];	//Pin : 21 GPIO : 16
-assign odoLB     = GPIO_0[18];	//Pin : 23 GPIO : 18
-assign odoRA     = GPIO_0[17];	//Pin : 22 GPIO : 17
-assign odoRB     = GPIO_0[19];	//Pin : 24 GPIO : 19
+assign odoRA     = GPIO_0[16];	//Pin : 21 GPIO : 16
+assign odoRB     = GPIO_0[18];	//Pin : 23 GPIO : 18
+assign odoLB     = GPIO_0[17];	//Pin : 22 GPIO : 17
+assign odoLA     = GPIO_0[19];	//Pin : 24 GPIO : 19
 
 //--- Servo ---//
 assign GPIO_0[28]  = servo_LC; 	//Pin : ? GPIO : ?
@@ -407,7 +392,7 @@ assign GPIO_0[32]  = servo_RP; 	//Pin : ? GPIO : ?
 //---Stepper-motors---//
 
 assign GPIO_0[27] = stepper_R;	// Pin : 34 GPIO : 27 
-assign GPIO_0[23] = stepper_L; 	// Pin : 28 GPIO : 23 
+assign GPIO_0[23] = stepper_L; 	// Pin : 28 GPIO : 23
 assign GPIO_0[25] = dir_R;		// Pin : 32 GPIO : 25
 assign GPIO_0[21] = dir_L;		// Pin : 26 GPIO : 21 
 
@@ -425,6 +410,5 @@ assign micro_switch_5 =  GPIO_0[8];		// Pin : 13 GPIO : 8
 //  IR2 => PIN : 3-23 	GPIO : ANALOG_in_4	
 //  IR3 => PIN : 3-21   GPIO : ANALOG_in_3
 //  IR4 => PIN : 3-19   GPIO : ANALOG_in_6
->>>>>>> 0f69134571873cde15c0b24dfd43b563f92fb133
 
 endmodule

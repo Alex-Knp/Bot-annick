@@ -38,7 +38,7 @@ begin
 	if(counter == 'd999999)
 			counter <= 0;
 
-	if(counter < ('d50000 + control))
+	if(counter < ('d27000 + control))
 			servo	<= 1;
 	else
 			servo	<= 0;
