@@ -132,10 +132,10 @@ logic reset_stepper_R; 		// Reset du stepper droit
 logic reset_stepper_L; 		// Reset du stepper gauche
 
 assign reset 			= State_control[0]; 
-assign reset_stepper_L 	= State_control[4];		// reset current known position to 0
-assign reset_stepper_R 	= State_control[8];		// reset current known position to 0
-assign homing_L 		= State_control[12]; 	// activate homing mode of left stepper
-assign homing_R 		= State_control[16];	// activate homing mode of left stepper
+assign reset_stepper_L 	= State_control[8];		// reset current known position to 0
+assign reset_stepper_R 	= State_control[12];		// reset current known position to 0
+assign homing_L 		= State_control[16]; 	// activate homing mode of left stepper
+assign homing_R 		= State_control[20];	// activate homing mode of left stepper
 
 
 //////// Stored Data assignement SENSORS //////////
@@ -169,7 +169,7 @@ end
 
 assign State_control 	  = Actuators_RAM[0];		// State control
 
-assign Servo_control_LC   = Actuators_RAM[1];		// Servo pince gauche 	: x1 
+assign Servo_control_LC   = Actuators_RAM[1];		// Servo pince gauche 	: x1
 assign Servo_control_LP   = Actuators_RAM[2];		// Servo pento gauche 	: x2
 assign Servo_control_RC   = Actuators_RAM[3];		// Servo pince droite 	: x3
 assign Servo_control_RP   = Actuators_RAM[4];		// Servo pince gauche 	: x4
@@ -410,6 +410,5 @@ assign micro_switch_5 =  GPIO_0[8];		// Pin : 13 GPIO : 8
 //  IR2 => PIN : 3-23 	GPIO : ANALOG_in_4	
 //  IR3 => PIN : 3-21   GPIO : ANALOG_in_3
 //  IR4 => PIN : 3-19   GPIO : ANALOG_in_6
->>>>>>> 0f69134571873cde15c0b24dfd43b563f92fb133
 
 endmodule
