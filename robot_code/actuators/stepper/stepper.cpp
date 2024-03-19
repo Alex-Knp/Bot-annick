@@ -10,13 +10,13 @@ int stepper_homing(int stepper_id) {
     uint8_t Reset_signal[5];
     uint8_t zero_message[5] = {0x00, 0x00, 0x00, 0x00, 0x00};
 
-    if(stepper_id == 1) {
+    if(stepper_id == 0) {    // left stepper data
         stepper_adress = 0xf5;
         micro_switch = 3;
         uint8_t Homing_enable[] = {0x00, 0x01, 0x00, 0x00};
         uint8_t Reset_signal[]  = {0x00, 0x00, 0x01, 0x00};
 
-    } else if(stepper_id == 0) {
+    } else if(stepper_id == 1) {    //right stepper data
         stepper_adress = 0xf6;
         micro_switch = 4;
         uint8_t Homing_enable[] = {0x00, 0x00, 0x10, 0x00};
