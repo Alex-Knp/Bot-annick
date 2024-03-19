@@ -1,5 +1,6 @@
 #ifndef XL_320_SERVO
 #define XL_320_SERVO
+#pragma once
 
 // C library headers
 #include <stdio.h>
@@ -11,7 +12,7 @@
 #include <unistd.h> // write(), read(), close()
 #include <sys/ioctl.h>
 #include <linux/spi/spidev.h>
-#include <gpiod.h> 
+#include <gpiod.h>
 
 #include <termios.h> // Contains POSIX terminal control definitions
 //#include <wiringPi.h>

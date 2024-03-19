@@ -7,6 +7,8 @@
  */
 
 #include "XL_320.hpp"
+#include <gpiod.h>
+
 
 using namespace std;
 
@@ -165,12 +167,13 @@ int XL_320 :: send(unsigned char Instruction, vector<int> param, bool receive)
     msg[i+1] = (crc>>8) & 0x00FF;
 
     // === WRITE INSTRUCTION ================================================
-
+    struct gpiod_chip *chip;
+    struct gpiod_line *line;
     // Open GPIO chip
-    gpiod_chip *chip = gpiod_chip_open("/dev/gpiochip0");
+    chip = gpiod_chip_open("/dev/gpiochip0");
 
     // Get the line
-    gpiod_line *line = gpiod_chip_get_line(chip, 4); // GPIO 4
+    line = gpiod_chip_get_line(chip, 4); // GPIO 4
 
     // Set the line state to HIGH
     gpiod_line_set_value(line, 1);
@@ -195,6 +198,7 @@ int XL_320 :: send(unsigned char Instruction, vector<int> param, bool receive)
         // Read serial buffer
         unsigned char buffer[32];
         int nb = read(serial_port, &buffer, sizeof(buffer));
+        printf("%s",buffer);
 
         if (nb < 0) {
 
@@ -1535,3 +1539,8 @@ vector<unsigned char> int2arg(int i, int n)
 
     return vB;
 }
+
+/* int main(){
+    return 0;
+}
+ */
