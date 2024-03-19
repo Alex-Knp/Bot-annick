@@ -63,13 +63,11 @@ GPIO_0[0] <> <UNC>
 GPIO_0[4] <> <UNC>
 GPIO_0[6] <> <UNC>
 GPIO_0[7] <> <UNC>
+GPIO_0[8] <> <UNC>
+GPIO_0[10] <> <UNC>
 GPIO_0[12] <> <UNC>
 GPIO_0[13] <> GPIO_0[13]
 GPIO_0[14] <> <UNC>
-GPIO_0[16] <> <UNC>
-GPIO_0[17] <> <UNC>
-GPIO_0[18] <> <UNC>
-GPIO_0[19] <> <UNC>
 GPIO_0[20] <> <UNC>
 GPIO_0[21] <> <UNC>
 GPIO_0[22] <> <UNC>

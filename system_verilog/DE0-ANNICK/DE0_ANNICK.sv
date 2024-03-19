@@ -410,5 +410,6 @@ assign micro_switch_5 =  GPIO_0[8];		// Pin : 13 GPIO : 8
 //  IR2 => PIN : 3-23 	GPIO : ANALOG_in_4	
 //  IR3 => PIN : 3-21   GPIO : ANALOG_in_3
 //  IR4 => PIN : 3-19   GPIO : ANALOG_in_6
+>>>>>>> 0f69134571873cde15c0b24dfd43b563f92fb133
 
 endmodule
