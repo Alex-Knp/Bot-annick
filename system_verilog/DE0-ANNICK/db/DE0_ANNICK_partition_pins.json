@@ -4,7 +4,39 @@
 			"name" : "Top",
 			"pins" : [
 				{
-					"name" : "GPIO_0[1]",
+					"name" : "ADC_CS_N",
+					"strict" : false
+				},
+				{
+					"name" : "ADC_SADDR",
+					"strict" : false
+				},
+				{
+					"name" : "ADC_SCLK",
+					"strict" : false
+				},
+				{
+					"name" : "GPIO_0[0]",
+					"strict" : false
+				},
+				{
+					"name" : "GPIO_0[2]",
+					"strict" : false
+				},
+				{
+					"name" : "GPIO_0[4]",
+					"strict" : false
+				},
+				{
+					"name" : "GPIO_0[5]",
+					"strict" : false
+				},
+				{
+					"name" : "GPIO_0[6]",
+					"strict" : false
+				},
+				{
+					"name" : "GPIO_0[7]",
 					"strict" : false
 				},
 				{
@@ -16,23 +48,63 @@
 					"strict" : false
 				},
 				{
-					"name" : "GPIO_0[10]",
+					"name" : "GPIO_0[16]",
 					"strict" : false
 				},
 				{
-					"name" : "GPIO_0[11]",
+					"name" : "GPIO_0[17]",
 					"strict" : false
 				},
 				{
-					"name" : "GPIO_0[13]",
+					"name" : "GPIO_0[18]",
 					"strict" : false
 				},
 				{
-					"name" : "GPIO_0[15]",
+					"name" : "GPIO_0[19]",
+					"strict" : false
+				},
+				{
+					"name" : "GPIO_0[21]",
+					"strict" : false
+				},
+				{
+					"name" : "GPIO_0[23]",
+					"strict" : false
+				},
+				{
+					"name" : "GPIO_0[25]",
+					"strict" : false
+				},
+				{
+					"name" : "GPIO_0[26]",
+					"strict" : false
+				},
+				{
+					"name" : "GPIO_0[27]",
+					"strict" : false
+				},
+				{
+					"name" : "GPIO_0[28]",
+					"strict" : false
+				},
+				{
+					"name" : "GPIO_0[30]",
+					"strict" : false
+				},
+				{
+					"name" : "GPIO_0[32]",
 					"strict" : false
 				},
 				{
 					"name" : "CLOCK_50",
+					"strict" : false
+				},
+				{
+					"name" : "GPIO_0_IN[1]",
+					"strict" : false
+				},
+				{
+					"name" : "ADC_SDAT",
 					"strict" : false
 				},
 				{

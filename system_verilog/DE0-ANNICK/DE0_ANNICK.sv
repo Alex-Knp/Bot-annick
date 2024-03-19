@@ -144,8 +144,8 @@ logic [31:0] Odometre_Left, Odometre_Right;
 
 always_comb begin
 	case(AddrFromPi[7:4])
-		4'hf : DataToPI = 32'h0f0f0f0f;		//TEST
-		4'he : DataToPI = 32'h1234abcd;		//TEST
+		4'hf : DataToPI = 32'h0f0f0f0f;			//TEST
+		4'he : DataToPI = 32'h1234abcd;			//TEST
 
 		4'h1 : DataToPI = Odometre_Left;  		// Odomètre gauche 	: 1x
 		4'h2 : DataToPI = Odometre_Right; 		// Odomètre droit 	: 2x
@@ -240,7 +240,7 @@ Servo_PWM SERVO_RP (
 	.servo(servo_RP)
 ); 
 
-// TEST servo
+// TEST SERVO
 //assign Servo_control_LC = 32'd25000; //0 def;
 /*
 logic [19:0] counter1;
@@ -378,10 +378,10 @@ assign spi_mosi     	= GPIO_0_IN[1];			//  15 (EDS Setup)  Pin : ? GPIO : IN1
 assign GPIO_0[0] = spi_cs ? 1'bz : spi_miso ;   //  13 (EDS Setup)  Pin : ? GPIO : 0
 
 //---Odomètre---//
-assign odoLA     = GPIO_0[16];	//Pin : 21 GPIO : 16
-assign odoLB     = GPIO_0[18];	//Pin : 23 GPIO : 18
-assign odoRA     = GPIO_0[17];	//Pin : 22 GPIO : 17
-assign odoRB     = GPIO_0[19];	//Pin : 24 GPIO : 19
+assign odoRA     = GPIO_0[16];	//Pin : 21 GPIO : 16
+assign odoRB     = GPIO_0[18];	//Pin : 23 GPIO : 18
+assign odoLB     = GPIO_0[17];	//Pin : 22 GPIO : 17
+assign odoLA     = GPIO_0[19];	//Pin : 24 GPIO : 19
 
 //--- Servo ---//
 assign GPIO_0[28]  = servo_LC; 	//Pin : ? GPIO : ?
@@ -392,7 +392,7 @@ assign GPIO_0[32]  = servo_RP; 	//Pin : ? GPIO : ?
 //---Stepper-motors---//
 
 assign GPIO_0[27] = stepper_R;	// Pin : 34 GPIO : 27 
-assign GPIO_0[23] = stepper_L; 	// Pin : 28 GPIO : 23 
+assign GPIO_0[23] = stepper_L; 	// Pin : 28 GPIO : 23
 assign GPIO_0[25] = dir_R;		// Pin : 32 GPIO : 25
 assign GPIO_0[21] = dir_L;		// Pin : 26 GPIO : 21 
 

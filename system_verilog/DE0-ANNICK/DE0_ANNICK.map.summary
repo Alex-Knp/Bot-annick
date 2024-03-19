@@ -1,14 +1,14 @@
-Analysis & Synthesis Status : Successful - Fri Feb 16 16:51:14 2024
+Analysis & Synthesis Status : Successful - Sun Mar 17 16:25:03 2024
 Quartus Prime Version : 18.1.0 Build 625 09/12/2018 SJ Lite Edition
 Revision Name : DE0_ANNICK
 Top-level Entity Name : DE0_ANNICK
 Family : Cyclone IV E
-Total logic elements : 1,813
-    Total combinational functions : 1,293
-    Dedicated logic registers : 1,259
-Total registers : 1259
+Total logic elements : 3,228
+    Total combinational functions : 2,030
+    Dedicated logic registers : 2,120
+Total registers : 2120
 Total pins : 152
 Total virtual pins : 0
-Total memory bits : 73,728
+Total memory bits : 155,648
 Embedded Multiplier 9-bit elements : 0
 Total PLLs : 0
