@@ -1,58 +1,62 @@
+#pragma one
 #include <stepper.hh>
 #include <../../communication/SPI_spidev.hh>
-
-
+#include <../../communication/SPI_spidev.cpp>
+#include <time.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
+#include <math.h>
 
 int stepper_homing(int fd, int stepper_id) {
     // initialise le stepper "stepper_id" (id 0 = stepper gauche; id 1 = stepper droit)
     
     int micro_switch;
     uint8_t response[5];
-    uint8_t Homing_enable[5];
-    uint8_t Reset_message[5];
-    uint8_t Reset_position_message[5];
-    uint8_t UnReset_message[5] = {0x00, 0x00, 0x00, 0x00, 0x00};
-    uint8_t MS_message[5] = {0x7f, 0x00, 0x00, 0x00, 0x00};
+    uint8_t Homing_enable[5] = {0xf0, 0x00, 0x00, 0x00, 0x00};
+    uint8_t Reset_message[5] = {0xf0, 0x00, 0x00, 0x00, 0x00};
+    uint8_t Reset_position[5] = {0x00, 0x00, 0x00, 0x00, 0x00};
+    uint8_t UnReset_message[5] = {0xf0, 0x00, 0x00, 0x00, 0x00};
 
     // DATA INITIALIZATION
     if(stepper_id == 0) {    // left stepper data
         micro_switch = 3;
-        uint8_t Homing_enable[] = {0xf0, 0x00, 0x01, 0x00, 0x00};
-        uint8_t Reset_message[] = {0xf0, 0x00, 0x00, 0x01, 0x00};
-        uint8_t Reset_position_message[] = {0xf5, 0x00, 0x00, 0x00, 0x00};
+        Homing_enable[2] = 0x01;
+        Reset_message[3] = 0x01;
+        Reset_position[0] = 0xf5;
 
     } else if(stepper_id == 1) {    //right stepper data
         micro_switch = 4;
-        uint8_t Homing_enable[] = {0xf0, 0x00, 0x10, 0x00, 0x00};
-        uint8_t Reset_message[] = {0xf0, 0x00, 0x00, 0x10, 0x00};
-        uint8_t Reset_position_message[] = {0xf6, 0x00, 0x00, 0x00, 0x00};
+        Homing_enable[2] = 0x10;
+        Reset_message[3] = 0x10;
+        Reset_position[0] = 0xf6;
     } else {
         printf("error : id should be 0 (left stepper) or 1 (right stepper)\n");
         return -1;}
 
     // HOMING ENABLE
-    spi_transfer(fd, Homing_enable, response, 5);
+    spi_transfer(fd, Homing_enable, 5);
 
     while(true){
 
         // MICRO-SWITCH TRACKING
-        spi_transfer(fd, MS_message, response, )5;
+        uint8_t MS_message[5] = {0x7f, 0x00, 0x00, 0x00, 0x00};
+        spi_transfer(fd, MS_message, 5);
         //printf("Micro-switch tracking : %u, %u, %u, %u \n", response[1], response[2], response[3], response[4]);
 
-        if(response[micro_switch] == 1){
+        if(MS_message[micro_switch] == 1){
 
             // RESET STEPPER
-            spi_transfer(fd, Reset_message, response, 5);
+            spi_transfer(fd, Reset_message, 5);
 
             // RESET TARGET POSITION
-            spi_transfer(fd, Reset_position_message, response, 5);
+            spi_transfer(fd, Reset_position, 5);
 
             // UNRESET STEPPER
-            spi_transfer(0xf0, UnReset_message, response, 5);
+            spi_transfer(0xf0, UnReset_message, 5);
 
             return 1;
         }
-        delay(1); 
     }
 }
 
@@ -82,11 +86,10 @@ int stepper_ask(int fd, int stepper_id, double depth, int speed_coef){
     control_message[4] = step_reel & 0xff; 
     control_message[1] = speed_coef & 0xff;
 
-    spi_ask(fd, control_message, response, 5);
+    spi_transfer(fd, control_message, 5);
 
     return 1; 
 }
-
 
 int main() {
 
@@ -97,7 +100,7 @@ int main() {
         printf("an error occured during homing of right stepper \n"); 
         return 0; }
 
-    stepper_ask(1.0, 1, 0);
+    stepper_ask(fd, 1, 3, 10);
 
     close(fd);
 
