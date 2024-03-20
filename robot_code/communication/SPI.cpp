@@ -214,7 +214,7 @@ int spi_sent(struct gpiod_chip *chip, unsigned char *tx_data) {
 
     return 0;
 }
-
+/*
 int main() {
     printf("SPI Test\n");
 
@@ -256,5 +256,5 @@ int main() {
     return 0;
 }
 
-
+*/
 

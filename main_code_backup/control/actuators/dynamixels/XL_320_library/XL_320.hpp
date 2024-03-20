@@ -62,6 +62,10 @@ private :
     struct termios tty;
     int pEnable;
 
+    // GPIO
+    gpiod_chip* chip;
+    gpiod_line* line;
+
     // ID
     unsigned char id;
 
@@ -169,6 +173,7 @@ public :
     int getPresentTemperature();
     int getRegisteredInstruction();
     int getHardwareErrorStatus();
+    int close_GPIO();
     
 };
 

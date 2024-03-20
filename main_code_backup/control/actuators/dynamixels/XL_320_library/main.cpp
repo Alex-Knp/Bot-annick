@@ -1,4 +1,7 @@
-#include "XL_320.cpp"
+#include "XL_320.hpp"
+#include <gpiod.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 using namespace std;
 
@@ -15,10 +18,10 @@ int main(int argc, char **argv)
      * Do this only once per Servo, the result is stored in the EEPROM
      */
 
-    // Servo.setTorqueEnable(0);
-    // Servo.setReturnDelayTime(100);
-    // Servo.setStatusReturnLevel(1);
-    // Servo.setTorqueEnable(0);
+    Servo.setTorqueEnable(0);
+    Servo.setReturnDelayTime(100);
+    Servo.setStatusReturnLevel(1);
+    Servo.setTorqueEnable(0);
 
     // --- Commands
     printf("before ping\n");
@@ -44,25 +47,54 @@ int main(int argc, char **argv)
     Servo.setGoalPosition(0);
     Servo.setTorqueEnable(0);
 
-        struct gpiod_chip *chip;
-    struct gpiod_line *line;
-    // Open GPIO chip
-    chip = gpiod_chip_open("/dev/gpiochip0");
+    gpiod_chip *chip = gpiod_chip_open("/dev/gpiochip4");
+    if (chip == nullptr) {
+        std::cerr << "Failed to open GPIO chip" << std::endl;
+        return 1;
+    }
 
-    // Get the line
-    line = gpiod_chip_get_line(chip, 4); // GPIO 4
-    printf("high\n");
+    printf("start\n");
+    // Get GPIO line
+    gpiod_line *line = gpiod_chip_get_line(chip, 4); // Change GPIO number as needed
+    if (line == nullptr) {
+        std::cerr << "Failed to get GPIO line" << std::endl;
+        gpiod_chip_close(chip);
+        return 1;
+    }
 
-    // Set the line state to HIGH
-    gpiod_line_set_value(line, 1);
+    // Request output mode for the line
+    int ret = gpiod_line_request_output(line, "example", 0);
+    if (ret < 0) {
+        std::cerr << "Failed to request output for GPIO line" << std::endl;
+        gpiod_line_release(line);
+        gpiod_chip_close(chip);
+        return 1;
+    }
 
-    // Sleep for a short duration
-    usleep(10000000);
+    // Drive GPIO high
+    ret = gpiod_line_set_value(line, 1);
+    if (ret < 0) {
+        std::cerr << "Failed to set GPIO value" << std::endl;
+        gpiod_line_release(line);
+        gpiod_chip_close(chip);
+        return 1;
+    }
 
-    // Set the line state to LOW
-    gpiod_line_set_value(line, 0);
-    printf("low\n");
-    // Release the chip
+    // Wait for 10 seconds
+    sleep(10);
+
+    // Drive GPIO low
+    ret = gpiod_line_set_value(line, 0);
+    if (ret < 0) {
+        std::cerr << "Failed to set GPIO value" << std::endl;
+        gpiod_line_release(line);
+        gpiod_chip_close(chip);
+        return 1;
+    }
+
+    printf("end\n");
+
+    // Release resources
     gpiod_line_release(line);
     gpiod_chip_close(chip);
 

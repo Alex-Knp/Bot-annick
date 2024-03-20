@@ -11,10 +11,14 @@
 #include <math.h>
 #include <stdint.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
 // forward declaration for localization
 typedef struct RobotPosition RobotPosition;
 typedef struct table_data table_data;
+
+// forward declaration for actuators 
 
 
 /// Main controller structure

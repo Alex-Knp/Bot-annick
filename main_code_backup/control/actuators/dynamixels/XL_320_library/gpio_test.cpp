@@ -1,56 +1,71 @@
 #include <gpiod.h>
-#include <iostream>
-#include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
 
-int main() {
-    // Open GPIO chip
-    gpiod_chip *chip = gpiod_chip_open("/dev/gpiochip0");
-    if (chip == nullptr) {
-        std::cerr << "Failed to open GPIO chip" << std::endl;
-        return 1;
+
+struct gpiod_chip  *gpiochip;
+struct gpiod_line  *gpioline;;
+
+#define GETPIN gpiod_line_get_value(gpioline)
+#define SETPIN(V) gpiod_line_set_value(gpioline,V)
+#define CHECKPIN(V) printf(GETPIN == V ? " OK    " : " ERROR ")
+
+int main(void)
+{
+  bool flag;
+  printf("GPIO Test\n");
+
+  gpiochip = gpiod_chip_open_by_name("gpiochip4");
+  if(gpiochip == NULL){
+      gpiochip = gpiod_chip_open_by_name("gpiochip0");
+      printf("c'était pas le 4\n");
     }
+  if(gpiochip == NULL)
+   {
+     printf("Unable to access GPIO\n");
+     return -1;
+   }
 
-    // Get GPIO line
-    gpiod_line *line = gpiod_chip_get_line(chip, 27); // Change GPIO number as needed
-    if (line == nullptr) {
-        std::cerr << "Failed to get GPIO line" << std::endl;
-        gpiod_chip_close(chip);
-        return 1;
+  for(int gpioPin=0;gpioPin<28;gpioPin++)
+  {
+
+   printf("GPIO %02d  ",gpioPin);
+
+   gpioline= gpiod_chip_get_line(gpiochip,gpioPin);
+
+   if(gpioline != NULL)
+   {
+       if(gpiod_line_request_output(gpioline,"Test",0)!=0)
+         {
+           gpiod_line_release(gpioline);
+           printf("Unable to  set Output! Maybe in Used\n");
+           continue;
+         }
+       printf("OUT 0:");
+       // test OUTPUT 0
+       SETPIN(1);
+       SETPIN(0);
+       CHECKPIN(0);
+       // test OUTPUT 1
+       printf(" 1:");
+       SETPIN(1);
+       CHECKPIN(1);
+       // test  IN pull down
+       printf("   IN PULL DOWN:");
+       gpiod_line_release(gpioline);
+       gpiod_line_request_input_flags(gpioline,"Test",GPIOD_LINE_REQUEST_FLAG_BIAS_PULL_DOWN);
+       CHECKPIN(0);
+       // test  IN pull UP
+       printf("   IN PULL UP:");
+       gpiod_line_release(gpioline);
+       gpiod_line_request_input_flags(gpioline,"Test",GPIOD_LINE_REQUEST_FLAG_BIAS_PULL_UP);
+       CHECKPIN(1);
+       printf("\n");
+       gpiod_line_release(gpioline);
     }
-
-    // Request output mode for the line
-    int ret = gpiod_line_request_output(line, "example", 0);
-    if (ret < 0) {
-        std::cerr << "Failed to request output for GPIO line" << std::endl;
-        gpiod_line_release(line);
-        gpiod_chip_close(chip);
-        return 1;
-    }
-
-    // Drive GPIO high
-    ret = gpiod_line_set_value(line, 1);
-    if (ret < 0) {
-        std::cerr << "Failed to set GPIO value" << std::endl;
-        gpiod_line_release(line);
-        gpiod_chip_close(chip);
-        return 1;
-    }
-
-    // Wait for 10 seconds
-    sleep(10);
-
-    // Drive GPIO low
-    ret = gpiod_line_set_value(line, 0);
-    if (ret < 0) {
-        std::cerr << "Failed to set GPIO value" << std::endl;
-        gpiod_line_release(line);
-        gpiod_chip_close(chip);
-        return 1;
-    }
-
-    // Release resources
-    gpiod_line_release(line);
-    gpiod_chip_close(chip);
-
-    return 0;
+    else
+       printf("In used or error\n");
+  }
+ gpiod_chip_close(gpiochip);
+ return 0;
 }
