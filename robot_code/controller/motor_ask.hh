@@ -9,6 +9,5 @@
 ///   PIN DEFINITION   ///
 
 void motor_ask(float dcL ,float dcR);
-int button_ask();
 void intsToBytes(int left_speed, int right_speed, uint8_t bytes[4]);
 

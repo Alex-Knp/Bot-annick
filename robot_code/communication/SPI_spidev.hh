@@ -14,4 +14,4 @@
 void spi_transfer(int fd, uint8_t *data, int length);
 int spi_init_0();
 int spi_init_1();
-void intsToBytes(int left_speed, int right_speed, uint8_t bytes[4]);
+int odo_calib();

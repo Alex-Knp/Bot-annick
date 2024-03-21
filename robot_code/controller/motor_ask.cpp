@@ -3,21 +3,23 @@
 #include "../communication/SPI_spidev.hh"
 
 
-int button_ask() {
-    uint8_t TEST_MESSAGE[4] = {0x00, 0x00, 0x00, 0x00};
-    uint8_t* resp = new uint8_t;
-    int fd1 = spi_init_1();
-
-    spi_transfer(fd1, TEST_MESSAGE, 4);
-    close(fd1);
-    
-    return resp[2];
-}
-
 void motor_ask(float left_speed ,float right_speed){
+    if(left_speed>40){
+        left_speed = 40;
+    }
+    if(left_speed<-40){
+        left_speed = -40;
+    }
+    if(right_speed>40){
+        right_speed = 40;
+    }
+    if(right_speed<-40){
+        right_speed = -40;
+    }
+
     uint8_t byteBuffer[4];
-    int left_speed_int = (int)((left_speed+30)*250);
-    int right_speed_int = (int)((right_speed+30)*250);
+    int left_speed_int = (int)((left_speed+40)*800);
+    int right_speed_int = (int)((right_speed+40)*800);
 
     int fd0 = spi_init_0();
 
@@ -36,7 +38,7 @@ void intsToBytes(int left_speed, int right_speed, uint8_t bytes[4]) {
 
 int main(){
     printf("motor_ask test start");
-    motor_ask(25,-25);
+    motor_ask(20.0,-10.0);
     
 }
 

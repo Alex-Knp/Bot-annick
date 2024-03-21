@@ -92,41 +92,62 @@ int spi_init_1(){
 	return fd;
 }
 
-void intsToBytes(int left_speed, int right_speed, uint8_t bytes[4]) {
-    bytes[1] = (left_speed >> 8) & 0xFF; // Bits de poids fort de value1
-    bytes[0] = left_speed & 0xFF;        // Bits de poids faible de value1
-    bytes[3] = (right_speed >> 8) & 0xFF; // Bits de poids fort de value2
-    bytes[2] = right_speed & 0xFF;        // Bits de poids faible de value2
-}
+// int main() {
+// 	odo_calib();
+// // 	float left_speed = 35;
+// // 	float right_speed = -35;
+// // 	uint8_t byteBuffer[4];
+// //     int left_speed_int = (int)((left_speed+30)*250);
+// //     int right_speed_int = (int)((right_speed+30)*250);
 
-int main() {
-	/*
-	float left_speed = 10.0;
-	float right_speed = 10.0;
-	uint8_t byteBuffer[4];
-    int left_speed_int = (int)((left_speed+30)*250);
-    int right_speed_int = (int)((right_speed+30)*250);
+// //     intsToBytes(left_speed_int,right_speed_int,byteBuffer); 
+// // 	// teensy test
+// //     int fd0 = spi_init_0();
+// // 	uint8_t data[4] = {0x00, 0x0A, 0x00, 0x0A};    
 
-    intsToBytes(left_speed_int,right_speed_int,byteBuffer); */
-	// teensy test
-    int fd0 = spi_init_0();
-	uint8_t data[4] = {0x00, 0x01, 0x00, 0x01};    
+// // 	spi_transfer(fd0, byteBuffer, 4);
 
-	spi_transfer(fd0, data, 4);
+// // 	close(fd0); 
+// // 	/*  
+// // 	// de0 test
+// // 	int fd1 = spi_init_1();
+
+// // 	uint8_t adr1 = 0xE0;
+// // 	uint8_t data1[5] = {adr1, 0x55, 0x45, 0xa8, 0x77};   
+// // 	spi_transfer(fd1, data1, 5);*/
+	
+// // 	for (int i = 0; i < 4; i++) {
+// //         printf("%02X ", data[i]);
+// //     }
+// // 	printf("\n");
+	
+// 	return 0;
+// }
+
+int odo_calib(){
+	int fd0 = spi_init_1();
+	uint8_t left_init[5] = {0x10, 0x0A, 0x00, 0x0A, 0x00};    
+	uint8_t right_init[5] = {0x20, 0x0A, 0x00, 0x0A, 0x00};
+	spi_transfer(fd0, left_init, 5);
+	spi_transfer(fd0, right_init, 5);
+
+	float left_init_value = left_init[1] << 24 | left_init[2] << 16 | left_init[3] << 8 | left_init[4];
+	float right_init_value = right_init[1] << 24 | right_init[2] << 16 | right_init[3] << 8 | right_init[4];
+	printf("left_init: %f, right_init: %f\n", left_init_value, right_init_value);
+
+	for(int i = 0; i < 100; i++){
+		uint8_t left[5] = {0x10, 0x00, 0x00, 0x00, 0x00};    
+		uint8_t right[5] = {0x20, 0x00, 0x00, 0x00, 0x00};
+		spi_transfer(fd0, left, 5);
+		spi_transfer(fd0, right, 5);
+		float left_value = (left[1] << 24 | left[2] << 16 | left[3] << 8 | left[4])-left_init_value;
+		float right_value = (right[1] << 24 | right[2] << 16 | right[3] << 8 | right[4])-right_init_value;
+		printf("left: %f, right: %f, sum:%f\n", left_value, right_value, left_value - right_value);
+		printf("%x %x %x %x %x\n", left[0], left[1], left[2], left[3], left[4]);
+		printf("%x %x %x %x %x\n", right[0], right[1], right[2], right[3], right[4]);
+		sleep(1);
+	}
 
 	close(fd0); 
-	/*  
-	// de0 test
-	int fd1 = spi_init_1();
-
-	uint8_t adr1 = 0xE0;
-	uint8_t data1[5] = {adr1, 0x55, 0x45, 0xa8, 0x77};   
-	spi_transfer(fd1, data1, 5);*/
-	
-	for (int i = 0; i < 4; i++) {
-        printf("%02X ", data[i]);
-    }
-	printf("\n");
-	
 	return 0;
 }

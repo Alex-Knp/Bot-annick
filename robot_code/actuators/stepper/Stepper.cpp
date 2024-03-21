@@ -95,7 +95,7 @@ int main() {
     printf("Homing of right stepper\n");
     int fd = spi_init_1();
 
-    if(stepper_homing(fd, 0) != 1){
+    if(stepper_homing(fd, 1) != 1){
         printf("an error occured during homing of right stepper \n"); 
         return 0; }
 

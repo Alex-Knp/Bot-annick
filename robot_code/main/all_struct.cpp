@@ -5,6 +5,8 @@
 #include "SPI.hh"
 #include "SPI_spidev.hh"
 #include "UART.hh"
+#include "Stepper.hh"
+#include "IR.hh"
 
 /*! \brief initialize all the structure that we need
  * 
