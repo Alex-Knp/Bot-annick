@@ -99,7 +99,7 @@ int If_pot_IR(int fd){
 
 int If_plant_IR(int fd){
 
-    int trigger = 1300; // Value to trigger the IR sensor, if sensed value higher than this value, return 1
+    int trigger = 1350; // Value to trigger the IR sensor, if sensed value higher than this value, return 1
     
     uint8_t IR_message[5] = {0x00, 0x00, 0x00, 0x00, 0x00};
     IR_message[0] = 0x5f;
@@ -116,15 +116,15 @@ int If_plant_IR(int fd){
 }
 
 
-// int main(){
+int main(){
 
-//     int fd = spi_init_1();
+    int fd = spi_init_1();
 
-//     while(true){
-//         int result = If_pot_IR(fd); 
-//         printf("Result : %d\n", result);
-//     }
+    while(true){
+        int result = If_plant_IR(fd); 
+        printf("Result : %d\n", result);
+    }
     
-//     close(fd);
-//     return 0;
-// }
+    close(fd);
+     return 0;
+}
