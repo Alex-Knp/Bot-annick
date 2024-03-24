@@ -49,16 +49,16 @@ int *reachedFlag;
 // Physical properties
 float l = 0.23;  // Distance between wheels [m]
 int cpr = 2048*4;  // Count per revolution of encoder.
-float mass = 7.0;  //mass of the robot [kg]
+float mass = 5;           //minibot mass [kg]
 float wheel_radius = 0.03;  //wheel radius [m]
-float max_voltage = 24.0;
-float max_current = 20.0;
-float max_speed = 500;
-float K = 1.0;
-float k_phi = 3.962 * 1e-3 * 60.0 / (2.0*PI);
+float max_voltage = 24;
+float max_current = 20;
+float max_speed = 30;
+float K = 1;  //power electronics gain
+float k_phi = 3.962 * 1e-3 * 60;
 float R_a = 5.84;  //armature resistance
-float K_v = 1.0/252.0 * 60.0 / (2.0*PI);  // Ensure proper float division
-float J_r = mass / 2.0 * wheel_radius*wheel_radius/(19.0*19.0);  //rotor inertia
+float K_v = 252*1e-3/60;
+float J_r = mass / 2 * wheel_radius * wheel_radius;  //rotor inertia
 float tau_m = J_r / K_v;
 
 float A; // Omega reference amplitude
@@ -183,7 +183,6 @@ void loop() {
     Serial.print(omega_lfilt[0]);
     Serial.print(" ");
     Serial.println(omega_rfilt[0]);
-
     /*
     Serial.print(" ");  
     Serial.print(*V_l);
@@ -219,8 +218,8 @@ void receiveEvent() {
     // Print data
 
 
-    bytesToInts(data, omega_lref, omega_rref); 
-    Serial.print(data);
+    bytesToInts(data, omega_rref, omega_lref); 
+    //Serial.print(data);
   }
   //Serial.println("]");
 }
@@ -334,7 +333,7 @@ void speedControl(float omega_ref, Encoder enc, int *previous_pos, float time_in
   int pos = enc.read();
 
   //compute speed
-  omega_mes[0] = (pos - *previous_pos) / time_interval * 2 * PI / (cpr);
+  omega_mes[0] = (pos - *previous_pos) / time_interval * 2 * PI / (cpr * 19);
 
   // 1st order Low-pass filter (25 Hz cutoff)
   //float b[] = { 0.03045903, 0.03045903, 0 };
@@ -351,7 +350,7 @@ void speedControl(float omega_ref, Encoder enc, int *previous_pos, float time_in
   omega_mes[1] = omega_mes[0];
 
   // Speed control
-  *V = PI_motor_controller(omega_mes[0], omega_ref, integral_term, time_interval, previous_error);
+  *V = PI_motor_controller(*omega_filt, omega_ref, integral_term, time_interval, previous_error);
 
   // Map voltage into pwm value
   float pwmVal = min(255, *V * 255 / max_voltage);
@@ -403,7 +402,7 @@ float PI_motor_controller(float omega_mes, float omega_ref, float *integral_term
     */
 
   float controller_time_constant = 0.05;  //defines the preciseness of the controller
-  float error = 10.0 - omega_mes;
+  float error = omega_ref - omega_mes;
 
   // Predictive term
   // Made by inverting th model of DC machine
@@ -422,11 +421,6 @@ float PI_motor_controller(float omega_mes, float omega_ref, float *integral_term
   float Kp = tau_m * Ki;
   float Kd = 0;
   *integral_term += error * time_interval;
-
-  // Serial.print(" Ki=");
-  // Serial.print(Ki);
-  // Serial.print(" kp=");
-  // Serial.println(Kp);
 
   //anti-windup
   if (*integral_term > max_voltage / Ki) {
