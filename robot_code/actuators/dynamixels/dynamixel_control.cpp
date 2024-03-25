@@ -1,4 +1,4 @@
-#include "dynamixel_control.h"
+#include "dynamixel_control.hh"
 
 bool DynamixelControl::setID(uint8_t id, uint8_t new_id) {
     uint8_t error = 0;

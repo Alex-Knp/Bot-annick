@@ -4,7 +4,8 @@
 #include <stdlib.h>
 #include <math.h>
 #include <stdint.h>
-#include <time.h>  
+#include <time.h> 
+#include "../communication/SPI_spidev.hh"
 
 ///   PIN DEFINITION   ///
 

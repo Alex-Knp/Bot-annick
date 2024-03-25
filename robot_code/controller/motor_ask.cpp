@@ -1,6 +1,5 @@
 
 #include "motor_ask.hh"
-#include "../communication/SPI_spidev.hh"
 
 
 void motor_ask(float left_speed ,float right_speed){
@@ -36,9 +35,9 @@ void intsToBytes(int left_speed, int right_speed, uint8_t bytes[4]) {
     bytes[2] = right_speed & 0xFF;        // Bits de poids faible de value2
 }
 
-int main(){
-    printf("motor_ask test start");
-    motor_ask(20.0,-10.0);
+// int main(){
+//     printf("motor_ask test start");
+//     motor_ask(20.0,-10.0);
     
-}
+// }
 
