@@ -207,6 +207,39 @@ void getBeacon(std::vector<Beacon>& beacons, std::vector<Cluster> tab){
       }
     }
 }
+
+
+void getObstacles(BigStruct* all_struct, std::vector<Cluster> tab,RobotPosition* coord){
+    int nb_clusters = tab.size();
+    all_struct->opp_pos->nb_opp = 0;
+
+    // pour chaque cluster test si c'est un obstacle et si oui on calcule la distance et l'angle en prenant pour distance la distance du point le plus proche et pour angle celui du point le plus proche
+    for (int i = 0; i < nb_clusters; i++) {
+        if (isObstacle(tab[i],coord))                          
+        {    
+            all_struct->opp_pos->nb_opp++;
+            int len = tab[i].points.size();
+            //donne le points le plus proche de l'obstacle avec son angle
+            double nearest_distance = tab[i].points[0].dist_mm_q2/4.0f;
+            double nearest_angle = (tab[i].points[0].angle_z_q14* 90.f / 16384.f)*PI/180;
+            for (size_t j = 0; j < len; j++) {
+                if (tab[i].points[j].dist_mm_q2/4.0f < nearest_distance) {
+                    nearest_distance = tab[i].points[j].dist_mm_q2/4.0f;
+                }
+                if ((tab[i].points[j].angle_z_q14* 90.f / 16384.f)*PI/180< nearest_angle) {
+                    nearest_angle = (tab[i].points[j].angle_z_q14* 90.f / 16384.f)*PI/180;
+                }    
+            }
+            double x_obstacle = coord->x*1000 + cos(coord->theta +nearest_angle)* nearest_distance;
+            double y_obstacle = coord->y*1000 + sin(coord->theta +nearest_angle)* nearest_distance;
+            //printf("x_obstacle : %f\n",x_obstacle);
+            //printf("y_obstacle : %f\n",y_obstacle);
+            all_struct->opp_pos->x[all_struct->opp_pos->nb_opp-1] = x_obstacle;
+            all_struct->opp_pos->y[all_struct->opp_pos->nb_opp-1] = y_obstacle;
+      }
+    }
+}
+
 bool isAbeacon(Cluster clust, double diam) {
 
     double size = clust.points.size();
@@ -232,6 +265,27 @@ bool isAbeacon(Cluster clust, double diam) {
     return true;
 }
 
+bool isObstacle(Cluster clust,RobotPosition* coord) {
+    // on regarde si le cluster est un obstacle en regardant si il y a plus de 10 points dans le cluster
+    
+    if (clust.points.size() >=1 || clust.points.size() < 40){ 
+        if(clust.points[0].dist_mm_q2/4.0f > 3500.0){
+            return false;
+        }
+        //Compare avec la position du robot pour voir si l'obstacle est dans l'air de jeu
+        float x_obstacle = coord->x*1000 + cos(coord->theta +(clust.points[0].angle_z_q14* 90.f/16384.f)/180*PI)* clust.points[0].dist_mm_q2/4.0f;
+        float y_obstacle = coord->y*1000 + sin(coord->theta +(clust.points[0].angle_z_q14* 90.f / 16384.f)/180*PI)* clust.points[0].dist_mm_q2/4.0f;
+        if(x_obstacle< 0 || x_obstacle > 2000 || y_obstacle < 0 || y_obstacle > 3000){
+            return false;
+        }
+        return true;
+    }
+    return false;
+    
+}
+
+
+
 void getFinalBeacon(std::vector<Beacon>& beacons, std::vector<Beacon>& final_beacons) {
     // on parcours les beacons et on les compare 3 par 3
     // une fois les trois bon beacons trouvés on les ajoute au vecteur final de beacons
@@ -249,9 +303,9 @@ void getFinalBeacon(std::vector<Beacon>& beacons, std::vector<Beacon>& final_bea
                 double distance2 = DistBtwBeacon(beacons[i], beacons[k]);
                 double distance3 = DistBtwBeacon(beacons[j], beacons[k]);
 
-                if (((1850 <= distance1 && distance1 <= 1950) || (3000 <= distance1 && distance1 <= 3110)) &&
-                    ((1850 <= distance2 && distance2 <= 1950) || (3000 <= distance2 && distance2 <= 3110)) &&
-                    ((1850 <= distance3 && distance3 <= 1950) || (3000 <= distance3 && distance3 <= 3110))) {
+                if (((1850 <= distance1 && distance1 <= 1950) || (3250 <= distance1 && distance1 <= 3400)) &&
+                    ((1850 <= distance2 && distance2 <= 1950) || (3250 <= distance2 && distance2 <= 3110)) &&
+                    ((1850 <= distance3 && distance3 <= 1950) || (3250 <= distance3 && distance3 <= 3110))) {
 
                     sum = distance1 + distance2 + distance3;
 
@@ -308,14 +362,12 @@ void lidar_update_position(RobotPosition &coord,lidar_data &data, std::vector<Be
         if (fabs(theta_int - 2*M_PI) < 0.035 || fabs(theta_int) < 0.035)
         {
             theta = theta_int;
-            printf("break : theta = %f\n", theta_int);
 
             break;
         }
         
         theta += 1/3.0*theta_int;
         
-        printf("theta = %f\n", theta_int);
     }
     //fill_points(x_int, y_int, 0, 0, x_tab, y_tab, x_ref_tab, y_ref_tab);
         printf("x = %f, y = %f, theta = %f\n", x_int/1000.0, y_int/1000.0, theta*(180/M_PI));

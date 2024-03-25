@@ -21,6 +21,7 @@
 // forward declaration for localization
 typedef struct RobotPosition RobotPosition;
 typedef struct lidar_data lidar_data;
+typedef struct OpponentsPosition OpponentsPosition;
 
 // forward declaration for actuators 
 
@@ -30,6 +31,7 @@ typedef struct BigStruct
 {
 	// Localisation data
 	RobotPosition *rob_pos;
+	OpponentsPosition *opp_pos;
 	lidar_data *table;
 	sl::ILidarDriver* drv;
 

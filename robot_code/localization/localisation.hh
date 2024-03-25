@@ -46,6 +46,15 @@ typedef struct RobotPosition
 }RobotPosition;
 //extern pthread_mutex_t mutex;
 
+typedef struct OpponentsPosition
+{
+	double x[2]; ///< x position of opponents [m]
+	double y[2]; ///< y position of opponents [m]
+
+	int nb_opp; ///< number of opponents
+
+} OpponentsPosition;
+
 typedef struct lidar_data
 {
 	float beaconsx[3];        		// beacons's coordinates on the game bord
@@ -117,3 +126,6 @@ void newsort(std::vector<Beacon>& final_beacons);
 void fill_points(double x, double y, double x_ref, double y_ref, std::vector<double> &x_tab, std::vector<double> &y_tab, std::vector<double> &x_ref_tab, std::vector<double> &y_ref_tab);
 
 
+void getObstacles(BigStruct* all_struct, std::vector<Cluster> tab,RobotPosition* coord);
+
+bool isObstacle(Cluster clust,RobotPosition* coord);

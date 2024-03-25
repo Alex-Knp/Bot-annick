@@ -41,6 +41,16 @@ BigStruct* init_BigStruct(){
 	all_struct->rob_pos->y = 0.0;
 	all_struct->rob_pos->theta = 0.0;
 
+	// Opponents position
+	all_struct->opp_pos = (OpponentsPosition*) malloc(sizeof(OpponentsPosition));
+	for(int i=0; i<2; i++)
+	{
+		all_struct->opp_pos->x[i] = 0.0;
+		all_struct->opp_pos->y[i] = 0.0;
+	}
+
+	all_struct->opp_pos->nb_opp = 0;
+
 	// lidar driver
 	all_struct->drv = connectLidar();
 
