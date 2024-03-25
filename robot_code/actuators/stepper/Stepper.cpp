@@ -8,11 +8,11 @@ int stepper_homing(int fd, int stepper_id) {
     
     int micro_switch;
     uint8_t response[5];
-    uint8_t Homing_enable[5] = {0xf0, 0x00, 0x00, 0x00, 0x00};
-    uint8_t Reset_message[5] = {0xf0, 0x00, 0x00, 0x00, 0x00};
-    uint8_t Reset_position[5] = {0x00, 0x00, 0x00, 0x00, 0x00};
-    uint8_t UnReset_message[5] = {0xf0, 0x00, 0x00, 0x00, 0x00};
-    uint8_t Clear_com[5] = {0x00, 0x00, 0x00, 0x00, 0x00};
+    uint8_t Homing_enable[5]    = {0xf0, 0x00, 0x00, 0x00, 0x00};
+    uint8_t Reset_message[5]    = {0xf0, 0x00, 0x00, 0x00, 0x00};
+    uint8_t Reset_position[5]   = {0x00, 0x00, 0x00, 0x00, 0x00};
+    uint8_t UnReset_message[5]  = {0xf0, 0x00, 0x00, 0x00, 0x00};
+    uint8_t Clear_com[5]        = {0x00, 0x00, 0x00, 0x00, 0x00};
 
     // DATA INITIALIZATION
     if(stepper_id == 0) {    // left stepper data
@@ -99,7 +99,7 @@ int main() {
         printf("an error occured during homing of right stepper \n"); 
         return 0; }
 
-    //stepper_ask(fd, 1, 3, 3);
+    stepper_go_to(fd, 4, 15, 55);
 
     close(fd);
 

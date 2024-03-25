@@ -1,6 +1,6 @@
 #pragma once
 
-#include "all_struct.hh"
+#include "../main/all_struct.hh"
 
 
 
