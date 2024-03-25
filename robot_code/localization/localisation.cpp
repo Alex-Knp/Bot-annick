@@ -174,7 +174,7 @@ void getClusters(std::vector<Cluster>& clusters, sl_lidar_response_measurement_n
             clusters[0].points.push_back(nodes[i]);
         }
         else {
-            if (nodes[i].dist_mm_q2/4.0f != 0 && nodes[i].dist_mm_q2/4.0f < 3300) {
+            if (nodes[i].dist_mm_q2/4.0f != 0 && nodes[i].dist_mm_q2/4.0f < 3300 && nodes[i].dist_mm_q2/4.0f > 200) {
                 if (distance_btw_points(clusters.back().points.back(), nodes[i]) > max_dist) {    
                     clusters.push_back(Cluster{});
                 }
