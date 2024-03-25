@@ -19,10 +19,15 @@
 void controller_loop(BigStruct *all_struct)
 {
     BigStruct *all_struct = init_BigStruct();
+  
 
+    std::thread scanThread(main_lidar, all_struct);
+    //std::thread controlThread(main_controller, all_struct); 
+  
 
-    main_lidar(all_struct);         // à lancer par le premier thread
-    main_controller(all_struct);    // à lancer par le deuxième thread
+    //controlThread.join();
+    scanThread.join();
+
     //main_camera(all_struct);        // à lancer par le troisième thread
 }
 
