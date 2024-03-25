@@ -382,9 +382,3 @@ void fill_points(double x, double y, double x_ref, double y_ref, std::vector<dou
     }
     fd.close();
 }
-
-
-void main_lidar(BigStruct *all_struct)
-{
-    scanLidar(all_struct);
-}

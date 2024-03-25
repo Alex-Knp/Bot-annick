@@ -13,10 +13,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>  
+#include "../sdk/include/sl_lidar_driver.h"
+#include "../sdk/include/sl_lidar.h"
+#include "../localization/localisation.hh"
+#include <thread>
 
 // forward declaration for localization
 typedef struct RobotPosition RobotPosition;
 typedef struct lidar_data lidar_data;
+ILidarDriver* connectLidar();
 
 // forward declaration for actuators 
 

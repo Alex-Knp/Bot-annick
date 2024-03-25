@@ -2,12 +2,11 @@
 
 // main with the threads, we include all the .hh in same as all_struct.cpp
 #include "main.hh"
-#include "localisation.hh"
-#include "motor_ask.hh"
-#include "I2C.hh"
-#include "SPI.hh"
-#include "SPI_spidev.hh"
-#include "UART.hh"
+#include "../localization/localisation.hh"
+#include "../controller/motor_ask.hh"
+#include "../communication/I2C.hh"
+#include "../communication/SPI_spidev.hh"
+#include "../communication/UART.hh"
 
 
 /*! \brief controller loop 
@@ -16,12 +15,12 @@
  */
 
 
-void controller_loop(BigStruct *all_struct)
+int main()
 {
     BigStruct *all_struct = init_BigStruct();
   
 
-    std::thread scanThread(main_lidar, all_struct);
+    std::thread scanThread(scanLidar, all_struct);
     //std::thread controlThread(main_controller, all_struct); 
   
 
