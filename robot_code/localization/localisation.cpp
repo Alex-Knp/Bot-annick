@@ -39,7 +39,7 @@ void ctrlc(int)
     ctrl_c_pressed = true;
 }
 
-void scanLidar(ILidarDriver* drv){
+void scanLidar(BigStruct *all_struct){
 
     lidar_data myLidarData;
     myLidarData.beaconsx[0] = 1950;
@@ -61,7 +61,7 @@ void scanLidar(ILidarDriver* drv){
     sl_lidar_response_device_info_t devinfo;
     sl_result     op_result;
 
-    op_result = drv->getDeviceInfo(devinfo);
+    op_result = all_struct->drv->getDeviceInfo(devinfo);
 
         // change scan mode
     /*
@@ -70,7 +70,7 @@ void scanLidar(ILidarDriver* drv){
     drv->startScanExpress(0,scanModes[3].id); */
 
     signal(SIGINT, ctrlc);
-    drv->startScan(0,1);
+    all_struct->drv->startScan(0,1);
     
 
     
@@ -90,12 +90,12 @@ void scanLidar(ILidarDriver* drv){
         //closest_point.angle_z_q14 = 0;
         //closest_point.dist_mm_q2 = 100000;
 
-        op_result = drv->grabScanDataHq(nodes, count);
+        op_result = all_struct->drv->grabScanDataHq(nodes, count);
         printf("count = %lu\n", count);
 
 
         if (SL_IS_OK(op_result)) {
-            drv->ascendScanData(nodes, count);
+            all_struct->drv->ascendScanData(nodes, count);
             
             for (int pos = 0; pos < (int)count ; ++pos) {
 /*
@@ -132,8 +132,8 @@ void scanLidar(ILidarDriver* drv){
             getFinalBeacon(beacons, final_beacons);
    
             if (final_beacons.size() == 3) {
-                lidar_update_position(*coord, myLidarData, final_beacons, x_tab, y_tab, x_ref_tab, y_ref_tab);
-                printf("x = %f, y = %f, theta = %f\n", coord->x, coord->y, coord->theta*(180/M_PI));
+                lidar_update_position(*all_struct->rob_pos, myLidarData, final_beacons, x_tab, y_tab, x_ref_tab, y_ref_tab);
+                printf("x = %f, y = %f, theta = %f\n", all_struct->rob_pos->x, all_struct->rob_pos->y, all_struct->rob_pos->theta*(180/M_PI));
             }
             else {
                 printf("not enough beacons\n");
@@ -394,5 +394,5 @@ void fill_points(double x, double y, double x_ref, double y_ref, std::vector<dou
 
 void main_lidar(BigStruct *all_struct)
 {
-    scanLidar(all_struct->drv);
+    scanLidar(all_struct);
 }
