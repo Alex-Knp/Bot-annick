@@ -15,7 +15,6 @@
 #include <time.h>  
 #include "../sdk/include/sl_lidar_driver.h"
 #include "../sdk/include/sl_lidar.h"
-#include "../localization/localisation.hh"
 #include <thread>
 
 // forward declaration for localization
@@ -31,7 +30,7 @@ typedef struct BigStruct
 	// Localisation data
 	RobotPosition *rob_pos;
 	lidar_data *table;
-	ILidarDriver* drv;
+	sl::ILidarDriver* drv;
 
 
 

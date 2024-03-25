@@ -1,12 +1,17 @@
 #include "all_struct.hh"
-#include "localisation.hh"
+/* #include "localisation.hh"
 #include "motor_ask.hh"
 #include "I2C.hh"
 #include "SPI.hh"
 #include "SPI_spidev.hh"
 #include "UART.hh"
 #include "Stepper.hh"
-#include "IR.hh"
+#include "IR.hh" */
+#include "../localization/localisation.hh"
+#include "../controller/motor_ask.hh"
+#include "../communication/I2C.hh"
+#include "../communication/SPI_spidev.hh"
+#include "../communication/UART.hh"
 
 /*! \brief initialize all the structure that we need
  * 
@@ -17,7 +22,6 @@
 
 BigStruct* init_BigStruct(){
 
-	BigStruct *all_struct;
 	BigStruct* all_struct = new BigStruct;
 
 
@@ -26,7 +30,7 @@ BigStruct* init_BigStruct(){
 
 	// localization
 
-	all_struct->table = new table_data;
+	all_struct->table = new lidar_data;
   	all_struct->table->beaconsx[0] = 1950;
   	all_struct->table->beaconsx[1] = 1000;
 	all_struct->table->beaconsx[2] = 50;
