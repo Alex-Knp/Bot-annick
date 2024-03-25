@@ -6,12 +6,6 @@
 #ifndef _countof
 #define _countof(_Array) (int)(sizeof(_Array) / sizeof(_Array[0]))
 #endif
-std::mutex mtx;
-/*
-        {                                                      //////// thread lock mutex
-        std::lock_guard<std::mutex> lock(mtx);                 //////// thread
-        }*/
-
 
 ILidarDriver* connectLidar(){
 
