@@ -15,14 +15,11 @@
  * \param[in] all_struct main structure
  */
 
-void controller_init(BigStruct *all_struct)
-{
-    ILidarDriver* drv = connectLidar();
-}
 
 void controller_loop(BigStruct *all_struct)
 {
     BigStruct *all_struct = init_BigStruct();
+    ILidarDriver* drv = connectLidar();
 
 
 
