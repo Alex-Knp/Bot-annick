@@ -56,6 +56,7 @@ void free_BigStruct(BigStruct *all_struct)
 {	
 	free(all_struct->table);
 	free(all_struct->rob_pos);
+	disconnectLidar(all_struct->drv);
 
 	free(all_struct);
 }

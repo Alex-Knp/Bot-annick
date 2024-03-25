@@ -324,12 +324,10 @@ void lidar_update_position(RobotPosition &coord,lidar_data &data, std::vector<Be
         printf("theta = %f\n", theta_int);
     }
     //fill_points(x_int, y_int, 0, 0, x_tab, y_tab, x_ref_tab, y_ref_tab);
-    //pthread_mutex_lock(&mutex);                 //////// thread lock mutex
         coord.x = x_int/1000.0;
         coord.y = y_int/1000.0;
         coord.theta = theta;
         coord.update_by = 1;
-    //pthread_mutex_unlock(&mutex);                 //////// thread lock mutex
 
 /*
     {
