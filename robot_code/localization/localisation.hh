@@ -17,8 +17,6 @@
 //#include "sl_lidar.h"
 //#include "sl_lidar_driver.h"
 
-#include "../sdk/include/sl_lidar_driver.h"
-#include "../sdk/include/sl_lidar.h"
 #define PI 3.14159265358979323846
 
 using namespace sl;

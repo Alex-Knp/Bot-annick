@@ -1,12 +1,5 @@
 #include "all_struct.hh"
-/* #include "localisation.hh"
-#include "motor_ask.hh"
-#include "I2C.hh"
-#include "SPI.hh"
-#include "SPI_spidev.hh"
-#include "UART.hh"
-#include "Stepper.hh"
-#include "IR.hh" */
+
 #include "../localization/localisation.hh"
 #include "../controller/motor_ask.hh"
 #include "../communication/I2C.hh"

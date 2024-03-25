@@ -25,7 +25,6 @@ void motor_ask(float left_speed ,float right_speed){
     intsToBytes(left_speed_int,right_speed_int,byteBuffer);
     spi_transfer(fd0, byteBuffer,4);
     close(fd0);
-
 }
 
 void intsToBytes(int left_speed, int right_speed, uint8_t bytes[4]) {

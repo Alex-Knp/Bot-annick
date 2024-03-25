@@ -13,9 +13,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>  
+#include <thread>
+
 #include "../sdk/include/sl_lidar_driver.h"
 #include "../sdk/include/sl_lidar.h"
-#include <thread>
 
 // forward declaration for localization
 typedef struct RobotPosition RobotPosition;
