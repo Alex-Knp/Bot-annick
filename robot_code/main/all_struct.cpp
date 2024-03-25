@@ -44,6 +44,9 @@ BigStruct* init_BigStruct(){
 	all_struct->rob_pos->y = 0.0;
 	all_struct->rob_pos->theta = 0.0;
 
+	// lidar driver
+	all_struct->drv = connectLidar();
+
 
 
 	return all_struct;

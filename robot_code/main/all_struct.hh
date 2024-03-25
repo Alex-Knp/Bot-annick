@@ -27,6 +27,7 @@ typedef struct BigStruct
 	// Localisation data
 	RobotPosition *rob_pos;
 	lidar_data *table;
+	ILidarDriver* drv;
 
 
 
