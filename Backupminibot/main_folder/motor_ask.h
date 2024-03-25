@@ -3,10 +3,10 @@
 #ifndef MOTOR_ASK_H
 #define MOTOR_ASK_H
 
-#include <wiringPi.h>
+//#include <wiringPi.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <softPwm.h>
+//#include <softPwm.h>
 
 
 ///   PIN DEFINITION   ///

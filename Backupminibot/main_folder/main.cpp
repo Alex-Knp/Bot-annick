@@ -31,10 +31,10 @@ int main(int argc, const char * argv[]){
     }*/
 
   std::thread scanThread(scanLidar, lidar);
-  std::thread controlThread(robot_controller); 
+  //std::thread controlThread(robot_controller); 
   
 
-  controlThread.join();
+  //controlThread.join();
   scanThread.join();
  
 

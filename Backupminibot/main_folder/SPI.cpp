@@ -4,7 +4,7 @@
 #define SPI_C
 
 // Function to perform SPI initialisation
-void spi_init() {
+/* void spi_init() {
      if (wiringPiSetup() == -1 || wiringPiSPISetup(SPI_CHANNEL, SPI_SPEED) == -1) {
         printf("Unable to initialize WiringPi or SPI. Make sure you have WiringPi installed.\n");
     }
@@ -25,6 +25,6 @@ void spi_ask(unsigned char addr, uint8_t* msg, uint8_t* response, int msg_len) {
     for (int i = 0; i < msg_len + 1; i++) {
         response[i] = to_send[i];
     }
-}
+} */
 
 #endif //SPI_C

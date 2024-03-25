@@ -22,7 +22,7 @@ int PWM1 = -1;
 int PWM2 = -1;
 
 ///   PIN initialisation  ///
-void init_motors() {
+/* void init_motors() {
     if (wiringPiSetupGpio() == -1) {
         fprintf(stderr, "Failed to initialize wiringPi.\n");
         exit(1);
@@ -78,7 +78,7 @@ int motors_test() {
 
     Motor_clear(); 
     return -1;
-}
+} */
 
 /*int main() {
     printf("button Test\n");

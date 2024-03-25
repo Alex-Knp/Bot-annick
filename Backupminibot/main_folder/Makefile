@@ -27,7 +27,7 @@ CXXSRC += lidar.cpp main.cpp position_controller_cpp.cpp motor_ask.cpp SPI.cpp
 C_INCLUDES += -I$(CURDIR)/../sdk/include -I$(CURDIR)/../sdk/src     -I$(CURDIR)/SPI.h  -I$(CURDIR)/motor_ask.h #-L./home/student/lidar_example_cpp-main/output/Linux/Release/
 
 EXTRA_OBJ :=
-LD_LIBS += -lstdc++ -lpthread -lm -pthread -lwiringPi   # -lm added for math.h
+LD_LIBS += -lstdc++ -lpthread -lm -pthread   # -lm added for math.h
 
 all: build_app
 
