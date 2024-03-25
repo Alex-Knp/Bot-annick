@@ -65,6 +65,9 @@ int stepper_go_to(int fd, int stepper_id, double depth, int speed_coef){
     uint8_t control_message[5];
     uint8_t response[5];
 
+    if(depth > 11){
+        printf("Erreur: la profondeur doit être inférieure à 11.\n");
+        return -1;}
 
     if(stepper_id == 0){        // left stepper
         control_message[0] = 0xf5;}

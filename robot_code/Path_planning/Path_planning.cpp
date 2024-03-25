@@ -87,6 +87,12 @@ if (y_lim-Y_robot < rho_0) {
 /////////--------   Plants avoidance  -------/////////
 
 // Variables declaration
+
+struct Plant {
+        double x;
+        double y;
+    };
+    
 std::vector<Plant> plants = {
         {0.500 + 1, 0.0 + 1.5},
         {-0.500 + 1, 0.0 + 1.5},
