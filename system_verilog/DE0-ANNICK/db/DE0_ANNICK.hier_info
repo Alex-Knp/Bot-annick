@@ -79,31 +79,15 @@ GPIO_2[12] <> <UNC>
 GPIO_2_IN[0] => ~NO_FANOUT~
 GPIO_2_IN[1] => ~NO_FANOUT~
 GPIO_2_IN[2] => ~NO_FANOUT~
-<<<<<<< HEAD
 GPIO_0[0] <> GPIO_0[0]
 GPIO_0[1] <> <UNC>
 GPIO_0[3] <> <UNC>
 GPIO_0[10] <> <UNC>
 GPIO_0[11] <> <UNC>
-=======
-GPIO_0[0] <> <UNC>
-GPIO_0[1] <> <UNC>
-GPIO_0[2] <> <UNC>
-GPIO_0[3] <> <UNC>
-GPIO_0[4] <> <UNC>
-GPIO_0[5] <> <UNC>
-GPIO_0[6] <> <UNC>
-GPIO_0[7] <> <UNC>
-GPIO_0[8] <> <UNC>
-GPIO_0[10] <> <UNC>
->>>>>>> d707fb58678ebe0571eea902370c22a5217d80bb
 GPIO_0[12] <> <UNC>
 GPIO_0[13] <> <UNC>
 GPIO_0[14] <> <UNC>
-<<<<<<< HEAD
 GPIO_0[15] <> <UNC>
-=======
->>>>>>> d707fb58678ebe0571eea902370c22a5217d80bb
 GPIO_0[20] <> <UNC>
 GPIO_0[21] <> GPIO_0[21]
 GPIO_0[22] <> <UNC>
@@ -121,7 +105,7 @@ GPIO_0[33] <> <UNC>
 GPIO_0_IN[0] => ~NO_FANOUT~
 GPIO_0_IN[1] => spi_mosi.IN1
 GPIO_1[0] <> <UNC>
-GPIO_1[1] <> GPIO_1[1]
+GPIO_1[1] <> <UNC>
 GPIO_1[2] <> <UNC>
 GPIO_1[3] <> <UNC>
 GPIO_1[4] <> <UNC>
@@ -1530,6 +1514,21 @@ ADC_3[11] <= ADC_3[11]~reg0.DB_MAX_OUTPUT_PORT_TYPE
 
 
 |DE0_ANNICK|stepper:stepper_inst_L
+clk => ACCEL_Counter[0].CLK
+clk => ACCEL_Counter[1].CLK
+clk => ACCEL_Counter[2].CLK
+clk => ACCEL_Counter[3].CLK
+clk => ACCEL_Counter[4].CLK
+clk => ACCEL_Counter[5].CLK
+clk => ACCEL_Counter[6].CLK
+clk => ACCEL_Counter[7].CLK
+clk => ACCEL_Counter[8].CLK
+clk => ACCEL_Counter[9].CLK
+clk => ACCEL_Counter[10].CLK
+clk => ACCEL_Counter[11].CLK
+clk => ACCEL_Counter[12].CLK
+clk => ACCEL_Counter[13].CLK
+clk => ACCEL_Counter[14].CLK
 clk => DELAY[0].CLK
 clk => DELAY[1].CLK
 clk => DELAY[2].CLK
@@ -1551,6 +1550,13 @@ clk => DELAY[17].CLK
 clk => DELAY[18].CLK
 clk => DELAY[19].CLK
 clk => DELAY[20].CLK
+clk => DELAY[21].CLK
+clk => DELAY[22].CLK
+clk => DELAY[23].CLK
+clk => DELAY[24].CLK
+clk => DELAY[25].CLK
+clk => DELAY[26].CLK
+clk => DELAY[27].CLK
 clk => step~reg0.CLK
 clk => current_position[0].CLK
 clk => current_position[1].CLK
@@ -1615,6 +1621,13 @@ reset => DELAY[17].ACLR
 reset => DELAY[18].ACLR
 reset => DELAY[19].ACLR
 reset => DELAY[20].ACLR
+reset => DELAY[21].ACLR
+reset => DELAY[22].ACLR
+reset => DELAY[23].ACLR
+reset => DELAY[24].ACLR
+reset => DELAY[25].ACLR
+reset => DELAY[26].ACLR
+reset => DELAY[27].ACLR
 reset => step~reg0.ACLR
 reset => current_position[0].ACLR
 reset => current_position[1].ACLR
@@ -1658,6 +1671,21 @@ reset => counter[14].ACLR
 reset => counter[15].ACLR
 reset => counter[16].ACLR
 reset => counter[17].ACLR
+reset => ACCEL_Counter[0].ENA
+reset => ACCEL_Counter[14].ENA
+reset => ACCEL_Counter[13].ENA
+reset => ACCEL_Counter[12].ENA
+reset => ACCEL_Counter[11].ENA
+reset => ACCEL_Counter[10].ENA
+reset => ACCEL_Counter[9].ENA
+reset => ACCEL_Counter[8].ENA
+reset => ACCEL_Counter[7].ENA
+reset => ACCEL_Counter[6].ENA
+reset => ACCEL_Counter[5].ENA
+reset => ACCEL_Counter[4].ENA
+reset => ACCEL_Counter[3].ENA
+reset => ACCEL_Counter[2].ENA
+reset => ACCEL_Counter[1].ENA
 control[0] => Equal0.IN47
 control[0] => LessThan3.IN48
 control[1] => Equal0.IN46
@@ -1733,8 +1761,22 @@ homing_enable => counter.OUTPUTSELECT
 homing_enable => counter.OUTPUTSELECT
 homing_enable => counter.OUTPUTSELECT
 homing_enable => step.OUTPUTSELECT
+homing_enable => ACCEL_Counter.OUTPUTSELECT
+homing_enable => ACCEL_Counter.OUTPUTSELECT
+homing_enable => ACCEL_Counter.OUTPUTSELECT
+homing_enable => ACCEL_Counter.OUTPUTSELECT
+homing_enable => ACCEL_Counter.OUTPUTSELECT
+homing_enable => ACCEL_Counter.OUTPUTSELECT
+homing_enable => ACCEL_Counter.OUTPUTSELECT
+homing_enable => ACCEL_Counter.OUTPUTSELECT
+homing_enable => ACCEL_Counter.OUTPUTSELECT
+homing_enable => ACCEL_Counter.OUTPUTSELECT
+homing_enable => ACCEL_Counter.OUTPUTSELECT
+homing_enable => ACCEL_Counter.OUTPUTSELECT
+homing_enable => ACCEL_Counter.OUTPUTSELECT
+homing_enable => ACCEL_Counter.OUTPUTSELECT
+homing_enable => ACCEL_Counter.OUTPUTSELECT
 homing_enable => dir.OUTPUTSELECT
-homing_enable => DELAY[0].ENA
 homing_enable => current_position[23].ENA
 homing_enable => current_position[22].ENA
 homing_enable => current_position[21].ENA
@@ -1759,6 +1801,13 @@ homing_enable => current_position[3].ENA
 homing_enable => current_position[2].ENA
 homing_enable => current_position[1].ENA
 homing_enable => current_position[0].ENA
+homing_enable => DELAY[27].ENA
+homing_enable => DELAY[26].ENA
+homing_enable => DELAY[25].ENA
+homing_enable => DELAY[24].ENA
+homing_enable => DELAY[23].ENA
+homing_enable => DELAY[22].ENA
+homing_enable => DELAY[21].ENA
 homing_enable => DELAY[20].ENA
 homing_enable => DELAY[19].ENA
 homing_enable => DELAY[18].ENA
@@ -1779,11 +1828,27 @@ homing_enable => DELAY[4].ENA
 homing_enable => DELAY[3].ENA
 homing_enable => DELAY[2].ENA
 homing_enable => DELAY[1].ENA
+homing_enable => DELAY[0].ENA
 step <= step~reg0.DB_MAX_OUTPUT_PORT_TYPE
 dir <= dir.DB_MAX_OUTPUT_PORT_TYPE
 
 
 |DE0_ANNICK|stepper:stepper_inst_R
+clk => ACCEL_Counter[0].CLK
+clk => ACCEL_Counter[1].CLK
+clk => ACCEL_Counter[2].CLK
+clk => ACCEL_Counter[3].CLK
+clk => ACCEL_Counter[4].CLK
+clk => ACCEL_Counter[5].CLK
+clk => ACCEL_Counter[6].CLK
+clk => ACCEL_Counter[7].CLK
+clk => ACCEL_Counter[8].CLK
+clk => ACCEL_Counter[9].CLK
+clk => ACCEL_Counter[10].CLK
+clk => ACCEL_Counter[11].CLK
+clk => ACCEL_Counter[12].CLK
+clk => ACCEL_Counter[13].CLK
+clk => ACCEL_Counter[14].CLK
 clk => DELAY[0].CLK
 clk => DELAY[1].CLK
 clk => DELAY[2].CLK
@@ -1805,6 +1870,13 @@ clk => DELAY[17].CLK
 clk => DELAY[18].CLK
 clk => DELAY[19].CLK
 clk => DELAY[20].CLK
+clk => DELAY[21].CLK
+clk => DELAY[22].CLK
+clk => DELAY[23].CLK
+clk => DELAY[24].CLK
+clk => DELAY[25].CLK
+clk => DELAY[26].CLK
+clk => DELAY[27].CLK
 clk => step~reg0.CLK
 clk => current_position[0].CLK
 clk => current_position[1].CLK
@@ -1869,6 +1941,13 @@ reset => DELAY[17].ACLR
 reset => DELAY[18].ACLR
 reset => DELAY[19].ACLR
 reset => DELAY[20].ACLR
+reset => DELAY[21].ACLR
+reset => DELAY[22].ACLR
+reset => DELAY[23].ACLR
+reset => DELAY[24].ACLR
+reset => DELAY[25].ACLR
+reset => DELAY[26].ACLR
+reset => DELAY[27].ACLR
 reset => step~reg0.ACLR
 reset => current_position[0].ACLR
 reset => current_position[1].ACLR
@@ -1912,6 +1991,21 @@ reset => counter[14].ACLR
 reset => counter[15].ACLR
 reset => counter[16].ACLR
 reset => counter[17].ACLR
+reset => ACCEL_Counter[0].ENA
+reset => ACCEL_Counter[14].ENA
+reset => ACCEL_Counter[13].ENA
+reset => ACCEL_Counter[12].ENA
+reset => ACCEL_Counter[11].ENA
+reset => ACCEL_Counter[10].ENA
+reset => ACCEL_Counter[9].ENA
+reset => ACCEL_Counter[8].ENA
+reset => ACCEL_Counter[7].ENA
+reset => ACCEL_Counter[6].ENA
+reset => ACCEL_Counter[5].ENA
+reset => ACCEL_Counter[4].ENA
+reset => ACCEL_Counter[3].ENA
+reset => ACCEL_Counter[2].ENA
+reset => ACCEL_Counter[1].ENA
 control[0] => Equal0.IN47
 control[0] => LessThan3.IN48
 control[1] => Equal0.IN46
@@ -1987,8 +2081,22 @@ homing_enable => counter.OUTPUTSELECT
 homing_enable => counter.OUTPUTSELECT
 homing_enable => counter.OUTPUTSELECT
 homing_enable => step.OUTPUTSELECT
+homing_enable => ACCEL_Counter.OUTPUTSELECT
+homing_enable => ACCEL_Counter.OUTPUTSELECT
+homing_enable => ACCEL_Counter.OUTPUTSELECT
+homing_enable => ACCEL_Counter.OUTPUTSELECT
+homing_enable => ACCEL_Counter.OUTPUTSELECT
+homing_enable => ACCEL_Counter.OUTPUTSELECT
+homing_enable => ACCEL_Counter.OUTPUTSELECT
+homing_enable => ACCEL_Counter.OUTPUTSELECT
+homing_enable => ACCEL_Counter.OUTPUTSELECT
+homing_enable => ACCEL_Counter.OUTPUTSELECT
+homing_enable => ACCEL_Counter.OUTPUTSELECT
+homing_enable => ACCEL_Counter.OUTPUTSELECT
+homing_enable => ACCEL_Counter.OUTPUTSELECT
+homing_enable => ACCEL_Counter.OUTPUTSELECT
+homing_enable => ACCEL_Counter.OUTPUTSELECT
 homing_enable => dir.OUTPUTSELECT
-homing_enable => DELAY[0].ENA
 homing_enable => current_position[23].ENA
 homing_enable => current_position[22].ENA
 homing_enable => current_position[21].ENA
@@ -2013,6 +2121,13 @@ homing_enable => current_position[3].ENA
 homing_enable => current_position[2].ENA
 homing_enable => current_position[1].ENA
 homing_enable => current_position[0].ENA
+homing_enable => DELAY[27].ENA
+homing_enable => DELAY[26].ENA
+homing_enable => DELAY[25].ENA
+homing_enable => DELAY[24].ENA
+homing_enable => DELAY[23].ENA
+homing_enable => DELAY[22].ENA
+homing_enable => DELAY[21].ENA
 homing_enable => DELAY[20].ENA
 homing_enable => DELAY[19].ENA
 homing_enable => DELAY[18].ENA
@@ -2033,6 +2148,7 @@ homing_enable => DELAY[4].ENA
 homing_enable => DELAY[3].ENA
 homing_enable => DELAY[2].ENA
 homing_enable => DELAY[1].ENA
+homing_enable => DELAY[0].ENA
 step <= step~reg0.DB_MAX_OUTPUT_PORT_TYPE
 dir <= dir.DB_MAX_OUTPUT_PORT_TYPE
 
