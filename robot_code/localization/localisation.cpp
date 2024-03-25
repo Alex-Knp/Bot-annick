@@ -277,7 +277,7 @@ double DistBtwBeacon(Beacon beacon1, Beacon beacon2) {
     return sqrt(pow(beacon1.distance, 2) + pow(beacon2.distance, 2) - 2 * beacon1.distance * beacon2.distance * cos(((beacon1.angle - beacon2.angle))*(M_PI / 180.0)));
 }
 
-void lidar_update_position(coordinates &coord,lidar_data &data, std::vector<Beacon> &final_beacons,std::vector<double> &x_tab, std::vector<double> &y_tab, std::vector<double> &x_ref_tab, std::vector<double> &y_ref_tab){
+void lidar_update_position(RobotPosition &coord,lidar_data &data, std::vector<Beacon> &final_beacons,std::vector<double> &x_tab, std::vector<double> &y_tab, std::vector<double> &x_ref_tab, std::vector<double> &y_ref_tab){
 
     newsort(final_beacons);
 
@@ -389,4 +389,10 @@ void fill_points(double x, double y, double x_ref, double y_ref, std::vector<dou
         fd << x_tab[i] << "," << y_tab[i] << "," << x_ref_tab[i] << "," << y_ref_tab[i] << "\n"; // Correction ici
     }
     fd.close();
+}
+
+
+void main_lidar(BigStruct *all_struct, ILidarDriver* drv)
+{
+    scanLidar(drv);
 }
