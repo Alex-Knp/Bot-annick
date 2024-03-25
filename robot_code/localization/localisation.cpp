@@ -392,7 +392,7 @@ void fill_points(double x, double y, double x_ref, double y_ref, std::vector<dou
 }
 
 
-void main_lidar(BigStruct *all_struct, ILidarDriver* drv)
+void main_lidar(BigStruct *all_struct)
 {
-    scanLidar(drv);
+    scanLidar(all_struct->drv);
 }
