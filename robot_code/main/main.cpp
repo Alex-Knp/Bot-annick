@@ -19,8 +19,6 @@
 void controller_loop(BigStruct *all_struct)
 {
     BigStruct *all_struct = init_BigStruct();
-    ILidarDriver* drv = connectLidar();
-
 
 
     main_lidar(all_struct);         // à lancer par le premier thread
@@ -34,6 +32,5 @@ void controller_loop(BigStruct *all_struct)
  */
 void controller_finish(BigStruct *all_struct)
 {
-    disconnectLidar(drv);
     free_BigStruct(all_struct);
 }
