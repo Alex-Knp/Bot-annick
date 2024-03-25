@@ -318,6 +318,7 @@ void lidar_update_position(RobotPosition &coord,lidar_data &data, std::vector<Be
         printf("theta = %f\n", theta_int);
     }
     //fill_points(x_int, y_int, 0, 0, x_tab, y_tab, x_ref_tab, y_ref_tab);
+        printf("x = %f, y = %f, theta = %f\n", x_int/1000.0, y_int/1000.0, theta*(180/M_PI));
         coord.x = x_int/1000.0;
         coord.y = y_int/1000.0;
         coord.theta = theta;
