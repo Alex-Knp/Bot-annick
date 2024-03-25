@@ -1,6 +1,6 @@
 #pragma once
 
-#include "all_struct.hh"
+#include "../main/all_struct.hh"
 #include <iostream>
 #include <thread>
 #include <mutex>
@@ -25,7 +25,8 @@ using namespace sl;
 
 ILidarDriver* connectLidar();
 
-void scanLidar(ILidarDriver* drv);
+
+void scanLidar(BigStruct *all_struct);
 
 void disconnectLidar(ILidarDriver* lidar);
 

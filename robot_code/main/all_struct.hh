@@ -21,7 +21,6 @@
 // forward declaration for localization
 typedef struct RobotPosition RobotPosition;
 typedef struct lidar_data lidar_data;
-ILidarDriver* connectLidar();
 
 // forward declaration for actuators 
 

@@ -19,13 +19,13 @@ int main()
 {
     BigStruct *all_struct = init_BigStruct();
   
-
-    std::thread scanThread(scanLidar, all_struct);
+    scanLidar(all_struct);
+    //std::thread scanThread(scanLidar, &all_struct);
     //std::thread controlThread(main_controller, all_struct); 
   
 
     //controlThread.join();
-    scanThread.join();
+    //scanThread.join();
 
     //main_camera(all_struct);        // à lancer par le troisième thread
 }
