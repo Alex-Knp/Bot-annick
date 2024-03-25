@@ -127,6 +127,7 @@ void scanLidar(BigStruct *all_struct){
    
             if (final_beacons.size() == 3) {
                 lidar_update_position(*all_struct->rob_pos, myLidarData, final_beacons, x_tab, y_tab, x_ref_tab, y_ref_tab);
+                getObstacles(all_struct, clusters, all_struct->rob_pos);
                 printf("x = %f, y = %f, theta = %f\n", all_struct->rob_pos->x, all_struct->rob_pos->y, all_struct->rob_pos->theta*(180/M_PI));
             }
             else {
