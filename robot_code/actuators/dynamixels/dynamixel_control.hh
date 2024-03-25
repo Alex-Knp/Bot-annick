@@ -3,10 +3,10 @@
 
 #include <iostream>
 #include <unistd.h>
-#include <SDK/dynamixel_sdk/dynamixel_sdk.h>
+#include <include/dynamixel_sdk/dynamixel_sdk.h>
 
 // Define communication parameters
-#define DEVICENAME "/dev/ttyS0"
+#define DEVICENAME "/dev/ttyUSB0"
 #define BAUDRATE 1000000
 #define PROTOCOL_VERSION 2.0
 
@@ -27,7 +27,7 @@ private:
     dynamixel::PacketHandler *packetHandler;
 
 public:
-    DynamixelControl(const char* devicename = "/dev/ttyS0", int baudrate = 1000000, float protocol_version = 2.0) {
+    DynamixelControl(DEVICENAME, BAUDRATE, PROTOCOL_VERSION) {
         portHandler = dynamixel::PortHandler::getPortHandler(devicename);
         packetHandler = dynamixel::PacketHandler::getPacketHandler(protocol_version);
 

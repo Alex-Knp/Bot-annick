@@ -44,6 +44,9 @@ BigStruct* init_BigStruct(){
 	all_struct->rob_pos->y = 0.0;
 	all_struct->rob_pos->theta = 0.0;
 
+	// lidar driver
+	all_struct->drv = connectLidar();
+
 
 
 	return all_struct;
@@ -53,6 +56,7 @@ void free_BigStruct(BigStruct *all_struct)
 {	
 	free(all_struct->table);
 	free(all_struct->rob_pos);
+	disconnectLidar(all_struct->drv);
 
 	free(all_struct);
 }
