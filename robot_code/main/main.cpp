@@ -20,7 +20,7 @@ int main()
     BigStruct *all_struct = init_BigStruct();
   
     scanLidar(all_struct);
-    //std::thread scanThread(scanLidar, &all_struct);
+    //std::thread scanThread(scanLidar, all_struct);
     //std::thread controlThread(main_controller, all_struct); 
   
 
@@ -28,6 +28,7 @@ int main()
     //scanThread.join();
 
     //main_camera(all_struct);        // à lancer par le troisième thread
+    return 0;
 }
 
 /*! \brief last controller operations (called once)
