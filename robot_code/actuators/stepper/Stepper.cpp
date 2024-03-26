@@ -108,19 +108,19 @@ double get_stepper_position(int fd, side stepper_id){
     return position_returned/3200;
 }
 
- int main() {
+//  int main() {
 
-     printf("Homing of right stepper\n");
-     int fd = spi_init_1();
+//      printf("Homing of right stepper\n");
+//      int fd = spi_init_1();
 
-     if(stepper_homing(fd, 0) != 1){
-         printf("an error occured during homing of right stepper \n"); 
-         return 0; }
+//      if(stepper_homing(fd, 0) != 1){
+//          printf("an error occured during homing of right stepper \n"); 
+//          return 0; }
 
-     stepper_go_to(fd, 0, 1, 2);
+//      stepper_go_to(fd, 0, 1, 2);
 
-     close(fd);
+//      close(fd);
 
-     printf("no error occured durin homing of right stepper \n");
-     return 0;}
+//      printf("no error occured durin homing of right stepper \n");
+//      return 0;}
 

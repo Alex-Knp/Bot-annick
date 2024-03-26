@@ -2,9 +2,9 @@
 
 //#include "../main/all_struct.hh"
 //#include "../main/all_struct.cpp"
-#include "../../communication/SPI_spidev.hh"
+//#include "../../communication/SPI_spidev.hh"
 //#include "../../communication/SPI_spidev.cpp"
-//#include "../../Sensors/Micro_switch.hh"
+#include "../../Sensors/Micro_switch.hh"
 
 //enum side {left, right};
 enum side {left, right};
