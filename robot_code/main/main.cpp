@@ -7,6 +7,7 @@
 #include "../communication/I2C.hh"
 #include "../communication/SPI_spidev.hh"
 #include "../communication/UART.hh"
+#include "../Path_planning/Path_planning.hh"
 
 
 /*! \brief controller loop 

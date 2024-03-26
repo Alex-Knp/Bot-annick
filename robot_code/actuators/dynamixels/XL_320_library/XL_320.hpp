@@ -1,6 +1,5 @@
 #ifndef XL_320_SERVO
 #define XL_320_SERVO
-#pragma once
 
 // C library headers
 #include <stdio.h>
@@ -11,11 +10,8 @@
 #include <errno.h> // Error integer and strerror() function
 #include <unistd.h> // write(), read(), close()
 #include <sys/ioctl.h>
-#include <linux/spi/spidev.h>
-#include <gpiod.h>
 
 #include <termios.h> // Contains POSIX terminal control definitions
-//#include <wiringPi.h>
 
 #include <iostream>
 #include <iomanip>
@@ -66,6 +62,10 @@ private :
     unsigned char id;
 
 public :
+
+    void is_id(unsigned char new_id){
+        id = new_id;
+    }
 
     // Constructor
     XL_320();

@@ -3,7 +3,7 @@
 #include <vector>
 
 
-void Path_planing_update(){
+void Path_planning_update(BigStruct* all_struct){
 
 //  Global Variables 
 
@@ -92,7 +92,7 @@ struct Plant {
         double x;
         double y;
     };
-    
+
 std::vector<Plant> plants = {
         {0.500 + 1, 0.0 + 1.5},
         {-0.500 + 1, 0.0 + 1.5},
@@ -120,6 +120,26 @@ for (int i = 0; i < plants.size(); i++) {
 
 
 /////////--------   Opponent avoidance  -------/////////
+
+double k_rep = 0;
+rho_0 = 0.5;
+
+int N = 3;
+
+
+for (int i = 0; i < N; i++) {
+
+    double x_obs = all_struct->opp_pos->x[i];
+    double y_obs = all_struct->opp_pos->y[i];
+
+    rho = sqrt(pow(x_obs-x, 2) + pow(y_obs-y, 2)); 
+
+    if (rho < rho_0) {
+        Frep[0] += k_rep * (1/rho - 1/rho_0) / pow(rho, 3) * (x-x_obs);
+        Frep[1] += Frep[1] / (x-x_obs) * (y-y_obs);
+    }
+}
+
 
 
 /////////--------   Obstacle avoidance  -------/////////

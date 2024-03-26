@@ -4,7 +4,6 @@
 
 typedef struct DynStruct {
     float gripper_current_angle;
-    float current_sector;
     XL_320 Servo;
 } DynStruct ;
 

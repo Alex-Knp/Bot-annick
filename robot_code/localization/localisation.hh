@@ -48,8 +48,8 @@ typedef struct RobotPosition
 
 typedef struct OpponentsPosition
 {
-	double x[2]; ///< x position of opponents [m]
-	double y[2]; ///< y position of opponents [m]
+	double* x; ///< x position of opponents [m]
+	double* y; ///< y position of opponents [m]
 
 	int nb_opp; ///< number of opponents
 

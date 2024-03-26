@@ -17,9 +17,9 @@ int get_MS(int fd, Micro_switch MS){
     spi_transfer(fd, MS_message, 5);
 
     switch (MS){ 
-        case left:
+        case Left_ms:
             return MS_message[1]>100;
-        case right:
+        case Right_ms:
             return MS_message[1]%2;
         case emergency:
             return abs(MS_message[2]-1);
@@ -29,12 +29,12 @@ int get_MS(int fd, Micro_switch MS){
     return MS_message[1]%2;
 }
 
-int main(){
-    int fd = spi_init_1();
-    while(1){
-        int result = get_MS(fd, right);
-        printf("Right micro switch: %d\n", result);
-    }
+// int main(){
+//     int fd = spi_init_1();
+//     while(1){
+//         int result = get_MS(fd, right);
+//         printf("Right micro switch: %d\n", result);
+//     }
     
-    return 0;
-}
+//     return 0;
+// }

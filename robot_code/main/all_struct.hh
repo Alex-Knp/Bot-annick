@@ -14,9 +14,13 @@
 #include <stdlib.h>
 #include <time.h>  
 #include <thread>
+#include <vector>
+#include <iostream>
 
 #include "../sdk/include/sl_lidar_driver.h"
 #include "../sdk/include/sl_lidar.h"
+
+enum side {left, right};
 
 // forward declaration for localization
 typedef struct RobotPosition RobotPosition;

@@ -2,14 +2,14 @@
 
 //#include "all_struct.hh"
 
-#include <iostream>
-#include <vector>
+//#include <iostream>
+//#include <vector>
 #include <algorithm>
 #include <cmath>  
 #include "time.h"
-#include "../controller/motor_ask.hh"
-// #include "../communication/SPI_spidev.hh"
-// #include "../communication/SPI_spidev.cpp"
+//#include "../controller/motor_ask.hh"
+//#include "../communication/SPI_spidev.hh"
+//#include "../communication/SPI_spidev.cpp"
 
 // Structure pour représenter un point (x, y)
 struct Point {

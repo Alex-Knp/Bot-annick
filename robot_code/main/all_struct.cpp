@@ -1,10 +1,15 @@
 #include "all_struct.hh"
 
 #include "../localization/localisation.hh"
+#include "../Path_planning/Path_planning.hh"
 #include "../controller/motor_ask.hh"
 #include "../communication/I2C.hh"
-#include "../communication/SPI_spidev.hh"
+//#include "../communication/SPI_spidev.hh"
 #include "../communication/UART.hh"
+//#include "../actuators/Servo/Servo.hh"
+//#include "../actuators/stepper/Stepper.hh"
+//#include "../Sensors/IR.hh"
+//#include "../Sensors/Micro_switch.hh"
 
 /*! \brief initialize all the structure that we need
  * 
@@ -43,7 +48,9 @@ BigStruct* init_BigStruct(){
 
 	// Opponents position
 	all_struct->opp_pos = (OpponentsPosition*) malloc(sizeof(OpponentsPosition));
-	for(int i=0; i<2; i++)
+	all_struct->opp_pos->x = (double*) malloc(20*sizeof(double));
+	all_struct->opp_pos->y = (double*) malloc(20*sizeof(double));
+	for(int i=0; i<20; i++)
 	{
 		all_struct->opp_pos->x[i] = 0.0;
 		all_struct->opp_pos->y[i] = 0.0;
@@ -63,6 +70,13 @@ void free_BigStruct(BigStruct *all_struct)
 {	
 	free(all_struct->table);
 	free(all_struct->rob_pos);
+
+	//Opponent position free
+	free(all_struct->opp_pos->x);
+	free(all_struct->opp_pos->y);
+	free(all_struct->opp_pos);
+
+	
 	disconnectLidar(all_struct->drv);
 
 	free(all_struct);

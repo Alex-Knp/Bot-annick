@@ -1,8 +1,6 @@
 #include "dynamixel_main.hh"
 
 
-
-
 // gripper_goal_angle in degrees
 // travel_speed in % of max speed
 int left_dyn_set_angle(DynStruct* dyn, float gripper_goal_angle, float travel_speed){
@@ -10,7 +8,10 @@ int left_dyn_set_angle(DynStruct* dyn, float gripper_goal_angle, float travel_sp
     //goal angle in degrees
 
     float gripper_angle_error = gripper_goal_angle - dyn->gripper_current_angle;
-    int direction = gripper_angle_error > 0 ? 1 : -1;
+    printf("gripper_angle_error: %f\n", gripper_angle_error);
+    printf("gripper_goal_angle: %f\n", gripper_goal_angle);
+    printf("gripper_current_angle: %f\n", dyn->gripper_current_angle);
+    int direction = gripper_angle_error > 0 ? 1.0 : 0.0;
     int goal_sector;
 
     if(0 <= gripper_goal_angle && gripper_goal_angle <= 100){
@@ -27,37 +28,51 @@ int left_dyn_set_angle(DynStruct* dyn, float gripper_goal_angle, float travel_sp
         return -1;
     }
 
-    float final_dynamixel_angle = fmod(gripper_goal_angle, 120.0) * 3.0;
+    int final_dynamixel_angle = (int) 1023*(1-(fmod(gripper_goal_angle, 120.0) * 3.0)/300);
+    printf("final_dynamixel_angle: %d\n", final_dynamixel_angle);
 
-    //IL FAUT ENCORE CALCULER LA VRAIE CONVERSION
-    float gripper_travel_speed_in_degPerSec = travel_speed/100 * 228; // Convert to rad/s
+    float gripper_travel_speed_in_degPerSec = travel_speed/100 * 684/3; // Convert to deg/sec
 
+    printf("setting wheel mode\n");
     // trorque disable
     dyn->Servo.setTorqueEnable(0);
+    usleep(1e5);
     //set wheel mode
     dyn->Servo.setControlMode(1);
+    usleep(1e5);
     //set speed
-    dyn->Servo.setSpeed(travel_speed*1023/100 + 1024*direction);
-    //torque enable
     dyn->Servo.setTorqueEnable(1);
-    sleep(gripper_angle_error / gripper_travel_speed_in_degPerSec);
+    dyn->Servo.setSpeed(1100);//(int) (travel_speed*1023.0/100.0 + 1024.0*direction));
+    printf("moving speed (/1023): %d\n", (int) (travel_speed*1023.0/100.0 + 1024.0*direction));
+    usleep(1e5);
+    //torque enable
+    printf("sleep time: %f\n", gripper_angle_error / gripper_travel_speed_in_degPerSec);
+    usleep(gripper_angle_error / gripper_travel_speed_in_degPerSec*1e6);
+    
     dyn->Servo.setSpeed(0);
+    printf("setting joint mode\n");
+    usleep(1e5);
 
     // trorque disable
     dyn->Servo.setTorqueEnable(0);
+    usleep(1e5);
     //set joint mode
-    dyn->Servo.setControlMode(0);
+    dyn->Servo.setControlMode(2);
+    usleep(1e5);
     //set speed
-    dyn->Servo.setGoalPosition(final_dynamixel_angle/300*1023);
+    dyn->Servo.setGoalPosition(final_dynamixel_angle);
+    usleep(1e5);
     //torque enable
     dyn->Servo.setTorqueEnable(1);
 
-    while(dyn->Servo.isMoving() == 1){}
+    //while(dyn->Servo.isMoving() == 1){}
 
-    dyn->gripper_current_angle = 120*goal_sector + final_dynamixel_angle/3.0;
+    dyn->gripper_current_angle = gripper_goal_angle;
 
     return 0; 
 }
+
+
 
 int home(DynStruct* dyn){
     // float homing_speed = 10; // % of the max speed
@@ -81,40 +96,68 @@ int home(DynStruct* dyn){
 }
 
 int dyn_init(DynStruct* left_dyn){//,DynStruct* right_dyn){
-    XL_320 left_Servo;
-    //XL_320 right_Servo;
-    left_Servo.verbose = true;
-    //right_Servo.verbose = true;
-    left_dyn->Servo = left_Servo;
-    //right_dyn->Servo = right_Servo;
 
-    // trorque disable
+
+    // torque disable
     left_dyn->Servo.setTorqueEnable(0);
     //set joint mode
-    left_dyn->Servo.setControlMode(0);
-    //set speed
-    left_dyn->Servo.setGoalPosition(0);
+    left_dyn->Servo.setControlMode(2);
+    //set position
+    left_dyn->Servo.setGoalPosition(512);
+    //set moving speed
+    left_dyn->Servo.setSpeed(300);
     //torque enable
     left_dyn->Servo.setTorqueEnable(1);
 
-    while(left_dyn->Servo.isMoving() == 1){}
+    // printf("before while\n");
+    // while(left_dyn->Servo.isMoving() == 1){
+    //     sleep(0.01);
+    // }
+    // printf("after while\n");
+    sleep(1);
 
+    left_dyn->gripper_current_angle = 50;
+    return 0;
+}
 
-    home(left_dyn);
-    //home(right_dyn);
+int test(){
+    
+    XL_320 Servo;
+    Servo.verbose = true;
+    Servo.is_id(0x05);
 
-    left_dyn->gripper_current_angle = 0;
-    left_dyn->current_sector = 0;
-    //right_dyn->gripper_current_angle = 0;
-    //right_dyn->current_sector = 0;
+    // // Test ping
+    Servo.ping();
+
+    Servo.setTorqueEnable(0);
+    Servo.setControlMode(2);
+    Servo.setSpeed(1023);
+    Servo.setGoalPosition(0);
+    Servo.setTorqueEnable(1);
+
     return 0;
 }
 
 int main(){
+    // DynStruct *left_dyn = new DynStruct;
+    // //DynStruct *right_dyn = new DynStruct;
+    // dyn_init(left_dyn);//,right_dyn);
+    // printf("Init done\n");
+    // left_dyn_set_angle(left_dyn, 150, 50);
+    //test();
+        
+    XL_320 left_Servo;
+    left_Servo.verbose = true;
+    left_Servo.is_id(0x04);
+
     DynStruct *left_dyn = new DynStruct;
-    //DynStruct *right_dyn = new DynStruct;
-    dyn_init(left_dyn);//,right_dyn);
-    left_dyn_set_angle(left_dyn, 50, 10);
+    left_dyn->Servo = left_Servo;
+
+    dyn_init(left_dyn);
+    printf("Init done ############################################################################\n");
+
+    left_dyn_set_angle(left_dyn, 250, 15);
+
     return 0;
 
 }

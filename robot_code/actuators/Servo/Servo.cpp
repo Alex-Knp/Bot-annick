@@ -5,46 +5,49 @@
 
 int open_claw(int fd, side servo_id) {
     // open the claw of the robot
-    int id; 
-    int position = 0;
+    int *id = new int;
+    int *position = new int;
 
     if(servo_id == left) {
-        int position = 0;
-        int id = 1;
-  
+        *position = 18000;
+        *id = 1;
+        
     } else if(servo_id == right) {
-        int position = 0;
-        int id = 3;
+        *position = 10000;
+        *id = 3;
         
     } else {
         printf("error : id should be left (left claw) or right (right servo)\n");
         return -1;
     }
 
-    servo_ask(fd, id, position);
+    printf("flag open claw function\n");
+
+    servo_ask(fd, *id, *position);
 
     return 1;
 }
 
 int close_claw(int fd, side servo_id) {
     // close the claw of the robot
-    int id; 
-    int position = 1;
+    int *id = new int; 
+    int *position = new int;
 
     if(servo_id == left) {
-        int position = 1;
-        int id = 1;
+        *position = 48000;
+        *id = 1;
         
     } else if(servo_id == right) {
-        int position = 1;
-        int id = 3;
+        *position = 1;
+        *id = 3;
         
     } else {
         printf("error : id should be left (left claw) or right (right servo)\n");
         return -1;
     }
 
-    servo_ask(fd, id, position);
+    printf("flag close claw function");
+    servo_ask(fd, *id, *position);
 
     return 1;
 }
@@ -94,12 +97,12 @@ int retract_pento(int fd, side servo_id) {
     return 1;
 }
 
-void servo_ask(int fd, int servo_id, int position) {
+void servo_ask(int fd, int id, int position) {
     // ask the position of the servo
 
     uint8_t Servo_message[5] = {0xf0, 0x00, 0x00, 0x00, 0x00};
 
-    switch(servo_id) {
+    switch(id) {
         case 1:
             Servo_message[0] = 0xf1;
             break;
@@ -113,7 +116,7 @@ void servo_ask(int fd, int servo_id, int position) {
             Servo_message[0] = 0xf4;
             break;
         default:
-            printf("error : id should be between 1 and 8\n");
+            printf("error : id should be between 1 and 4\n");
             return;
     }
 
@@ -123,23 +126,15 @@ void servo_ask(int fd, int servo_id, int position) {
     Servo_message[3] = (position >>  8) & 0xff; 
     Servo_message[4] = position & 0xff;
 
-    printf("Servo message : %u, %u, %u, %u, %u\n", Servo_message[0], Servo_message[1], Servo_message[2], Servo_message[3], Servo_message[4]);
-
     spi_transfer(fd, Servo_message, 5);
 }
 
-int main(){
-    printf("Ask the position of the servo\n");
-    int fd = spi_init_1();
+// int main(){
+//     printf("Ask the position of the servo\n");
+//     int fd = spi_init_1();
 
-    int position = 5000; 
-    while(1){
-        servo_ask(fd, 2, position);
-        printf("asked position : %d\n", position);
-        usleep(3000000);    // 1s
-        position = position - 1000;
-    }
+//     close_claw(fd, left);
 
-    close(fd);
-    return 0;
-}
+//     close(fd);
+//     return 0;
+// }

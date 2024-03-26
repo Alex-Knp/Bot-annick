@@ -17,11 +17,10 @@ using namespace std;
 //
 // --------------------------------------------------------------------------
 
-XL_320 :: XL_320() : errorcode(0), pEnable(11), id(0x04), model(0), version(0), verbose(false)
+XL_320 :: XL_320() : errorcode(0), pEnable(11), id(0x00), model(0), version(0), verbose(false)
 {
-
     // Open UART2 serial port
-    serial_port = open("/dev/ttyUSB0", O_RDWR);
+    serial_port = open("/dev/ttyUSB1", O_RDWR);
 
     // Read in existing settings, and handle any error
     if(tcgetattr(this->serial_port, &tty) != 0) {

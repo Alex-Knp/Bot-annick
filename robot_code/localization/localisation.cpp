@@ -34,7 +34,7 @@ void ctrlc(int)
 }
 
 void scanLidar(BigStruct *all_struct){
-
+    printf("enter scan");
     lidar_data myLidarData;
     myLidarData.beaconsx[0] = 1950;
     myLidarData.beaconsx[1] = 1000;
@@ -74,7 +74,7 @@ void scanLidar(BigStruct *all_struct){
     //sl_lidar_response_measurement_node_hq_t closest_point;
 
     while (is<1000) {
-        //auto start_time = std::chrono::high_resolution_clock::now();
+        auto start_time = std::chrono::high_resolution_clock::now();
         sl_lidar_response_measurement_node_hq_t nodes[8192];
         std::vector<Cluster> clusters;
         std::vector<Beacon> beacons;
@@ -85,7 +85,7 @@ void scanLidar(BigStruct *all_struct){
         //closest_point.dist_mm_q2 = 100000;
 
         op_result = all_struct->drv->grabScanDataHq(nodes, count);
-        printf("count = %lu\n", count);
+        //printf("count = %lu\n", count);
 
 
         if (SL_IS_OK(op_result)) {
@@ -117,28 +117,29 @@ void scanLidar(BigStruct *all_struct){
                 
             }*/
             
-            getBeacon(beacons, clusters);/*
+            getBeacon(beacons, clusters);/* 
             for (size_t i = 0; i < beacons.size(); i++)
             {
 
                 printf("beacon %ld : %f, angle : %f \n", i, beacons[i].distance, beacons[i].angle);
-            }*/
+            } */
             getFinalBeacon(beacons, final_beacons);
    
             if (final_beacons.size() == 3) {
                 lidar_update_position(*all_struct->rob_pos, myLidarData, final_beacons, x_tab, y_tab, x_ref_tab, y_ref_tab);
-                getObstacles(all_struct, clusters, all_struct->rob_pos);
                 printf("x = %f, y = %f, theta = %f\n", all_struct->rob_pos->x, all_struct->rob_pos->y, all_struct->rob_pos->theta*(180/M_PI));
+                getObstacles(all_struct, clusters, all_struct->rob_pos);
+
             }
             else {
                 printf("not enough beacons\n");
             }
-
+/*
             for (size_t i = 0; i < final_beacons.size(); i++)
             {
                 printf("final_beacon %ld : %f, angle : %f \n", i, final_beacons[i].distance, final_beacons[i].angle);
             }
-            printf("\n");
+            printf("\n");*/
         }
                    //////////////// threads end of lock mutex
 
@@ -146,10 +147,10 @@ void scanLidar(BigStruct *all_struct){
           break;
         }
        is++;
-    /*
+    
     auto end_time = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time);
-    std::cout << "Execution time: " << duration.count() << " microseconds" << std::endl;*/
+    std::cout << "Execution time: " << duration.count() << " microseconds" << std::endl;
     }
 
 
@@ -213,17 +214,41 @@ void getBeacon(std::vector<Beacon>& beacons, std::vector<Cluster> tab){
 void getObstacles(BigStruct* all_struct, std::vector<Cluster> tab,RobotPosition* coord){
     int nb_clusters = tab.size();
     all_struct->opp_pos->nb_opp = 0;
+    for(int i = 0; i < 2; i++){
+        all_struct->opp_pos->x[i] = 0;
+        all_struct->opp_pos->y[i] = 0;
+     }
 
     // pour chaque cluster test si c'est un obstacle et si oui on calcule la distance et l'angle en prenant pour distance la distance du point le plus proche et pour angle celui du point le plus proche
     for (int i = 0; i < nb_clusters; i++) {
         if (isObstacle(tab[i],coord))                          
         {    
+
             all_struct->opp_pos->nb_opp++;
+
+            printf("nb_opp:%d\n",all_struct->opp_pos->nb_opp);
+
+            // optimisation à tester
+ /*         const Cluster& cluster = tab[i];
+            double nearest_distance = cluster.points[0].dist_mm_q2/4.0f;
+            double nearest_angle = 0.0;
+
+            for (const auto& point : cluster.points) {
+                double distance = point.dist_mm_q2 / 4.0f;
+                double angle = (point.angle_z_q14 * 90.f / 16384.f) * PI / 180;
+
+                if (distance < nearest_distance) {
+                    nearest_distance = distance;
+                    nearest_angle = angle;
+                }
+            } */                
+            
+
             int len = tab[i].points.size();
             //donne le points le plus proche de l'obstacle avec son angle
             double nearest_distance = tab[i].points[0].dist_mm_q2/4.0f;
             double nearest_angle = (tab[i].points[0].angle_z_q14* 90.f / 16384.f)*PI/180;
-            for (size_t j = 0; j < len; j++) {
+            for (int j = 0; j < len; j++) {
                 if (tab[i].points[j].dist_mm_q2/4.0f < nearest_distance) {
                     nearest_distance = tab[i].points[j].dist_mm_q2/4.0f;
                 }
@@ -231,10 +256,13 @@ void getObstacles(BigStruct* all_struct, std::vector<Cluster> tab,RobotPosition*
                     nearest_angle = (tab[i].points[j].angle_z_q14* 90.f / 16384.f)*PI/180;
                 }    
             }
-            double x_obstacle = coord->x*1000 + cos(coord->theta +nearest_angle)* nearest_distance;
-            double y_obstacle = coord->y*1000 + sin(coord->theta +nearest_angle)* nearest_distance;
-            //printf("x_obstacle : %f\n",x_obstacle);
-            //printf("y_obstacle : %f\n",y_obstacle);
+
+            double x_obstacle = coord->x*1000 + cos(coord->theta +PI/2 +nearest_angle)* nearest_distance;
+            double y_obstacle = coord->y*1000 + sin(coord->theta +PI/2 +nearest_angle)* nearest_distance;
+
+            printf("x_obstacle : %f\n",x_obstacle);
+            printf("y_obstacle : %f\n",y_obstacle);
+
             all_struct->opp_pos->x[all_struct->opp_pos->nb_opp-1] = x_obstacle;
             all_struct->opp_pos->y[all_struct->opp_pos->nb_opp-1] = y_obstacle;
       }
@@ -269,13 +297,14 @@ bool isAbeacon(Cluster clust, double diam) {
 bool isObstacle(Cluster clust,RobotPosition* coord) {
     // on regarde si le cluster est un obstacle en regardant si il y a plus de 10 points dans le cluster
     
-    if (clust.points.size() >=1 || clust.points.size() < 40){ 
-        if(clust.points[0].dist_mm_q2/4.0f > 3500.0){
+    if (clust.points.size() > 3 || clust.points.size() < 40){ 
+        if(clust.points[0].dist_mm_q2/4.0f > 3500.0 || clust.points[0].dist_mm_q2/4.0f < 200.0){
             return false;
         }
         //Compare avec la position du robot pour voir si l'obstacle est dans l'air de jeu
-        float x_obstacle = coord->x*1000 + cos(coord->theta +(clust.points[0].angle_z_q14* 90.f/16384.f)/180*PI)* clust.points[0].dist_mm_q2/4.0f;
-        float y_obstacle = coord->y*1000 + sin(coord->theta +(clust.points[0].angle_z_q14* 90.f / 16384.f)/180*PI)* clust.points[0].dist_mm_q2/4.0f;
+        float x_obstacle = coord->x*1000 + cos(coord->theta +PI/2 +(clust.points[0].angle_z_q14* 90.f/16384.f)/180*PI)* clust.points[0].dist_mm_q2/4.0f;
+        float y_obstacle = coord->y*1000 + sin(coord->theta + PI/2 +(clust.points[0].angle_z_q14* 90.f / 16384.f)/180*PI)* clust.points[0].dist_mm_q2/4.0f;
+
         if(x_obstacle< 0 || x_obstacle > 2000 || y_obstacle < 0 || y_obstacle > 3000){
             return false;
         }
@@ -292,7 +321,7 @@ void getFinalBeacon(std::vector<Beacon>& beacons, std::vector<Beacon>& final_bea
     // une fois les trois bon beacons trouvés on les ajoute au vecteur final de beacons
     double sum = 0;
     int size = beacons.size();
-    double desired_distance = 8020  ;           // distance cumulée entre les trois beacons
+    double desired_distance = 8600  ;           // distance cumulée entre les trois beacons
     double error = 100;                         // marge d'erreur pour la distance souhaitée
     for (int i = 0; i < size-2; ++i) {
         for (int j = i + 1; j < size-1; ++j) {
@@ -305,8 +334,8 @@ void getFinalBeacon(std::vector<Beacon>& beacons, std::vector<Beacon>& final_bea
                 double distance3 = DistBtwBeacon(beacons[j], beacons[k]);
 
                 if (((1850 <= distance1 && distance1 <= 1950) || (3250 <= distance1 && distance1 <= 3400)) &&
-                    ((1850 <= distance2 && distance2 <= 1950) || (3250 <= distance2 && distance2 <= 3110)) &&
-                    ((1850 <= distance3 && distance3 <= 1950) || (3250 <= distance3 && distance3 <= 3110))) {
+                    ((1850 <= distance2 && distance2 <= 1950) || (3250 <= distance2 && distance2 <= 3400)) &&
+                    ((1850 <= distance3 && distance3 <= 1950) || (3250 <= distance3 && distance3 <= 3400))) {
 
                     sum = distance1 + distance2 + distance3;
 
@@ -314,13 +343,47 @@ void getFinalBeacon(std::vector<Beacon>& beacons, std::vector<Beacon>& final_bea
                         final_beacons.push_back(beacons[i]);
                         final_beacons.push_back(beacons[j]);
                         final_beacons.push_back(beacons[k]);
-                        //return;
+                        return;
                     }
                 }
             }
         }
     }    
 }
+//////// opti à tester
+/* void getFinalBeacon(const std::vector<Beacon>& beacons, std::vector<Beacon>& final_beacons) {
+    int size = beacons.size();
+    double desired_distance = 8600;
+    double error = 100;
+
+    // Précalculer les distances entre toutes les paires de balises
+    std::vector<std::vector<double>> distances(size, std::vector<double>(size, 0));
+    for (int i = 0; i < size - 1; ++i) {
+        for (int j = i + 1; j < size; ++j) {
+            distances[i][j] = DistBtwBeacon(beacons[i], beacons[j]);
+            distances[j][i] = distances[i][j]; // La distance entre i et j est la même que j et i
+        }
+    }
+
+    for (int i = 0; i < size - 2; ++i) {
+        for (int j = i + 1; j < size - 1; ++j) {
+            for (int k = j + 1; k < size; ++k) {
+                double sum = distances[i][j] + distances[i][k] + distances[j][k];
+                if (((1850 <= distances[i][j] && distances[i][j] <= 1950) || (3250 <= distances[i][j] && distances[i][j] <= 3400)) &&
+                    ((1850 <= distances[i][k] && distances[i][k] <= 1950) || (3250 <= distances[i][k] && distances[i][k] <= 3400)) &&
+                    ((1850 <= distances[j][k] && distances[j][k] <= 1950) || (3250 <= distances[j][k] && distances[j][k] <= 3400))) {
+
+                    if (fabs(desired_distance - sum) < error) {
+                        final_beacons.push_back(beacons[i]);
+                        final_beacons.push_back(beacons[j]);
+                        final_beacons.push_back(beacons[k]);
+                        return;
+                    }
+                }
+            }
+        }
+    }
+} */
 
 double DistBtwBeacon(Beacon beacon1, Beacon beacon2) {
     return sqrt(pow(beacon1.distance, 2) + pow(beacon2.distance, 2) - 2 * beacon1.distance * beacon2.distance * cos(((beacon1.angle - beacon2.angle))*(M_PI / 180.0)));
@@ -406,7 +469,7 @@ void disconnectLidar(ILidarDriver* lidar){
 }
 
 void newsort(std::vector<Beacon>& final_beacons) {
-    float mean = 2670;
+    float mean = 2852;
     double distance1 = DistBtwBeacon(final_beacons[0], final_beacons[1]);
     double distance2 = DistBtwBeacon(final_beacons[1], final_beacons[2]);
     if (distance1 >= mean)               // si distance1 = A et distance2 = B
