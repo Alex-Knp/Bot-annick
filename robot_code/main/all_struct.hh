@@ -20,14 +20,41 @@
 #include "../sdk/include/sl_lidar_driver.h"
 #include "../sdk/include/sl_lidar.h"
 
-enum side {left, right};
+// Strategy States
+enum{CALIB_STATE, WAIT_INIT_STATE,ON_THE_MOVE,
+	GO_TO_POT,GO_TO_PLANT,GO_TO_PANNEL,GO_TO_DROP,GO_TO_END,
+	TAKE_PLANT,TAKE_POT,
+	TURN, MOVE,START, // Test FSM states
+	SOLAR_PANNEL_STATE,DROP_POT_STATE,END_STATE};
+
+//teams
+enum {TEAM_YELLOW,TEAM_BLUE};
+
+//side 
+enum side {LEFT, RIGHT};
+
+// Plant Manager State
+enum State {WAITING_PLANT, GRAB_PLANT, STORE_PLANT, WAITNG_CLEAR};
+
+// Fill state of storage
+enum Fill {EMPTY, POT, DOUBLE_POT, POT_AND_PLANT, DOUBLE_POT_AND_PLANT, PLANT};
+
+// Storage angle
+enum Angle {PICKING, PLANT1, PLANT2, PLANT3, STANDBY};
+
+// Stepper height
+enum Height {GROUND, LOW, MIDDLE, HIGH};
 
 // forward declaration for localization
 typedef struct RobotPosition RobotPosition;
 typedef struct lidar_data lidar_data;
 typedef struct OpponentsPosition OpponentsPosition;
+typedef struct Strategy Strategy;
 
-// forward declaration for actuators 
+// forward declaration for actuators
+typedef struct Storage Storage;
+typedef struct Side Side;
+typedef struct Plant_Manager; 
 
 
 /// Main controller structure
@@ -36,8 +63,13 @@ typedef struct BigStruct
 	// Localisation data
 	RobotPosition *rob_pos;
 	OpponentsPosition *opp_pos;
+	Strategy *strat;
 	lidar_data *table;
 	sl::ILidarDriver* drv;
+
+	int team_id;
+	//double time; chrono
+	bool startup; // False until the startup microswitch is pressed
 
 
 

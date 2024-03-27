@@ -8,6 +8,7 @@
 #include "../communication/SPI_spidev.hh"
 #include "../communication/UART.hh"
 #include "../Path_planning/Path_planning.hh"
+#include "../Strategy/strategy.hh"
 
 
 /*! \brief controller loop 
@@ -21,6 +22,9 @@ int main()
     BigStruct *all_struct = init_BigStruct();
   
     scanLidar(all_struct);
+
+    
+    
     //std::thread scanThread(scanLidar, all_struct);
     //std::thread controlThread(main_controller, all_struct); 
   

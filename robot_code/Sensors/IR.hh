@@ -1,15 +1,7 @@
-#pragma one 
+#pragma once 
 
-//#include "all_struct.hh"
-
-//#include <iostream>
-//#include <vector>
-#include <algorithm>
-#include <cmath>  
-#include "time.h"
-//#include "../controller/motor_ask.hh"
-//#include "../communication/SPI_spidev.hh"
-//#include "../communication/SPI_spidev.cpp"
+#include "all_struct.hh"
+#include "../communication/SPI_spidev.hh"
 
 // Structure pour représenter un point (x, y)
 struct Point {
@@ -23,3 +15,5 @@ double interpolateLinear(int xi);
 int If_pot_IR(int fd);
 int If_plant_IR(int fd);
 int If_double_pot(int fd);
+int wait_for_plant(int fd);
+int wait_for_pot(int fd);

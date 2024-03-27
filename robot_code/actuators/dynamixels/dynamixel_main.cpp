@@ -53,28 +53,6 @@ int left_dyn_set_angle(DynStruct* dyn, float gripper_goal_angle, float travel_sp
 }
 
 
-
-int home(DynStruct* dyn){
-    // float homing_speed = 10; // % of the max speed
-    // float homing_detection_torque = 5; //% of the max torque
-    // float standby_angle = 220; // dynamixel degrees
-
-    // // Set the speed of the dynamixel
-    // setWheelMode(dyn->id);
-    // setSpeed(homing_speed, dyn->id);
-    // while(getTorque(dyn->id) < homing_detection_torque){}
-    // setSpeed(0, dyn->id);
-
-    // setJointMode(dyn->id);
-    // setAngle(standby_angle, dyn->id);
-    // dyn->current_sector = 1;
-    // dyn->gripper_current_angle = standby_angle/3.0;
-
-    // dyn->gripper_current_angle = dyn->homing_sector1_angle;
-
-    return 0;
-}
-
 int dyn_init(DynStruct* left_dyn){//,DynStruct* right_dyn){
 
 
@@ -83,20 +61,15 @@ int dyn_init(DynStruct* left_dyn){//,DynStruct* right_dyn){
     //set joint mode
     left_dyn->Servo.setControlMode(2);
     //set position
-    left_dyn->Servo.setGoalPosition(256);//256
+    left_dyn->Servo.setGoalPosition(256);
     //set moving speed
     left_dyn->Servo.setSpeed(300);
     //torque enable
     left_dyn->Servo.setTorqueEnable(1);
 
-    // printf("before while\n");
-    // while(left_dyn->Servo.isMoving() == 1){
-    //     sleep(0.01);
-    // }
-    // printf("after while\n");
     sleep(1);
 
-    left_dyn->gripper_current_angle = 75;//75
+    left_dyn->gripper_current_angle = 75;
     return 0;
 }
 
@@ -119,12 +92,6 @@ int test(){
 }
 
 int main(){
-    // DynStruct *left_dyn = new DynStruct;
-    // //DynStruct *right_dyn = new DynStruct;
-    // dyn_init(left_dyn);//,right_dyn);
-    // printf("Init done\n");
-    // left_dyn_set_angle(left_dyn, 150, 50);
-    //test();
         
     XL_320 left_Servo;
     left_Servo.verbose = true;
@@ -134,48 +101,39 @@ int main(){
     left_dyn->Servo = left_Servo;
 
     dyn_init(left_dyn);
-    printf("Init done ############################################################################\n");
-
-    // sleep(1);
-    // left_dyn_set_angle(left_dyn, 120, 100);
-    // sleep(1);
-    // left_dyn_set_angle(left_dyn, 22, 70);
+    printf("Init done\n");
 
     while(1){
-        dyn_go_to(left_dyn, NULL, 1, 4, 100);
+        dyn_go_to(left_dyn, NULL, LEFT, STANDBY, 100);
         sleep(1);
-        dyn_go_to(left_dyn, NULL, 1, 0, 100);
+        dyn_go_to(left_dyn, NULL, LEFT, PICKING, 100);
         sleep(1);
-        dyn_go_to(left_dyn, NULL, 1, 1, 100);
+        dyn_go_to(left_dyn, NULL, LEFT, PLANT1, 100);
         sleep(1);
-        dyn_go_to(left_dyn, NULL, 1, 2, 100);
+        dyn_go_to(left_dyn, NULL, LEFT, PLANT2, 100);
         sleep(1);
-        dyn_go_to(left_dyn, NULL, 1, 3, 100);
+        dyn_go_to(left_dyn, NULL, LEFT, PLANT3, 100);
         sleep(1);
     }
 
-    dyn_go_to(left_dyn, NULL, 1, 1, 100);
-
-
     return 0;
-
 }
 
-int dyn_go_to(DynStruct *left_dyn,DynStruct *right_dyn, int side, int number, int speed){
+int dyn_go_to(DynStruct *left_dyn,DynStruct *right_dyn, side side, Angle angle, int speed){
     //left side
-    if(side == 1){
-        switch (number)
+    if(side == LEFT){
+        switch (angle)
         {
-        case 0: //pick up
+        case PICKING: //pick up
             left_dyn_set_angle(left_dyn, 32, speed);
             break;
-        case 1: //plant 1
+        case PLANT1: //plant 1
             left_dyn_set_angle(left_dyn, 90.5, speed);
             break;
-        case 2: //plant 2
+        case PLANT2: //plant 2
             left_dyn_set_angle(left_dyn, 186, speed);
             break;
-        case 3: //plant 3
+        case PLANT3: //plant 3
             left_dyn_set_angle(left_dyn, 245, speed);
             break;        
         default: //standby

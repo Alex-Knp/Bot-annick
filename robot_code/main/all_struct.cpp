@@ -4,6 +4,7 @@
 #include "../Path_planning/Path_planning.hh"
 #include "../controller/motor_ask.hh"
 #include "../communication/I2C.hh"
+#include "../Strategy/strategy.hh"
 //#include "../communication/SPI_spidev.hh"
 #include "../communication/UART.hh"
 //#include "../actuators/Servo/Servo.hh"
@@ -60,6 +61,11 @@ BigStruct* init_BigStruct(){
 
 	// lidar driver
 	all_struct->drv = connectLidar();
+
+	//strategy
+	all_struct->strat = (Strategy*) malloc(sizeof(Strategy));
+	all_struct->strat->state = CALIB_STATE;
+
 
 
 

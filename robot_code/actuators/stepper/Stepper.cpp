@@ -55,7 +55,7 @@ int stepper_homing(int fd, int stepper_id) {
     }
 }
 
-int stepper_go_to(int fd, int stepper_id, double depth, int speed_coef){
+int stepper_go_to(int fd, side stepper_id, double depth, int speed_coef){
         
     unsigned char stepper_adress; 
     uint8_t control_message[5];
@@ -65,10 +65,10 @@ int stepper_go_to(int fd, int stepper_id, double depth, int speed_coef){
         printf("Erreur: la profondeur doit être inférieure à 12.5.\n");
         return -1;}
 
-    if(stepper_id == 0){        // left stepper
+    if(stepper_id == LEFT){        // left stepper
         control_message[0] = 0xf5;}
 
-    else if(stepper_id == 1){   // right
+    else if(stepper_id == RIGHT){   // right
         control_message[0] = 0xf6;}
 
     else{
@@ -94,9 +94,9 @@ double get_stepper_position(int fd, side stepper_id){
     uint8_t position_message[5] = {0x7f, 0x00, 0x00, 0x00, 0x00};
 
     if(stepper_id == 0){
-        position_message[0] = 0x9f;}
-    else if(stepper_id == 1){
         position_message[0] = 0x8f;}
+    else if(stepper_id == 1){
+        position_message[0] = 0x9f;}
     else{
         printf("error : id should be 0 (left stepper) or 1 (right stepper)\n");
         return -1;}
@@ -105,7 +105,7 @@ double get_stepper_position(int fd, side stepper_id){
 
     int position_returned = position_message[1] << 24 | position_message[2] << 16 | position_message[3] << 8 | position_message[4];
 
-    return position_returned/3200;
+    return position_returned/3200/5;
 }
 
 //  int main() {

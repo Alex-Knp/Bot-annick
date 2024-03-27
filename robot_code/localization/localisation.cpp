@@ -2,6 +2,7 @@
 #include "localisation.hh"
 #include <chrono>
 #include <algorithm>
+#include ../controller/motor_ask.hh
 
 #ifndef _countof
 #define _countof(_Array) (int)(sizeof(_Array) / sizeof(_Array[0]))
@@ -74,6 +75,7 @@ void scanLidar(BigStruct *all_struct){
     //sl_lidar_response_measurement_node_hq_t closest_point;
 
     while (is<1000) {
+
         auto start_time = std::chrono::high_resolution_clock::now();
         sl_lidar_response_measurement_node_hq_t nodes[8192];
         std::vector<Cluster> clusters;

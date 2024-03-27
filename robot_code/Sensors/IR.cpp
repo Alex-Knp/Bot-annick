@@ -133,6 +133,24 @@ int If_double_pot(int fd){
     }
 }
 
+int wait_for_plant(int fd){
+    while(1){
+        if(If_plant_IR(fd)){
+            return 1;
+        }
+        usleep(5000);
+    }
+}
+
+int wait_for_pot(int fd){
+    while(1){
+        if(If_pot_IR(fd)){
+            return 1;
+        }
+        usleep(5000);
+    }
+}
+
 
 // int main(){
 
