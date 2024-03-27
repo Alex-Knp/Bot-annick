@@ -4,7 +4,7 @@ print("cv2 version : ",cv2.__version__)
 
 def main():
     # Initialize the camera
-    cap = cv2.VideoCapture(1)  # Change the parameter to 1 if using an external USB camera
+    cap = cv2.VideoCapture(0)  # Change the parameter to 1 if using an external USB camera
     print('cap ok')
     # Check if camera opened successfully
     if not cap.isOpened():
@@ -14,6 +14,8 @@ def main():
     while True:
         # Capture frame-by-frame
         ret, frame = cap.read()
+
+        print(frame)
 
         if not ret:
             print("Error: Failed to capture frame.")

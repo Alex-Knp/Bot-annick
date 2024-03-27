@@ -47,7 +47,13 @@ int picking_FSM_left(Plant_Manager* plant_manager){
 
         case GRAB_PLANT:
             
+            // Stepper DOWN
+            stepper_go_to(fd, LEFT, 12.5, 30);
 
+            // CHECK WHEN ARRIVED
+            while(1){
+                if(get_stepper_position(fd, LEFT) > 12.3){break;}
+            }
 
         case STORE_PLANT:
 
