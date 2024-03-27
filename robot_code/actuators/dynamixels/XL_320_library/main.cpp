@@ -7,7 +7,10 @@ int main(int argc, char **argv)
 
     XL_320 Servo;
     Servo.verbose = true;
-    Servo.is_id(0x05);
+    // Servo.factory_reset();
+    // Servo.is_id(0x01);
+    // Servo.setID(5);
+    // Servo.is_id(0x05);
 
     // --- Timing optimization
 
@@ -34,7 +37,7 @@ int main(int argc, char **argv)
     Servo.setTorqueEnable(0);
     Servo.setControlMode(2);
     Servo.setSpeed(1023);
-    Servo.setGoalPosition(800);
+    Servo.setGoalPosition(0);
     Servo.setTorqueEnable(1);
     //sleep(1);
     //Servo.setSpeed(0);

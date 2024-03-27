@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cmath>
+#include <chrono>
 #include "XL_320_library/XL_320.hpp"
 
 typedef struct DynStruct {
@@ -10,3 +11,4 @@ typedef struct DynStruct {
 int left_dyn_set_angle(DynStruct* dyn, float gripper_goal_angle, float travel_speed);
 int home(DynStruct* dyn);
 int dyn_init(DynStruct* left_dyn,DynStruct* right_dyn);
+int dyn_go_to(DynStruct *left_dyn,DynStruct *right_dyn, int side, int number, int speed);
