@@ -1,4 +1,5 @@
 #include "Path_planning.hh"
+#include "../localization/localisation.hh"
 #include <cmath>
 #include <vector>
 #include "../controller/motor_ask.hh"
@@ -11,8 +12,8 @@ void Path_planning_update(BigStruct* all_struct){
     double k_rep;
     double rho;
     double K = 0.1;         // Speed factor
-    double x_robot = 0.0;   // Robot position [m]
-    double y_robot = 0.0;   // Robot position [m]
+    double x_robot = all_struct->rob_pos->x;   // Robot position [m]
+    double y_robot = all_struct->rob_pos->y;   // Robot position [m]
 
     double x_obs;           // Obstacle position [m]
     double y_obs;
@@ -35,21 +36,21 @@ void Path_planning_update(BigStruct* all_struct){
     double X_goal = all_struct->strat->goal_x;            // Goal position [m]
     double Y_goal = all_struct->strat->goal_y;            // Goal position [m]
 
-    double rho_goal = sqrt(pow(x_robot - X_goal, 2) + pow(y_robot - Y_goal, 2));
+    double rho_goal = sqrt(pow(x_robot - x_goal, 2) + pow(y_robot - y_goal, 2));
 
 
     // compute attractive field
 
     // if the robot is far from the goal (rho_goal > trigger_decel), the robot moves at maximum speed
     if (rho_goal > trigger_decel) {     
-        F[0] = v_max * (X_goal - x_robot) / rho_goal;
-        F[1] = v_max * (Y_goal - y_robot) / rho_goal;
+        F[0] = v_max * (x_goal - x_robot) / rho_goal;
+        F[1] = v_max * (y_goal - y_robot) / rho_goal;
     }
 
     // if the robot is close to the goal (rho_goal <= trigger_decel), the robot decelerates
     else {
-        F[0] = v_max * (X_goal - x_robot) / trigger_decel;
-        F[1] = v_max * (Y_goal - y_robot) / trigger_decel;
+        F[0] = v_max * (x_goal - x_robot) / trigger_decel;
+        F[1] = v_max * (y_goal - y_robot) / trigger_decel;
     }
 
 
@@ -186,7 +187,7 @@ void Path_planning_update(BigStruct* all_struct){
         Frep[1] += k_rep * (1/rho - 1/rho_0) / pow(rho, 3) * (y_robot-y_obs);
         Frep[0] += k_rep * (1/rho - 1/rho_0) / pow(rho, 3) * (x_robot-x_obs);
     }
-    else if (x_robot - 0.15 < rho_0 && 1.05 < y_robot < 1.95) {
+    else if (x_robot - 0.15 < rho_0 && (1.05 < y_robot) < 1.95) {
         rho = x_robot - 0.15;
         x_obs = 0.15;
         if (rho < 0.1) {
