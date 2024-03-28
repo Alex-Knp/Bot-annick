@@ -1,5 +1,7 @@
 #include "Path_planning.hh"
 #include "../localization/localisation.hh"
+#include "../controller/motor_ask.hh"
+#include "../Strategy/strategy.hh"
 #include <cmath>
 #include <vector>
 
@@ -15,12 +17,12 @@ void Path_planning_update(BigStruct* all_struct){
     double y_robot = all_struct->rob_pos->y;   // Robot position [m]
 
     double x_obs;           // Obstacle position [m]
-    double y_obs;
+    double y_obs;          
 
     double x_lim = 2.0;     // limite map x [m]
     double y_lim = 3.0;     // limite map y [m]
 
-    double *F = (double *)calloc(2, sizeof(double));    // Field vector [rad/s]
+    double *F = (double *)calloc(2, sizeof(double));       // Field vector [rad/s]
     double *Frep = (double *)calloc(2, sizeof(double));    // Field vector [rad/s]
 
     double v_max = all_struct->path->v_max;
@@ -32,8 +34,8 @@ void Path_planning_update(BigStruct* all_struct){
 
     double trigger_decel = 0.1;     // distance [m] from goal at which the robot starts to decelerate
 
-    double x_goal = 0.0;            // Goal position [m]
-    double y_goal = 0.0;            // Goal position [m]
+    double x_goal = all_struct->strat->goal_x;            // Goal position [m]
+    double y_goal = all_struct->strat->goal_y;            // Goal position [m]
 
     double rho_goal = sqrt(pow(x_robot - x_goal, 2) + pow(y_robot - y_goal, 2));
 
@@ -244,4 +246,57 @@ void Path_planning_update(BigStruct* all_struct){
 
     free(Frep);
     free(F);
+}
+
+
+
+void setSpeed(BigStruct* all_struct) {
+
+    float stationnary_error_angle = M_PI/4 ;          //the error angles for which the robot only turns and do not drive forward
+    double x_goal = all_struct->strat->goal_x;
+    double y_goal = all_struct->strat->goal_y;
+
+    float current_theta = all_struct->rob_pos->theta;
+    float wanted_theta = all_struct->path->theta;
+    float wanted_speed = all_struct->path->norm;
+    float turning_speed = wanted_speed / 1.5;       //[rad/s] the speed at which the robot turns
+
+    double x = all_struct->rob_pos->x;
+    double y = all_struct->rob_pos->y;
+
+    double rho = sqrt(pow(x-x_goal/1000, 2) + pow(y-y_goal/1000, 2));  // TODO : find where to get the info
+
+    float angle_error = wanted_theta - current_theta;
+
+    if (angle_error > M_PI) {                       // Angle error between -PI and +PI
+    angle_error -= 2*M_PI;
+    } else if (angle_error < -M_PI) {
+    angle_error += 2*M_PI;
+    }
+
+    float linear_speed = 0.0;
+    float rotational_speed = 0.0;
+
+
+    if(abs(angle_error)>stationnary_error_angle){
+        linear_speed = 0.0;
+        rotational_speed = turning_speed * angle_error / abs(angle_error);
+    } else {
+        linear_speed = wanted_speed*cos(angle_error/stationnary_error_angle*PI/2.0);
+        rotational_speed = turning_speed*angle_error/stationnary_error_angle;
+    }
+
+    float L_wheel_speed = linear_speed - rotational_speed;
+    float R_wheel_speed = linear_speed + rotational_speed;
+
+    if (rho < 0.05) {
+        L_wheel_speed = 0;
+        R_wheel_speed = 0;
+        //all_struct->strat->goal_reached = true;
+    }
+    /*else {
+        all_struct->strat->goal_reached = false;
+    }*/
+
+    motor_ask(L_wheel_speed, R_wheel_speed);
 }

@@ -65,8 +65,9 @@ BigStruct* init_BigStruct(){
 	//strategy
 	all_struct->strat = (Strategy*) malloc(sizeof(Strategy));
 	all_struct->strat->state = CALIB_STATE;
-
-
+	all_struct->strat->goal_reached = false;
+	all_struct->strat->goal_x = 0.5;
+	all_struct->strat->goal_x = 0.5;
 
 
 	return all_struct;
