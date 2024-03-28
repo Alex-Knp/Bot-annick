@@ -57,7 +57,10 @@ typedef struct lidar_data lidar_data;
 // forward declaration for actuators
 typedef struct Storage Storage;
 typedef struct Side Side;
-typedef struct Plant_Manager; 
+typedef struct Plant_Manager Plant_Manager; 
+
+
+typedef struct Path_planning Path_planning;
 
 
 typedef struct RobotPosition
@@ -101,7 +104,7 @@ typedef struct BigStruct
 	Strategy *strat;
 	lidar_data *table;
 	sl::ILidarDriver* drv;
-
+	Path_planning *path;
 	int team_id;
 	bool startup; // False until the startup microswitch is pressed
 
