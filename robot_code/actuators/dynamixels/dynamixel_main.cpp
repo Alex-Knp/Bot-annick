@@ -53,7 +53,7 @@ int left_dyn_set_angle(DynStruct* dyn, float gripper_goal_angle, float travel_sp
 }
 
 
-int dyn_init(DynStruct* left_dyn){//,DynStruct* right_dyn){
+int left_dyn_init(DynStruct* left_dyn){//,DynStruct* right_dyn){
 
 
     // torque disable
@@ -73,51 +73,52 @@ int dyn_init(DynStruct* left_dyn){//,DynStruct* right_dyn){
     return 0;
 }
 
-int test(){
-    
-    XL_320 Servo;
-    Servo.verbose = true;
-    Servo.is_id(0x05);
+int right_dyn_init(DynStruct* right_dyn){
+    // torque disable
+    right_dyn->Servo.setTorqueEnable(0);
+    //set joint mode
+    right_dyn->Servo.setControlMode(2);
+    //set position
+    right_dyn->Servo.setGoalPosition(256);
+    //set moving speed
+    right_dyn->Servo.setSpeed(300);
+    //torque enable
+    right_dyn->Servo.setTorqueEnable(1);
 
-    // // Test ping
-    Servo.ping();
+    sleep(1);
 
-    Servo.setTorqueEnable(0);
-    Servo.setControlMode(2);
-    Servo.setSpeed(1023);
-    Servo.setGoalPosition(0);
-    Servo.setTorqueEnable(1);
-
+    right_dyn->gripper_current_angle = 75;
     return 0;
 }
 
-int main(){
+
+// int main(){
         
-    XL_320 left_Servo;
-    left_Servo.verbose = true;
-    left_Servo.is_id(0x05);
+//     XL_320 left_Servo;
+//     left_Servo.verbose = true;
+//     left_Servo.is_id(0x05);
 
-    DynStruct *left_dyn = new DynStruct;
-    left_dyn->Servo = left_Servo;
+//     DynStruct *left_dyn = new DynStruct;
+//     left_dyn->Servo = left_Servo;
 
-    dyn_init(left_dyn);
-    printf("Init done\n");
+//     left_dyn_init(left_dyn);
+//     printf("Init done\n");
 
-    while(1){
-        dyn_go_to(left_dyn, NULL, LEFT, STANDBY, 100);
-        sleep(1);
-        dyn_go_to(left_dyn, NULL, LEFT, PICKING, 100);
-        sleep(1);
-        dyn_go_to(left_dyn, NULL, LEFT, PLANT1, 100);
-        sleep(1);
-        dyn_go_to(left_dyn, NULL, LEFT, PLANT2, 100);
-        sleep(1);
-        dyn_go_to(left_dyn, NULL, LEFT, PLANT3, 100);
-        sleep(1);
-    }
+//     while(1){
+//         dyn_go_to(left_dyn, NULL, LEFT, STANDBY, 100);
+//         sleep(1);
+//         dyn_go_to(left_dyn, NULL, LEFT, PICKING, 100);
+//         sleep(1);
+//         dyn_go_to(left_dyn, NULL, LEFT, PLANT1, 100);
+//         sleep(1);
+//         dyn_go_to(left_dyn, NULL, LEFT, PLANT2, 100);
+//         sleep(1);
+//         dyn_go_to(left_dyn, NULL, LEFT, PLANT3, 100);
+//         sleep(1);
+//     }
 
-    return 0;
-}
+//     return 0;
+// }
 
 int dyn_go_to(DynStruct *left_dyn,DynStruct *right_dyn, side side, Angle angle, int speed){
     //left side

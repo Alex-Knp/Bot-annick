@@ -8,11 +8,11 @@ int open_claw(int fd, side servo_id) {
     int *id = new int;
     int *position = new int;
 
-    if(servo_id == left) {
+    if(servo_id == LEFT) {
         *position = 18000;
         *id = 1;
         
-    } else if(servo_id == right) {
+    } else if(servo_id == RIGHT) {
         *position = 10000;
         *id = 3;
         
@@ -33,11 +33,11 @@ int close_claw(int fd, side servo_id) {
     int *id = new int; 
     int *position = new int;
 
-    if(servo_id == left) {
+    if(servo_id == LEFT) {
         *position = 48000;
         *id = 1;
         
-    } else if(servo_id == right) {
+    } else if(servo_id == RIGHT) {
         *position = 1;
         *id = 3;
         
@@ -57,11 +57,11 @@ int extend_pento(int fd, side servo_id) {
     int id; 
     int position = 0;
 
-    if(servo_id == left) {
+    if(servo_id == LEFT) {
         int position = 0;
         int id = 2;
         
-    } else if(servo_id == right) {
+    } else if(servo_id == RIGHT) {
         int position = 0;
         int id = 4;
         
@@ -80,11 +80,11 @@ int retract_pento(int fd, side servo_id) {
     int id; 
     int position = 1;
 
-    if(servo_id == left) {
+    if(servo_id == LEFT) {
         int position = 1;
         int id = 2;
         
-    } else if(servo_id == right) {
+    } else if(servo_id == RIGHT) {
         int position = 1;
         int id = 4;
         
@@ -133,7 +133,7 @@ void servo_ask(int fd, int id, int position) {
 //     printf("Ask the position of the servo\n");
 //     int fd = spi_init_1();
 
-//     close_claw(fd, left);
+//     close_claw(fd, LEFT);
 
 //     close(fd);
 //     return 0;

@@ -1,9 +1,9 @@
-from picamera import PiCamera
+from picamera2 import Picamera2
 from time import sleep
 
 def main():
     # Initialize the PiCamera
-    camera = PiCamera()
+    camera = Picamera2()
     camera.resolution = (640, 480)  # Set the resolution of the camera
     camera.start_preview()  # Start the camera preview
 

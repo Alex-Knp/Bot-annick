@@ -2,10 +2,10 @@
 
 void main_strategy(BigStruct* all_struct){
     //  Global Variables 
-    if(all_struct->time > 80.0){
+    if(all_struct->elapsed_time > 80.0){
         all_struct->strat->state = GO_TO_END;
     }
-    if(all_struct->time > 90.0){
+    if(all_struct->elapsed_time > 90.0){
         all_struct->strat->state = END_STATE;
     }
 
@@ -13,9 +13,7 @@ void main_strategy(BigStruct* all_struct){
 
     {
         case CALIB_STATE:
-            if(verification_beacon(all_struct)){
-                all_struct->strat->state = WAIT_INIT_STATE;
-            }
+
             break;
         case WAIT_INIT_STATE:
             if(all_struct->team_id == TEAM_BLUE && !all_struct->startup){
@@ -31,6 +29,9 @@ void main_strategy(BigStruct* all_struct){
             break;
         case ON_THE_MOVE:
             // Robot is moving
+            if (all_struct->strat->goal_reached){
+                break;
+            }
             break;
 
         case GO_TO_POT:
@@ -63,11 +64,4 @@ void main_strategy(BigStruct* all_struct){
 
     }
 
-}
-
-bool verification_beacon(BigStruct* all_struct){
-    if (all_struct->rob_pos->x == 0.0 && all_struct->rob_pos->y == 0.0 && all_struct->rob_pos->theta == 0.0){
-        return false;
-    }
-    return true;
 }

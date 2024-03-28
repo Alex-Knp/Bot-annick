@@ -10,20 +10,20 @@ def main():
     if not cap.isOpened():
         print("Error: Could not open camera.")
         return
-
+    count = 0
     while True:
         # Capture frame-by-frame
         ret, frame = cap.read()
-
-        print(frame)
-
+        print("frame count = ",count)
+        count+=1
+        
         if not ret:
             print("Error: Failed to capture frame.")
-            break
+            continue
 
         # Display the resulting frame
         
-        cv2.imshow('Camera Stream', frame)
+        # cv2.imshow('Camera Stream', frame)
 
         # Press 'q' to exit the loop
         if cv2.waitKey(1) & 0xFF == ord('q'):
