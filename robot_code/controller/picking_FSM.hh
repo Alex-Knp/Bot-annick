@@ -7,17 +7,18 @@
 #include "../actuators/stepper/Stepper.hh"
 #include "../actuators/Servo/Servo.hh"
 
-typedef struct Storage{
-    Side left; 
-    Side right;
-} Storage;
 
-typedef struct Side{
+struct Side{
     Fill storage_1;
     Fill storage_2;
     Fill storage_3;
     int is_in_middle;
-} Side; 
+}; 
+
+typedef struct Storage{
+    Side left; 
+    Side right;
+} Storage;
 
 typedef struct Plant_Manager{
     Storage storage;
@@ -25,7 +26,14 @@ typedef struct Plant_Manager{
     State right_state;
     int potting_enable;
     Fill type_expected;
+    DynStruct* left_dyn;
+    DynStruct* right_dyn;
+    int fd;
 } Plant_Manager;
 
-int picking_FSM(Plant_Manager* plant_manager);
-int plant_manager_init();
+int picking_FSM_left(Plant_Manager* plant_manager);
+int init_plant_manager();
+Angle drop_slot(Plant_Manager *PM, side side);
+
+float travel_height(Plant_Manager *PM, side side, Angle angle);
+int update_fill(Plant_Manager *PM, side side, Angle angle);

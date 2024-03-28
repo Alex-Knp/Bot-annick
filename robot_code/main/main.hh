@@ -4,3 +4,4 @@
 
 
 void controller_finish(BigStruct *all_struct);
+void timeThread(BigStruct *all_struct);

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../main/all_struct.hh"
+#include "../../main/all_struct.hh"
 #include "../../communication/SPI_spidev.hh"
 
 int stepper_homing(int fd, int stepper_id); 

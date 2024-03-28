@@ -110,7 +110,7 @@ bool isAbeacon(Cluster clust, double diam);
 * \internal
 * error : Max error threshold accepted when comparing distance btw beacons(default value: 50)
 */
-void getFinalBeacon(std::vector<Beacon>& beacons, std::vector<Beacon>& final_beacons);
+void getFinalBeacon(std::vector<Beacon>& beacons, std::vector<Beacon>& final_beacons, BigStruct* all_struct);
 /**
 * Compute the distance between two beacons
 * \param beacon1 
@@ -129,3 +129,6 @@ void fill_points(double x, double y, double x_ref, double y_ref, std::vector<dou
 void getObstacles(BigStruct* all_struct, std::vector<Cluster> tab,RobotPosition* coord);
 
 bool isObstacle(Cluster clust,RobotPosition* coord);
+
+bool OpponnentBeaconCancel (Beacon beacon1, Beacon beacon2, Beacon beacon3, BigStruct* all_struct);
+bool belong_range(double valeur, double borne_inf, double borne_sup);

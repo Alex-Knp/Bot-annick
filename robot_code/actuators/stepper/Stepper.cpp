@@ -61,7 +61,7 @@ int stepper_go_to(int fd, side stepper_id, double depth, int speed_coef){
     uint8_t control_message[5];
     uint8_t response[5];
 
-    if(depth > 12.7){
+    if(depth > 12.8){
         printf("Erreur: la profondeur doit être inférieure à 12.5.\n");
         return -1;}
 
@@ -108,19 +108,12 @@ double get_stepper_position(int fd, side stepper_id){
     return position_returned/3200/5;
 }
 
-//  int main() {
+// int main() {
 
-//      printf("Homing of right stepper\n");
-//      int fd = spi_init_1();
+//     int fd = spi_init_1();
+//     stepper_homing(fd, LEFT); 
 
-//      if(stepper_homing(fd, 0) != 1){
-//          printf("an error occured during homing of right stepper \n"); 
-//          return 0; }
-
-//      stepper_go_to(fd, 0, 1, 2);
-
-//      close(fd);
-
-//      printf("no error occured durin homing of right stepper \n");
-//      return 0;}
+//     stepper_go_to(fd, LEFT, 0.5, 7); 
+//     printf("no error occured durin homing of right stepper \n");
+//     return 0;}
 

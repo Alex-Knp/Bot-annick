@@ -16,6 +16,9 @@
 #include <thread>
 #include <vector>
 #include <iostream>
+#include <time.h>
+#include <mutex>
+
 
 #include "../sdk/include/sl_lidar_driver.h"
 #include "../sdk/include/sl_lidar.h"
@@ -34,7 +37,7 @@ enum {TEAM_YELLOW,TEAM_BLUE};
 enum side {LEFT, RIGHT};
 
 // Plant Manager State
-enum State {WAITING_PLANT, GRAB_PLANT, STORE_PLANT, WAITNG_CLEAR};
+enum State {WAITING_PLANT, GRAB_PLANT, STORE_PLANT, WAITING_CLEAR};
 
 // Fill state of storage
 enum Fill {EMPTY, POT, DOUBLE_POT, POT_AND_PLANT, DOUBLE_POT_AND_PLANT, PLANT};
@@ -68,9 +71,10 @@ typedef struct BigStruct
 	sl::ILidarDriver* drv;
 
 	int team_id;
-	//double time; chrono
 	bool startup; // False until the startup microswitch is pressed
 
+	time_t start_time, current_time, elapsed_time;  // start time mis à zero dans init big struct
+	std::mutex time_mutex;
 
 
 } BigStruct;

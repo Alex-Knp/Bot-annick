@@ -27,6 +27,7 @@ int main()
     
     //std::thread scanThread(scanLidar, all_struct);
     //std::thread controlThread(main_controller, all_struct); 
+    //std::thread time_thread(timeThread);
   
 
     //controlThread.join();
@@ -43,4 +44,28 @@ int main()
 void controller_finish(BigStruct *all_struct)
 {
     free_BigStruct(all_struct);
+}
+
+
+void timeThread(BigStruct *all_struct) {
+    time_t game = 180;
+    while (all_struct->strat->state != END_STATE) {
+        // Obtenez le temps actuel
+        time_t local_time = time(NULL);
+        
+        // Verrouiller la section critique pour accéder à la variable partagée
+        all_struct->time_mutex.lock();
+        all_struct->current_time = local_time;
+        all_struct->elapsed_time = difftime(all_struct->current_time, all_struct->start_time);
+        if (all_struct->elapsed_time > game)
+        {
+            all_struct->strat->state = END_STATE;
+        }
+        
+        all_struct->time_mutex.unlock();
+
+        
+        // Attendre un certain temps (par exemple, 1 seconde) avant de vérifier à nouveau le temps
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+    }
 }

@@ -5,12 +5,12 @@
 #include "../controller/motor_ask.hh"
 #include "../communication/I2C.hh"
 #include "../Strategy/strategy.hh"
-//#include "../communication/SPI_spidev.hh"
+#include "../communication/SPI_spidev.hh"
 #include "../communication/UART.hh"
-//#include "../actuators/Servo/Servo.hh"
-//#include "../actuators/stepper/Stepper.hh"
-//#include "../Sensors/IR.hh"
-//#include "../Sensors/Micro_switch.hh"
+#include "../actuators/Servo/Servo.hh"
+#include "../actuators/stepper/Stepper.hh"
+#include "../Sensors/IR.hh"
+#include "../Sensors/Micro_switch.hh"
 
 /*! \brief initialize all the structure that we need
  * 
@@ -48,7 +48,7 @@ BigStruct* init_BigStruct(){
 	all_struct->rob_pos->theta = 0.0;
 
 	// Opponents position
-	all_struct->opp_pos = (OpponentsPosition*) malloc(sizeof(OpponentsPosition));
+ 	all_struct->opp_pos = (OpponentsPosition*) malloc(sizeof(OpponentsPosition));
 	all_struct->opp_pos->x = (double*) malloc(20*sizeof(double));
 	all_struct->opp_pos->y = (double*) malloc(20*sizeof(double));
 	for(int i=0; i<20; i++)
@@ -57,7 +57,7 @@ BigStruct* init_BigStruct(){
 		all_struct->opp_pos->y[i] = 0.0;
 	}
 
-	all_struct->opp_pos->nb_opp = 0;
+	all_struct->opp_pos->nb_opp = 0; 
 
 	// lidar driver
 	all_struct->drv = connectLidar();
@@ -65,6 +65,8 @@ BigStruct* init_BigStruct(){
 	//strategy
 	all_struct->strat = (Strategy*) malloc(sizeof(Strategy));
 	all_struct->strat->state = CALIB_STATE;
+	all_struct->start_time = time(NULL);
+	all_struct->elapsed_time = 0.0;
 
 
 
@@ -83,7 +85,7 @@ void free_BigStruct(BigStruct *all_struct)
 	free(all_struct->opp_pos);
 
 	
-	disconnectLidar(all_struct->drv);
+	//disconnectLidar(all_struct->drv);
 
 	free(all_struct);
 }

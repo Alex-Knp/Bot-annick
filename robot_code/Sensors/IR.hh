@@ -1,6 +1,6 @@
 #pragma once 
 
-#include "all_struct.hh"
+#include "../main/all_struct.hh"
 #include "../communication/SPI_spidev.hh"
 
 // Structure pour représenter un point (x, y)

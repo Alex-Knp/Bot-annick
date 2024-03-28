@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../main/all_struct.hh"
-#include "../../communication/SPI_spidev.hh"
+#include "../communication/SPI_spidev.hh"
 
 enum Micro_switch {Left_ms, Right_ms, emergency};
 
