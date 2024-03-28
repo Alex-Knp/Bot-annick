@@ -43,6 +43,8 @@ int main()
     //scanThread.join();
 
     //main_camera(all_struct);        // à lancer par le troisième thread
+
+    
     return 0;
 }
 
