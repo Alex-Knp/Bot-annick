@@ -62,8 +62,12 @@ void main_strategy(BigStruct* all_struct){
         case GO_TO_PANNEL:
 
         case GO_TO_DROP:
-            // Go to the pot
+            drop_zone_select(all_struct,all_struct->strat->drop_zone);
+            all_struct->strat->state = ON_THE_MOVE;
+            all_struct->strat->next_state = DROP_POT_STATE;
             break;
+
+            
         case GO_TO_END: // Vérifier les coords
             if(all_struct->team_id == TEAM_BLUE){
                 all_struct->strat->goal_x = 225.0;
@@ -81,9 +85,15 @@ void main_strategy(BigStruct* all_struct){
             }
             break;
         case TAKE_PLANT:
-            // Take the plant
+            /*if(all_struct->camera->pot_detected < 3){
+                go to anothet pot zone
+            }*/
+            all_struct->grabbing_plant_enable = true;
+            if(all_struct->grabbing_plant_done){
+                all_struct->grabbing_plant_enable = false;
+                all_struct->strat->state = GO_TO_DROP;
+            }
             break;
-
         case TAKE_POT:
             /*if(all_struct->camera->pot_detected < 3){
                 go to anothet pot zone
@@ -122,32 +132,28 @@ void pot_zone_select(BigStruct* all_struct, int num_pot){
 
 
     if(num_pot == 0){
-        all_struct->strat->goal_x = 1870;
-        all_struct->strat->goal_y= 2000;
+        all_struct->strat->goal_x = 612,5;
+        all_struct->strat->goal_y= 285;
     }
     else if(num_pot == 1){
         all_struct->strat->goal_x = 1387.5;
-        all_struct->strat->goal_y = 2900;
+        all_struct->strat->goal_y = 285;
     }
     else if(num_pot == 2){
-        all_struct->strat->goal_x = 612.5;
-        all_struct->strat->goal_y = 2900;
+        all_struct->strat->goal_x = 1387.5;
+        all_struct->strat->goal_y = 2715;
     }
     else if(num_pot == 3){
         all_struct->strat->goal_x = 612.5;
-        all_struct->strat->goal_y = 120;
+        all_struct->strat->goal_y = 2715;
     }
     else if(num_pot == 4){
-        all_struct->strat->goal_x = 1387.5;
-        all_struct->strat->goal_y = 120;
-    }
-    else if(num_pot == 5){
-        all_struct->strat->goal_x = 1870;
+        all_struct->strat->goal_x = 285;
         all_struct->strat->goal_y = 1000;
     }
-    else {
-        all_struct->strat->goal_x = 1000;
-        all_struct->strat->goal_y = 1500;
+    else if(num_pot == 5){
+        all_struct->strat->goal_x = 285;
+        all_struct->strat->goal_y = 2000;
     }
 
     count_pot++;
@@ -163,35 +169,59 @@ void plant_zone_select(BigStruct* all_struct, int num_plant){
 
 
     if(num_plant == 0){
-        all_struct->strat->goal_x = 1870;
-        all_struct->strat->goal_y= 2000;
+        all_struct->strat->goal_x = 700;
+        all_struct->strat->goal_y= 1000;
     }
     else if(num_plant == 1){
-        all_struct->strat->goal_x = 1387.5;
-        all_struct->strat->goal_y = 2900;
-    }
-    else if(num_plant == 2){
-        all_struct->strat->goal_x = 612.5;
-        all_struct->strat->goal_y = 2900;
-    }
-    else if(num_plant == 3){
-        all_struct->strat->goal_x = 612.5;
-        all_struct->strat->goal_y = 120;
-    }
-    else if(num_plant == 4){
-        all_struct->strat->goal_x = 1387.5;
-        all_struct->strat->goal_y = 120;
-    }
-    else if(num_plant == 5){
-        all_struct->strat->goal_x = 1870;
+        all_struct->strat->goal_x = 1300;
         all_struct->strat->goal_y = 1000;
     }
-    else {
-        all_struct->strat->goal_x = 1000;
+    else if(num_plant == 2){
+        all_struct->strat->goal_x = 1500;
         all_struct->strat->goal_y = 1500;
     }
-
+    else if(num_plant == 3){
+        all_struct->strat->goal_x = 1300;
+        all_struct->strat->goal_y = 2000;
+    }
+    else if(num_plant == 4){
+        all_struct->strat->goal_x = 700;
+        all_struct->strat->goal_y = 2000;
+    }
+    else if(num_plant == 5){
+        all_struct->strat->goal_x = 500;
+        all_struct->strat->goal_y = 1500;
+    }
     count_plant++;
     all_struct->strat->next_pot = all_struct->plant_list[count_plant];
           
 } 
+
+void drop_zone_select(BigStruct* all_struct,int num_drop_zone){
+    if(num_drop_zone == 0){
+        all_struct->strat->goal_x = 612,5;
+        all_struct->strat->goal_y = 10;
+    }
+    else if(num_drop_zone == 1){
+        all_struct->strat->goal_x = 1387,5;
+        all_struct->strat->goal_y = 10;
+    }
+    else if(num_drop_zone == 2){
+        all_struct->strat->goal_x = 1990;
+        all_struct->strat->goal_y = 762,5;
+    }
+    else if(num_drop_zone == 3){
+        all_struct->strat->goal_x = 1990;
+        all_struct->strat->goal_y = 2237,5;
+    }
+    else if(num_drop_zone == 4){
+        all_struct->strat->goal_x = 1387,5;
+        all_struct->strat->goal_y = 2990;
+    }
+    else if(num_drop_zone == 5){
+        all_struct->strat->goal_x = 612,5;
+        all_struct->strat->goal_y = 2990;
+    }
+
+    
+}
