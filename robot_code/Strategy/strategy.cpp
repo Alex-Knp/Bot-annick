@@ -1,5 +1,8 @@
 #include "strategy.hh"
 
+int count_pot = 0;
+int count_plant = 0;
+
 void main_strategy(BigStruct* all_struct){
     //  Global Variables 
     if(all_struct->elapsed_time > 80.0){
@@ -13,55 +16,182 @@ void main_strategy(BigStruct* all_struct){
 
     {
         case CALIB_STATE:
-
+            if (verification_beacon(all_struct)){
+                all_struct->strat->state = WAIT_INIT_STATE;
+            }
             break;
+
         case WAIT_INIT_STATE:
             if(all_struct->team_id == TEAM_BLUE && !all_struct->startup){
                 all_struct->strat->goal_x = 225.0;
                 all_struct->strat->goal_y = 225.0;
                 all_struct->strat->goal_theta = 90.0;// degree
+                all_struct->strat->state = ON_THE_MOVE;
+                all_struct->strat->next_state = GO_TO_POT;
             }
             else if(all_struct->team_id == TEAM_YELLOW && !all_struct->startup){
                 all_struct->strat->goal_x = 225.0;
                 all_struct->strat->goal_y = 2775.0;
                 all_struct->strat->goal_theta = 270.0;// degree
+                all_struct->strat->state = ON_THE_MOVE;
+                all_struct->strat->next_state = GO_TO_POT;
             }
             break;
         case ON_THE_MOVE:
             // Robot is moving
-            if (all_struct->strat->goal_reached){
-                break;
+            if (all_struct->strat->goal_reached && all_struct->startup){
+                all_struct->strat->state = all_struct->strat->next_state;
+                all_struct->strat->goal_reached = false;
             }
             break;
 
         case GO_TO_POT:
+            // Go to the pot
+            pot_zone_select(all_struct, all_struct->strat->next_pot);
+            all_struct->strat->state = ON_THE_MOVE;
+            all_struct->strat->next_state = TAKE_POT;
+            break;
 
         case GO_TO_PLANT:
+
+            plant_zone_select(all_struct, all_struct->strat->next_pot);
+            all_struct->strat->state = ON_THE_MOVE;
+            all_struct->strat->next_state = TAKE_PLANT;
+            break;
 
         case GO_TO_PANNEL:
 
         case GO_TO_DROP:
             // Go to the pot
             break;
-        case GO_TO_END:
-            // Go to the end
+        case GO_TO_END: // Vérifier les coords
+            if(all_struct->team_id == TEAM_BLUE){
+                all_struct->strat->goal_x = 225.0;
+                all_struct->strat->goal_y = 225.0;
+                all_struct->strat->goal_theta = 90.0;// degree
+                all_struct->strat->state = ON_THE_MOVE;
+                all_struct->strat->next_state = END_STATE;
+            }
+            else if(all_struct->team_id == TEAM_YELLOW){
+                all_struct->strat->goal_x = 225.0;
+                all_struct->strat->goal_y = 2775.0;
+                all_struct->strat->goal_theta = 270.0;// degree
+                all_struct->strat->state = ON_THE_MOVE;
+                all_struct->strat->next_state = END_STATE;
+            }
             break;
         case TAKE_PLANT:
             // Take the plant
             break;
 
         case TAKE_POT:
-            // Take the pot
+            /*if(all_struct->camera->pot_detected < 3){
+                go to anothet pot zone
+            }*/
+            all_struct->grabbing_pot_enable = true;
+            if(all_struct->grabbing_pot_done){
+                all_struct->grabbing_pot_enable = false;
+                all_struct->strat->state = GO_TO_PLANT;
+            }
             break;
         case SOLAR_PANNEL_STATE:
 
         case DROP_POT_STATE:
 
         case END_STATE:
-            // End of the game
+            // shutdown actuators
             break;
 
 
     }
 
 }
+
+bool verification_beacon(BigStruct* all_struct){
+    if(all_struct->rob_pos->x ==0.0 && all_struct->rob_pos->y == 0.0 && all_struct->rob_pos->theta == 0.0){
+        return false;
+    }
+    return true;
+}
+
+void pot_zone_select(BigStruct* all_struct, int num_pot){
+    //printf("enter pot zone select\t");
+    //printf("num pot = %d\n", num_pot);
+/*     all_struct->strat->goal_x = all_struct->pot_zones[num_pot].x;
+    all_struct->strat->goal_y = all_struct->pot_zones[num_pot].y; */
+
+
+    if(num_pot == 0){
+        all_struct->strat->goal_x = 1870;
+        all_struct->strat->goal_y= 2000;
+    }
+    else if(num_pot == 1){
+        all_struct->strat->goal_x = 1387.5;
+        all_struct->strat->goal_y = 2900;
+    }
+    else if(num_pot == 2){
+        all_struct->strat->goal_x = 612.5;
+        all_struct->strat->goal_y = 2900;
+    }
+    else if(num_pot == 3){
+        all_struct->strat->goal_x = 612.5;
+        all_struct->strat->goal_y = 120;
+    }
+    else if(num_pot == 4){
+        all_struct->strat->goal_x = 1387.5;
+        all_struct->strat->goal_y = 120;
+    }
+    else if(num_pot == 5){
+        all_struct->strat->goal_x = 1870;
+        all_struct->strat->goal_y = 1000;
+    }
+    else {
+        all_struct->strat->goal_x = 1000;
+        all_struct->strat->goal_y = 1500;
+    }
+
+    count_pot++;
+    all_struct->strat->next_pot = all_struct->pot_list[count_pot];
+          
+} 
+
+void plant_zone_select(BigStruct* all_struct, int num_plant){
+    //printf("enter pot zone select\t");
+    //printf("num pot = %d\n", num_pot);
+/*     all_struct->strat->goal_x = all_struct->pot_zones[num_pot].x;
+    all_struct->strat->goal_y = all_struct->pot_zones[num_pot].y; */
+
+
+    if(num_plant == 0){
+        all_struct->strat->goal_x = 1870;
+        all_struct->strat->goal_y= 2000;
+    }
+    else if(num_plant == 1){
+        all_struct->strat->goal_x = 1387.5;
+        all_struct->strat->goal_y = 2900;
+    }
+    else if(num_plant == 2){
+        all_struct->strat->goal_x = 612.5;
+        all_struct->strat->goal_y = 2900;
+    }
+    else if(num_plant == 3){
+        all_struct->strat->goal_x = 612.5;
+        all_struct->strat->goal_y = 120;
+    }
+    else if(num_plant == 4){
+        all_struct->strat->goal_x = 1387.5;
+        all_struct->strat->goal_y = 120;
+    }
+    else if(num_plant == 5){
+        all_struct->strat->goal_x = 1870;
+        all_struct->strat->goal_y = 1000;
+    }
+    else {
+        all_struct->strat->goal_x = 1000;
+        all_struct->strat->goal_y = 1500;
+    }
+
+    count_plant++;
+    all_struct->strat->next_pot = all_struct->plant_list[count_plant];
+          
+} 

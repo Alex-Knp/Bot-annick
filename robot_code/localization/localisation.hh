@@ -37,23 +37,6 @@ struct Beacon {
     float angle;
 };
 
-typedef struct RobotPosition
-{
-    float x;
-    float y;
-    float theta;
-    int   update_by;        // 0 if updated by odometers, 1 if by LIDAR
-}RobotPosition;
-//extern pthread_mutex_t mutex;
-
-typedef struct OpponentsPosition
-{
-	double* x; ///< x position of opponents [m]
-	double* y; ///< y position of opponents [m]
-
-	int nb_opp; ///< number of opponents
-
-} OpponentsPosition;
 
 typedef struct lidar_data
 {
