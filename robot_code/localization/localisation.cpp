@@ -100,7 +100,7 @@ void scanLidar(BigStruct *all_struct){
                 printf("beacon %ld : %f, angle : %f \n", i, beacons[i].distance, beacons[i].angle);
             } */
             getFinalBeacon(beacons, final_beacons, all_struct);
-   
+            printf("x = %f, y = %f, theta = %f\n", all_struct->rob_pos->x, all_struct->rob_pos->y, all_struct->rob_pos->theta*(180/M_PI));
             if (final_beacons.size() == 3) {
                 lidar_update_position(*all_struct->rob_pos, *all_struct->table, final_beacons, x_tab, y_tab, x_ref_tab, y_ref_tab);
                 printf("x = %f, y = %f, theta = %f\n", all_struct->rob_pos->x, all_struct->rob_pos->y, all_struct->rob_pos->theta*(180/M_PI));
@@ -300,17 +300,13 @@ void getFinalBeacon(std::vector<Beacon>& beacons, std::vector<Beacon>& final_bea
                     sum = distance1 + distance2 + distance3;
 
                     if (fabs(desired_distance-sum) < error) {
-                        printf("potential final beacons");
-                        printf("beacon %d : %f, angle : %f \n", i, beacons[i].distance, beacons[i].angle);
-                        printf("beacon %d : %f, angle : %f \n", j, beacons[j].distance, beacons[j].angle);
-                        printf("beacon %d : %f, angle : %f \n", k, beacons[k].distance, beacons[k].angle);
-
-                        
-                        if (OpponnentBeaconCancel(beacons[i], beacons[j], beacons[k], all_struct)){
+                        printf("potential final beacons\n");
+                        bool not_opponnent = OpponnentBeaconCancel(beacons[i], beacons[j], beacons[k], all_struct);
+                        //if (not_opponnent){
                             final_beacons.push_back(beacons[i]);
                             final_beacons.push_back(beacons[j]);
                             final_beacons.push_back(beacons[k]);
-                        }
+                        //}
                         return;
                     }
                 }
@@ -421,13 +417,13 @@ void newsort(std::vector<Beacon>& final_beacons) {
 
 
 bool OpponnentBeaconCancel (Beacon beacon0, Beacon beacon1, Beacon beacon2, BigStruct* all_struct){
-    double x = all_struct->rob_pos->x;
-    double y = all_struct->rob_pos->y;   
+    double x = all_struct->rob_pos->x*1000;
+    double y = all_struct->rob_pos->y*1000;   
     double theta = all_struct->rob_pos->theta;
     int counter = 0;
-    double beacon0_angle = beacon0.angle - 90;
-    double beacon1_angle = beacon1.angle - 90;
-    double beacon2_angle = beacon2.angle - 90;
+    double beacon0_angle = beacon0.angle + 90;
+    double beacon1_angle = beacon1.angle + 90;
+    double beacon2_angle = beacon2.angle + 90;
 
     if (beacon0_angle < 0)
     {
@@ -442,17 +438,23 @@ bool OpponnentBeaconCancel (Beacon beacon0, Beacon beacon1, Beacon beacon2, BigS
         beacon2_angle+=360;
     }
         
-
+/*     printf("beacon 0 : %f, angle : %f \n", beacon0.distance, beacon0_angle);
+    printf("beacon 1 : %f, angle : %f \n", beacon1.distance, beacon1_angle);
+    printf("beacon 2 : %f, angle : %f \n", beacon2.distance, beacon2_angle); */
 
     for (int i = 0; i < 3; i++) {
         double angle = 0.0;
         double delta_x = all_struct->table->beaconsx[i] - x;
         double delta_y = all_struct->table->beaconsy[i] - y;
         angle = atan2(delta_y, delta_x)*180.0/M_PI;
+        //printf("angle artcan2 = %f\n", angle);
         if (angle < 0) {
             angle += 360.0;
         }
         angle -= theta*180.0/M_PI;
+        if (angle < 0) {
+            angle += 360.0;
+        }
 
         if (belong_range(beacon0_angle, angle - 10, angle + 10) || belong_range(beacon1_angle, angle - 10, angle + 10) || belong_range(beacon2_angle, angle - 10, angle + 10)){
             counter++;
@@ -462,7 +464,7 @@ bool OpponnentBeaconCancel (Beacon beacon0, Beacon beacon1, Beacon beacon2, BigS
 }
 
 bool belong_range(double valeur, double borne_inf, double borne_sup) {
-    printf("beacon range angle : %f, borne inf : %f, borne sup : %f\n", valeur, borne_inf, borne_sup);
+    //printf("beacon range angle : %f, borne inf : %f, borne sup : %f\n", valeur, borne_inf, borne_sup);
     return (valeur >= borne_inf && valeur <= borne_sup);
 }
 

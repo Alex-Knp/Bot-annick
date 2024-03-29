@@ -105,7 +105,7 @@ double get_stepper_position(int fd, side stepper_id){
 
     int position_returned = position_message[1] << 24 | position_message[2] << 16 | position_message[3] << 8 | position_message[4];
 
-    return position_returned/3200/5;
+    return position_returned/3200.0/5.0;
 }
 
 // int main() {
@@ -113,7 +113,7 @@ double get_stepper_position(int fd, side stepper_id){
 //     int fd = spi_init_1();
 //     stepper_homing(fd, LEFT); 
 
-//     stepper_go_to(fd, LEFT, 0.5, 7); 
+//     stepper_go_to(fd, LEFT, 7, 30); 
 //     printf("no error occured durin homing of right stepper \n");
 //     return 0;}
 

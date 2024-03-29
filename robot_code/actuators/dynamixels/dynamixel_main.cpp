@@ -53,7 +53,7 @@ int left_dyn_set_angle(DynStruct* dyn, float gripper_goal_angle, float travel_sp
 }
 
 
-int left_dyn_init(DynStruct* left_dyn){//,DynStruct* right_dyn){
+int left_dyn_init(DynStruct* left_dyn){
 
 
     // torque disable
@@ -106,16 +106,18 @@ int right_dyn_init(DynStruct* right_dyn){
 
 //     while(1){
 //         dyn_go_to(left_dyn, NULL, LEFT, STANDBY, 100);
-//         sleep(1);
+//         sleep(5);
 //         dyn_go_to(left_dyn, NULL, LEFT, PICKING, 100);
-//         sleep(1);
+//         sleep(5);
 //         dyn_go_to(left_dyn, NULL, LEFT, PLANT1, 100);
-//         sleep(1);
+//         sleep(5);
 //         dyn_go_to(left_dyn, NULL, LEFT, PLANT2, 100);
-//         sleep(1);
+//         sleep(5);
 //         dyn_go_to(left_dyn, NULL, LEFT, PLANT3, 100);
-//         sleep(1);
+//         sleep(5);
 //     }
+//     dyn_go_to(left_dyn, NULL, LEFT, PLANT1, 100);
+//     sleep(100);
 
 //     return 0;
 // }
@@ -126,7 +128,7 @@ int dyn_go_to(DynStruct *left_dyn,DynStruct *right_dyn, side side, Angle angle, 
         switch (angle)
         {
         case PICKING: //pick up
-            left_dyn_set_angle(left_dyn, 32, speed);
+            left_dyn_set_angle(left_dyn, 39, speed);
             break;
         case PLANT1: //plant 1
             left_dyn_set_angle(left_dyn, 90.5, speed);
