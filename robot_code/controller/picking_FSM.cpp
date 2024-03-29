@@ -19,22 +19,6 @@ int init_plant_manager(Plant_Manager* plant_manager){
     plant_manager->type_expected = POT;
     plant_manager->fd = fd; 
 
-
-    XL_320 left_Servo;
-    XL_320 right_Servo;
-    left_Servo.verbose = false;
-    right_Servo.verbose = false;
-    left_Servo.is_id(0x05);
-    right_Servo.is_id(0x04);
-
-    plant_manager->left_dyn = new DynStruct;
-    plant_manager->right_dyn = new DynStruct;
-    plant_manager->left_dyn->Servo = left_Servo;
-    plant_manager->right_dyn->Servo = right_Servo;
-    left_dyn_init(plant_manager->left_dyn);
-    right_dyn_init(plant_manager->right_dyn);
-    sleep(2);
-
     return 0;
 }
 
@@ -44,12 +28,14 @@ int picking_FSM_left(Plant_Manager* plant_manager){
     State next_state;
     float depth;
     Angle angle;
-    float offset_without_plant = 2.7;
+    float offset_without_plant = 2.9;
     int fd = plant_manager->fd;
 
     switch(plant_manager->left_state){
 
         case WAITING_CLEAR:
+
+            printf("---------- in waiting clear state -----------\n");
 
             // Dynamixel rotate 
             dyn_go_to(plant_manager->left_dyn, plant_manager->right_dyn, LEFT, STANDBY, 100);
@@ -78,20 +64,18 @@ int picking_FSM_left(Plant_Manager* plant_manager){
 
         case WAITING_PLANT:
 
-            printf("in waiting plant state \n");
+            printf("---------- in waiting plant state ----------\n");
 
             plant_manager->storage.left.is_in_middle = 1;
 
-            printf("bite \n");
             // Open claw
             open_claw(fd, LEFT);
 
             // Dynamixel ROTATE
-            dyn_go_to(plant_manager->left_dyn, plant_manager->right_dyn, LEFT, PICKING, 100); 
-            printf("bite \n");
+            dyn_go_to(plant_manager->left_dyn, plant_manager->right_dyn, LEFT, PICKING, 100);
 
             // Stepper DOWN
-            stepper_go_to(fd, LEFT, 4.7, 15); 
+            stepper_go_to(fd, LEFT, 4.7, 35); 
 
             // Wait for potting mode ON
             while(1){
@@ -119,20 +103,20 @@ int picking_FSM_left(Plant_Manager* plant_manager){
 
         case GRAB_PLANT:
 
-            printf("in grab plant state \n");
+            printf("----------- in grab plant state ----------\n");
             
             // Stepper DOWN
-            stepper_go_to(fd, LEFT, 12.8, 15);
+            stepper_go_to(fd, LEFT, 12.8, 35);
 
             // Wait for stepper to arrive
             while(1){
-                if(get_stepper_position(fd, LEFT) > 12.4){break;}
+                if(get_stepper_position(fd, LEFT) > 12.77){break;}
             }
 
             // Close claw
             close_claw(fd, LEFT);
 
-            // Sleep ???
+            // Sleep
 
             next_state = STORE_PLANT;
 
@@ -140,24 +124,32 @@ int picking_FSM_left(Plant_Manager* plant_manager){
 
         case STORE_PLANT:
 
+            printf("---------- In store plant state ----------\n");
+
             angle = drop_slot(plant_manager, LEFT); 
             depth = travel_height(plant_manager, LEFT, angle);
 
+            printf("angle : %d\n", angle);
+            printf("depth : %f\n", depth);
+
             // Stepper UP
-            stepper_go_to(fd, LEFT, depth, 15); 
+            stepper_go_to(fd, LEFT, depth, 20); 
+            printf("stepper asked, waiting for goal position... \n");
 
             // Wait for stepper 
             while(1){
-                if(get_stepper_position(fd, LEFT) < depth + 0.2){break;}
+                if(get_stepper_position(fd, LEFT) < depth + 0.05){break;}
             }
+            printf("stepper arrived\n");
 
             plant_manager->storage.left.is_in_middle = 0;
 
             // Dynamixel rotate
             dyn_go_to(plant_manager->left_dyn, plant_manager->right_dyn, LEFT, angle, 100);
+            printf("dyn asked\n");
 
             // Sleep ? 
-            usleep(20000);
+            //usleep(20000);
 
             // Open Claw
             open_claw(fd, LEFT);
@@ -167,11 +159,12 @@ int picking_FSM_left(Plant_Manager* plant_manager){
 
             // Stepper UP
             depth = travel_height(plant_manager, LEFT, angle) + offset_without_plant;
-            stepper_go_to(fd, LEFT, depth, 15);
+            stepper_go_to(fd, LEFT, depth, 20);
 
             // Wait for stepper
             while(1){
-                if(get_stepper_position(fd, LEFT) < depth + 0.2){break;}
+                if(get_stepper_position(fd, LEFT) < depth + 0.05){break;}
+                printf(" depth = %f,    current = %f \n", depth, get_stepper_position(fd, LEFT));
             }
 
             if(plant_manager->storage.right.is_in_middle == 0){
@@ -296,6 +289,7 @@ float travel_height(Plant_Manager *PM, side side, Angle angle){
             if(PM->storage.left.storage_1 == DOUBLE_POT_AND_PLANT){ return double_pot_and_plant; }
             break;
         case PLANT2:
+            if(PM->storage.left.storage_2 == EMPTY){ return empty; }
             if(PM->storage.left.storage_2 == POT){ return pot; }
             if(PM->storage.left.storage_2 == DOUBLE_POT){ return double_pot; }
             if(PM->storage.left.storage_2 == PLANT){ return plant; }
@@ -303,6 +297,7 @@ float travel_height(Plant_Manager *PM, side side, Angle angle){
             if(PM->storage.left.storage_2 == DOUBLE_POT_AND_PLANT){ return double_pot_and_plant; }
             break;
         case PLANT3:
+            if(PM->storage.left.storage_3 == EMPTY){ return empty; }
             if(PM->storage.left.storage_3 == POT){ return pot; }
             if(PM->storage.left.storage_3 == DOUBLE_POT){ return double_pot; }
             if(PM->storage.left.storage_3 == PLANT){ return plant; }
@@ -325,6 +320,7 @@ float travel_height(Plant_Manager *PM, side side, Angle angle){
             if(PM->storage.right.storage_1 == DOUBLE_POT_AND_PLANT){ return double_pot_and_plant; }
             break;
         case PLANT2:
+            if(PM->storage.right.storage_2 == EMPTY){ return empty; }
             if(PM->storage.right.storage_2 == POT){ return pot; }
             if(PM->storage.right.storage_2 == DOUBLE_POT){ return double_pot; }
             if(PM->storage.right.storage_2 == PLANT){ return plant; }
@@ -332,6 +328,7 @@ float travel_height(Plant_Manager *PM, side side, Angle angle){
             if(PM->storage.right.storage_2 == DOUBLE_POT_AND_PLANT){ return double_pot_and_plant; }
             break;
         case PLANT3:
+            if(PM->storage.right.storage_3 == EMPTY){ return empty; }   
             if(PM->storage.right.storage_3 == POT){ return pot; }
             if(PM->storage.right.storage_3 == DOUBLE_POT){ return double_pot; }
             if(PM->storage.right.storage_3 == PLANT){ return plant; }
@@ -427,8 +424,52 @@ int main(){
     Plant_Manager* plant_manager = new Plant_Manager;
     init_plant_manager(plant_manager);
     plant_manager->potting_enable = 1;
+
+    XL_320 left_Servo;
+    left_Servo.verbose = true;
+    left_Servo.is_id(0x05);
+
+    plant_manager->left_dyn = new DynStruct;
+    plant_manager->right_dyn = NULL;
+    plant_manager->left_dyn->Servo = left_Servo;
+    left_dyn_init(plant_manager->left_dyn);
+
+
     while(1){
         picking_FSM_left(plant_manager);
     }
+
+    dyn_go_to(plant_manager->left_dyn, plant_manager->right_dyn, LEFT, PICKING, 100);
+    sleep(2);
+    dyn_go_to(plant_manager->left_dyn, plant_manager->right_dyn, LEFT, PLANT1, 100);
+
     return 0;
 }
+
+// int main(){
+        
+//     XL_320 left_Servo;
+//     left_Servo.verbose = true;
+//     left_Servo.is_id(0x05);
+
+//     DynStruct *left_dyn = new DynStruct;
+//     left_dyn->Servo = left_Servo;
+
+//     left_dyn_init(left_dyn);
+//     printf("Init done\n");
+
+//     while(1){
+//         dyn_go_to(left_dyn, NULL, LEFT, STANDBY, 100);
+//         sleep(1);
+//         dyn_go_to(left_dyn, NULL, LEFT, PICKING, 100);
+//         sleep(1);
+//         dyn_go_to(left_dyn, NULL, LEFT, PLANT1, 100);
+//         sleep(1);
+//         dyn_go_to(left_dyn, NULL, LEFT, PLANT2, 100);
+//         sleep(1);
+//         dyn_go_to(left_dyn, NULL, LEFT, PLANT3, 100);
+//         sleep(1);
+//     }
+
+//     return 0;
+// }

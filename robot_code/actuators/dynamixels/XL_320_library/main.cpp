@@ -7,6 +7,8 @@ int main(int argc, char **argv)
 
     XL_320 Servo;
     Servo.verbose = true;
+    Servo.is_id(0x05);
+
     // Servo.factory_reset();
     // Servo.is_id(0x01);
     // Servo.setID(5);
@@ -18,10 +20,10 @@ int main(int argc, char **argv)
      * Do this only once per Servo, the result is stored in the EEPROM
      */
 
-    // Servo.setTorqueEnable(0);
-    // Servo.setReturnDelayTime(100);
-    // Servo.setStatusReturnLevel(1);
-    // Servo.setTorqueEnable(0);
+    Servo.setTorqueEnable(0);
+    Servo.setReturnDelayTime(100);
+    Servo.setStatusReturnLevel(1);
+    Servo.setTorqueEnable(0);
 
     // --- Commands
 
@@ -37,7 +39,7 @@ int main(int argc, char **argv)
     Servo.setTorqueEnable(0);
     Servo.setControlMode(2);
     Servo.setSpeed(1023);
-    Servo.setGoalPosition(0);
+    Servo.setGoalPosition(500);
     Servo.setTorqueEnable(1);
     //sleep(1);
     //Servo.setSpeed(0);

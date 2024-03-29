@@ -48,6 +48,9 @@ enum Angle {PICKING, PLANT1, PLANT2, PLANT3, STANDBY};
 // Stepper height
 enum Height {GROUND, LOW, MIDDLE, HIGH};
 
+// microswitch
+enum Micro_switch {Left_ms, Right_ms, emergency};
+
 // forward declaration for localization
 typedef struct RobotPosition RobotPosition;
 typedef struct lidar_data lidar_data;
