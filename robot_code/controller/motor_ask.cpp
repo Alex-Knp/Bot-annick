@@ -1,6 +1,5 @@
 
 #include "motor_ask.hh"
-#include "../communication/SPI_spidev.hh"
 
 
 void motor_ask(float left_speed ,float right_speed){
@@ -26,7 +25,6 @@ void motor_ask(float left_speed ,float right_speed){
     intsToBytes(left_speed_int,right_speed_int,byteBuffer);
     spi_transfer(fd0, byteBuffer,4);
     close(fd0);
-
 }
 
 void intsToBytes(int left_speed, int right_speed, uint8_t bytes[4]) {
@@ -36,9 +34,9 @@ void intsToBytes(int left_speed, int right_speed, uint8_t bytes[4]) {
     bytes[2] = right_speed & 0xFF;        // Bits de poids faible de value2
 }
 
-int main(){
-    printf("motor_ask test start");
-    motor_ask(20.0,-10.0);
+// int main(){
+//     printf("motor_ask test start");
+//     motor_ask(20.0,-10.0);
     
-}
+// }
 

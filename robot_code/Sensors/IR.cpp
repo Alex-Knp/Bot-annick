@@ -115,16 +115,52 @@ int If_plant_IR(int fd){
     }
 }
 
+int If_double_pot(int fd){
 
-int main(){
-
-    int fd = spi_init_1();
-
-    while(true){
-        int result = If_plant_IR(fd); 
-        printf("Result : %d\n", result);
-    }
+    int trigger = 1350; // Value to trigger the IR sensor, if sensed value higher than this value, return 1
     
-    close(fd);
-     return 0;
+    uint8_t IR_message[5] = {0x00, 0x00, 0x00, 0x00, 0x00};
+    IR_message[0] = 0x6f;
+
+    spi_transfer(fd, IR_message, 5);
+    int IR_value = IR_message[1] << 24 | IR_message[2] << 16 | IR_message[3] << 8 | IR_message[4];
+
+    if(IR_value > trigger){
+        return 1;
+    }
+    else{
+        return 0;
+    }
 }
+
+int wait_for_plant(int fd){
+    while(1){
+        if(If_plant_IR(fd)){
+            return 1;
+        }
+        usleep(5000);
+    }
+}
+
+int wait_for_pot(int fd){
+    while(1){
+        if(If_pot_IR(fd)){
+            return 1;
+        }
+        usleep(5000);
+    }
+}
+
+
+// int main(){
+
+//     int fd = spi_init_1();
+
+//     while(true){
+//         int result = If_plant_IR(fd); 
+//         printf("Result : %d\n", result);
+//     }
+    
+//     close(fd);
+//      return 0;
+// }

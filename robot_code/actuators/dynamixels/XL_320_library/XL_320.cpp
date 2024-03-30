@@ -1,3 +1,4 @@
+
 /* XL_320
  *
  * This class is designed to operate the Dynamixel XL320 servo with a Raspberry Pi 4B.
@@ -8,7 +9,6 @@
 
 #include "XL_320.hpp"
 
-
 using namespace std;
 
 // --------------------------------------------------------------------------
@@ -17,50 +17,15 @@ using namespace std;
 //
 // --------------------------------------------------------------------------
 
-XL_320::XL_320() : errorcode(0), pEnable(4), id(0x04), model(0), version(0), verbose(false), chip(nullptr), line(nullptr)
+XL_320 :: XL_320() : errorcode(0), pEnable(11), id(0x00), model(0), version(0), verbose(false)
 {
     // Open UART2 serial port
-    serial_port = open("/dev/ttyAMA0", O_RDWR);
-    if (serial_port < 0) {
-        error();
-        return;
-    }
+    serial_port = open("/dev/ttyUSB1", O_RDWR);
 
-    // Open GPIO chip
-    chip = gpiod_chip_open_by_name("gpiochip4");
-    if (chip == nullptr) {
-        chip = gpiod_chip_open_by_name("gpiochip0");
-        if (chip == nullptr) {
-            error();
-            close(serial_port); // Close serial port before returning
-            return;
-        }
-    }
-
-    // Get GPIO line
-    line = gpiod_chip_get_line(chip, 4);
-    if (line == nullptr) {
-        error();
-        gpiod_chip_close(chip); // Close GPIO chip before returning
-        close(serial_port); // Close serial port before returning
-        return;
-    }
-
-    // Request output mode for the line
-    int ret = gpiod_line_request_output(line, "example", 0);
-    if (ret < 0) {
-        error();
-        gpiod_line_release(line);
-        gpiod_chip_close(chip);
-        close(serial_port);
-        return;
-    }
-
-    // Initialize serial port settings
-    if (tcgetattr(serial_port, &tty) != 0) {
+    // Read in existing settings, and handle any error
+    if(tcgetattr(this->serial_port, &tty) != 0) {
         errorcode = ERROR_SERIAL_GET;
         error();
-        close_GPIO();
         return;
     }
 
@@ -91,15 +56,10 @@ XL_320::XL_320() : errorcode(0), pEnable(4), id(0x04), model(0), version(0), ver
     if (tcsetattr(serial_port, TCSANOW, &tty) != 0) {
         errorcode = ERROR_SERIAL_SET;
         error();
-        close_GPIO();
         return;
     }
+
 }
-
-
-
-
-
 
 XL_320 :: ~XL_320()
 {
@@ -206,36 +166,9 @@ int XL_320 :: send(unsigned char Instruction, vector<int> param, bool receive)
     msg[i+1] = (crc>>8) & 0x00FF;
 
     // === WRITE INSTRUCTION ================================================
-    
 
-    // Drive GPIO high
-    int ret = gpiod_line_set_value(line, 1);
-    if (ret < 0) {
-        std::cerr << "Failed to set GPIO value" << std::endl;
-        gpiod_line_release(line);
-        gpiod_chip_close(chip);
-        return 1;
-    }
-
-    // Write to serial port
     write(serial_port, msg, sizeof(msg));
-
-    // Sleep for a short duration
     usleep(100);
-
-    printf("sleeping in the XL_320 fct\n");
-
-    // Drive GPIO low
-    ret = gpiod_line_set_value(line, 0);
-    if (ret < 0) {
-        std::cerr << "Failed to set GPIO value" << std::endl;
-        gpiod_line_release(line);
-        gpiod_chip_close(chip);
-        return 1;
-    }
-
-    printf("end\n");
-
 
     // === READ STATUS ======================================================
 
@@ -244,7 +177,6 @@ int XL_320 :: send(unsigned char Instruction, vector<int> param, bool receive)
         // Read serial buffer
         unsigned char buffer[32];
         int nb = read(serial_port, &buffer, sizeof(buffer));
-        printf("%s",buffer);
 
         if (nb < 0) {
 
@@ -364,9 +296,9 @@ void XL_320 :: dispPacket(unsigned char* p, int np, bool status)
         if (np) {
             cout << setfill(' ') << setw(np*3-1) << left;
             if (np==1) {
-                cout << "Pm | ";
+                cout << "Pm | ";
             } else {
-                cout << "Param | ";
+                cout << "Param | ";
             }
         }
         cout << " CRC  |" << endl;
@@ -394,7 +326,7 @@ void XL_320 :: dispPacket(unsigned char* p, int np, bool status)
         // Title line
         cout << "→ |    Header   | ID | Size  | In | ";
         if (np) {
-            cout << setfill(' ') << setw(np*3-1) << left << "Param" << " | ";
+            cout << setfill(' ') << setw(np*3-1) << left << "Param" << " | ";
         }
         cout << " CRC  |" << endl;
 
@@ -1584,18 +1516,4 @@ vector<unsigned char> int2arg(int i, int n)
     }
 
     return vB;
-}
-
-//function to release the this->line and close this->chip gpiod
-int XL_320::close_GPIO()
-{
-    if (line != nullptr) {
-        gpiod_line_release(line);
-    }
-    if (chip != nullptr) {
-        gpiod_chip_close(chip);
-    }
-    if (serial_port >= 0) {
-        close(serial_port);
-    }
 }

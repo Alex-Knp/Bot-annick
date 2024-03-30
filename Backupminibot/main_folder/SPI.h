@@ -4,8 +4,8 @@
 #define SPI_H
 
 #include <stdio.h>
-#include <wiringPi.h>
-#include <wiringPiSPI.h>
+//#include <wiringPi.h>
+//#include <wiringPiSPI.h>
 #include <stdint.h>
 
 // SPI channel (CE1)

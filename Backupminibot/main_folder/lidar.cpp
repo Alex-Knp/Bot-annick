@@ -48,13 +48,18 @@ void ctrlc(int)
 void scanLidar(ILidarDriver* drv){
 
     lidar_data myLidarData;
-    myLidarData.beaconsx[0] = 45;
-    myLidarData.beaconsx[1] = 1995;
-    myLidarData.beaconsx[2] = 1000;
-    myLidarData.beaconsy[0] = -94;
-    myLidarData.beaconsy[1] = -94;
-    myLidarData.beaconsy[2] = 3044;
-    myLidarData.theta_lidar_calibration = M_PI;
+    myLidarData.beaconsx[0] = 1950;
+    myLidarData.beaconsx[1] = 1000;
+    myLidarData.beaconsx[2] = 50;
+    myLidarData.beaconsy[0] = 50;
+    myLidarData.beaconsy[1] = 2950;
+    myLidarData.beaconsy[2] = 50;
+    myLidarData.theta_lidar_calibration = M_PI/2;
+
+    std::vector<double> x_tab;
+    std::vector<double> y_tab;
+    std::vector<double> x_ref_tab;
+    std::vector<double> y_ref_tab;
 
     //float mean = 1/2.0*(sqrt(pow((myLidarData.beaconsx[0]-myLidarData.beaconsx[1]),2.0)+pow(myLidarData.beaconsy[0]-myLidarData.beaconsy[1],2.0))+sqrt(pow((myLidarData.beaconsx[1]-myLidarData.beaconsx[2]),2.0)+pow((myLidarData.beaconsy[1]-myLidarData.beaconsy[2]),2.0)));
     
@@ -122,8 +127,8 @@ void scanLidar(ILidarDriver* drv){
 
                 }
                 
-            }
-            */
+            }*/
+            
             getBeacon(beacons, clusters);/*
             for (size_t i = 0; i < beacons.size(); i++)
             {
@@ -133,7 +138,7 @@ void scanLidar(ILidarDriver* drv){
             getFinalBeacon(beacons, final_beacons);
    
             if (final_beacons.size() == 3) {
-                lidar_update_position(*coord, myLidarData, final_beacons);
+                lidar_update_position(*coord, myLidarData, final_beacons, x_tab, y_tab, x_ref_tab, y_ref_tab);
                 printf("x = %f, y = %f, theta = %f\n", coord->x, coord->y, coord->theta*(180/M_PI));
             }
             else {
@@ -244,7 +249,7 @@ void getFinalBeacon(std::vector<Beacon>& beacons, std::vector<Beacon>& final_bea
     // une fois les trois bon beacons trouvés on les ajoute au vecteur final de beacons
     double sum = 0;
     int size = beacons.size();
-    double desired_distance = 8510  ;           // distance cumulée entre les trois beacons
+    double desired_distance = 8020  ;           // distance cumulée entre les trois beacons
     double error = 100;                         // marge d'erreur pour la distance souhaitée
     for (int i = 0; i < size-2; ++i) {
         for (int j = i + 1; j < size-1; ++j) {
@@ -256,9 +261,9 @@ void getFinalBeacon(std::vector<Beacon>& beacons, std::vector<Beacon>& final_bea
                 double distance2 = DistBtwBeacon(beacons[i], beacons[k]);
                 double distance3 = DistBtwBeacon(beacons[j], beacons[k]);
 
-                if (((1900 <= distance1 && distance1 <= 2000) || (3230 <= distance1 && distance1 <= 3330)) &&
-                    ((1900 <= distance2 && distance2 <= 2000) || (3230 <= distance2 && distance2 <= 3330)) &&
-                    ((1900 <= distance3 && distance3 <= 2000) || (3230 <= distance3 && distance3 <= 3330))) {
+                if (((1850 <= distance1 && distance1 <= 1950) || (3000 <= distance1 && distance1 <= 3110)) &&
+                    ((1850 <= distance2 && distance2 <= 1950) || (3000 <= distance2 && distance2 <= 3110)) &&
+                    ((1850 <= distance3 && distance3 <= 1950) || (3000 <= distance3 && distance3 <= 3110))) {
 
                     sum = distance1 + distance2 + distance3;
 
@@ -278,7 +283,7 @@ double DistBtwBeacon(Beacon beacon1, Beacon beacon2) {
     return sqrt(pow(beacon1.distance, 2) + pow(beacon2.distance, 2) - 2 * beacon1.distance * beacon2.distance * cos(((beacon1.angle - beacon2.angle))*(M_PI / 180.0)));
 }
 
-void lidar_update_position(coordinates &coord,lidar_data &data, std::vector<Beacon> &final_beacons){
+void lidar_update_position(coordinates &coord,lidar_data &data, std::vector<Beacon> &final_beacons,std::vector<double> &x_tab, std::vector<double> &y_tab, std::vector<double> &x_ref_tab, std::vector<double> &y_ref_tab){
 
     newsort(final_beacons);
 
@@ -305,7 +310,7 @@ void lidar_update_position(coordinates &coord,lidar_data &data, std::vector<Beac
 		    theta_aligned += M_PI;
 	    }
 
-        float theta_int = theta_aligned + final_beacons[i].angle*(M_PI / 180.0) - 2*M_PI - data.theta_lidar_calibration;
+        float theta_int = theta_aligned - final_beacons[i].angle*(M_PI / 180.0) - 2*M_PI - data.theta_lidar_calibration;
         while(theta_int < 0){
 		    theta_int += 2*M_PI;
 	    }
@@ -324,7 +329,7 @@ void lidar_update_position(coordinates &coord,lidar_data &data, std::vector<Beac
         
         printf("theta = %f\n", theta_int);
     }
-
+    //fill_points(x_int, y_int, 0, 0, x_tab, y_tab, x_ref_tab, y_ref_tab);
     //pthread_mutex_lock(&mutex);                 //////// thread lock mutex
         coord.x = x_int/1000.0;
         coord.y = y_int/1000.0;
@@ -361,24 +366,33 @@ void disconnectLidar(ILidarDriver* lidar){
 }
 
 void newsort(std::vector<Beacon>& final_beacons) {
-    float mean = 2750.983398;
+    float mean = 2670;
     double distance1 = DistBtwBeacon(final_beacons[0], final_beacons[1]);
     double distance2 = DistBtwBeacon(final_beacons[1], final_beacons[2]);
-    if (distance1 <= mean)               // si distance1 = A et distance2 = B
+    if (distance1 >= mean)               // si distance1 = A et distance2 = B
     {
         if (distance2 <= mean)
         {
             std::swap(final_beacons[0], final_beacons[2]);
             std::swap(final_beacons[2], final_beacons[1]);
-            printf("short short\n");
-        }
-        else
-        {
-            std::swap(final_beacons[0], final_beacons[1]);
-            std::swap(final_beacons[1], final_beacons[2]);
-            printf("short long\n");
         }   
     } else {
-        printf("long short\n");
+        std::swap(final_beacons[0], final_beacons[1]);
+        std::swap(final_beacons[1], final_beacons[2]);
     }   
 };
+
+
+/* 
+void fill_points(double x, double y, double x_ref, double y_ref, std::vector<double> &x_tab, std::vector<double> &y_tab, std::vector<double> &x_ref_tab, std::vector<double> &y_ref_tab) {
+    x_tab.push_back(x);
+    y_tab.push_back(y); // Correction ici
+    x_ref_tab.push_back(x_ref);
+    y_ref_tab.push_back(y_ref); // Correction ici
+
+    std::ofstream fd("donnees.csv");
+    for (size_t i = 0; i < x_tab.size(); ++i) {
+        fd << x_tab[i] << "," << y_tab[i] << "," << x_ref_tab[i] << "," << y_ref_tab[i] << "\n"; // Correction ici
+    }
+    fd.close();
+} */

@@ -1,4 +1,4 @@
-#include "position_controller_cpp.h"
+/* #include "position_controller_cpp.h"
 
 void update_position_encoders(struct coordinates *prev_known_coord, struct odometer_data *odo_data) 
 {
@@ -228,7 +228,7 @@ int robot_controller(){
             update_encoders(enc_data);
             coord->update_by = 0;
         }
-        }*/
+        } // a commenter
 
         //pthread_mutex_lock(&mutex);
         if(coord->update_by){
@@ -284,7 +284,7 @@ int robot_controller(){
 
     return 0;
 }
-
+ */
 
 /* int main(){
     robot_controller();

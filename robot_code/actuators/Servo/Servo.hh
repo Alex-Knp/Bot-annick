@@ -2,10 +2,7 @@
 
 #include "../../main/all_struct.hh"
 #include "../../communication/SPI_spidev.hh"
-#include "../../communication/SPI_spidev.cpp"
-//#include "../../main/all_struct.cpp"
 
-enum side {left, right}; // side of the robot
 
 int open_claw(int fd, side servo_id);
 int close_claw(int fd, side servo_id);

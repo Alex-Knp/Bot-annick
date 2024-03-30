@@ -1,7 +1,13 @@
 #include <iostream>
+#include <chrono>
 
-#include "motor_ask.hh"
-#include "../Sensors/IR.hh"
+#pragma once
+#include "../Sensors/IR.cpp"
 
-int left_panel_controller(float speed, float distance);
-int right_panel_controller(float speed, float distance);
+struct panel_controller_struct {
+    float previous_error;
+    time_t previous_time;
+};
+
+int left_panel_controller(panel_controller_struct *panel_struct,float speed, float distance);
+int right_panel_controller(panel_controller_struct *panel_struct,float speed, float distance);

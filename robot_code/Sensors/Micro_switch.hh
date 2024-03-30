@@ -2,7 +2,6 @@
 
 #include "../main/all_struct.hh"
 #include "../communication/SPI_spidev.hh"
-#include "../communication/SPI_spidev.cpp"
 
 int get_right_MS(int fd); 
 int get_left_MS(int fd);

@@ -133,7 +133,7 @@ logic reset_stepper_L; 		// Reset du stepper gauche
 
 assign reset 			= State_control[0]; 
 assign reset_stepper_L 	= State_control[8];		// reset current known position to 0
-assign reset_stepper_R 	= State_control[12];		// reset current known position to 0
+assign reset_stepper_R 	= State_control[12];	// reset current known position to 0
 assign homing_L 		= State_control[16]; 	// activate homing mode of left stepper
 assign homing_R 		= State_control[20];	// activate homing mode of left stepper
 
@@ -170,9 +170,9 @@ end
 assign State_control 	  = Actuators_RAM[0];		// State control
 
 assign Servo_control_LC   = Actuators_RAM[1];		// Servo pince gauche 	: x1
-assign Servo_control_LP   = Actuators_RAM[2];		// Servo pento gauche 	: x2
-assign Servo_control_RC   = Actuators_RAM[3];		// Servo pince droite 	: x3
-assign Servo_control_RP   = Actuators_RAM[4];		// Servo pince gauche 	: x4
+assign Servo_control_RC   = Actuators_RAM[2];		// Servo pince droite	: x2
+assign Servo_control_LP   = Actuators_RAM[3];		// Servo pento gauche 	: x3
+assign Servo_control_RP   = Actuators_RAM[4];		// Servo pento droite 	: x4
 assign stepper_control_L  = Actuators_RAM[5]; 		// Steppers gauche		: x5
 assign stepper_control_R  = Actuators_RAM[6]; 		// Steppers droit  		: x6
 
@@ -194,7 +194,6 @@ spi_slave spi_slave_inst (
 	.Data_Read(DataFromPI), 
 	.Clk(CLOCK_50)
 );
-
 
 // ---   odometers instantiation   -------------------------------------------
 
@@ -356,7 +355,6 @@ stepper stepper_inst_L (
 	.dir(dir_L)
 );
 
-
 stepper stepper_inst_R (
 	.clk(CLOCK_50),
 	.reset(reset_stepper_R),
@@ -384,17 +382,17 @@ assign odoLB     = GPIO_0[17];	//Pin : 22 GPIO : 17
 assign odoLA     = GPIO_0[19];	//Pin : 24 GPIO : 19
 
 //--- Servo ---//
-assign GPIO_0[28]  = servo_LC; 	//Pin : ? GPIO : ?
-assign GPIO_0[26]  = servo_LP; 	//Pin : ? GPIO : ?
-assign GPIO_0[30]  = servo_RC; 	//Pin : ? GPIO : ?
-assign GPIO_0[32]  = servo_RP; 	//Pin : ? GPIO : ?
+assign GPIO_0[28]  = servo_LC; 	//Pin : ? GPIO : 28
+assign GPIO_0[26]  = servo_LP; 	//Pin : ? GPIO : 26
+assign GPIO_0[30]  = servo_RC; 	//Pin : ? GPIO : 30
+assign GPIO_0[32]  = servo_RP; 	//Pin : ? GPIO : 32
 
 //---Stepper-motors---//
 
 assign GPIO_0[27] = stepper_R;	// Pin : 34 GPIO : 27 
 assign GPIO_0[23] = stepper_L; 	// Pin : 28 GPIO : 23
-assign GPIO_0[25] = dir_R;		// Pin : 32 GPIO : 25
-assign GPIO_0[21] = dir_L;		// Pin : 26 GPIO : 21 
+assign GPIO_0[25] = ~dir_R;		// Pin : 32 GPIO : 25
+assign GPIO_0[21] = ~dir_L;		// Pin : 26 GPIO : 21 
 
 //---Micro-Swich---//
 

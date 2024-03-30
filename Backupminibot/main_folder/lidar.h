@@ -116,7 +116,7 @@ void getFinalBeacon(std::vector<Beacon>& beacons, std::vector<Beacon>& final_bea
 */
 double DistBtwBeacon(Beacon beacon1, Beacon beacon2);
 
-void lidar_update_position(coordinates &coord,lidar_data &data, std::vector<Beacon> &final_beacons);
+void lidar_update_position(coordinates &coord,lidar_data &data, std::vector<Beacon> &final_beacons,std::vector<double> &x_tab, std::vector<double> &y_tab, std::vector<double> &x_ref_tab, std::vector<double> &y_ref_tab);
 bool comparerParAngle(const Beacon& a, const Beacon& b, float alpha);
 void newsort(std::vector<Beacon>& final_beacons);
 
