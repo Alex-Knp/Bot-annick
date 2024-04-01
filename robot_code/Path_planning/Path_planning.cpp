@@ -11,8 +11,12 @@ void Path_planning_update(BigStruct* all_struct){
     //  Global Variables 
 
     double k_rep;
-    double rho;
+    double k_att = 100;
     double K = 0.1;         // Speed factor
+
+    double rho;
+    double rho_0
+
     double x_robot = all_struct->rob_pos->x;   // Robot position [m]
     double y_robot = all_struct->rob_pos->y;   // Robot position [m]
 
@@ -44,14 +48,14 @@ void Path_planning_update(BigStruct* all_struct){
 
     // if the robot is far from the goal (rho_goal > trigger_decel), the robot moves at maximum speed
     if (rho_goal > trigger_decel) {     
-        F[0] = v_max * (x_goal - x_robot) / rho_goal;
-        F[1] = v_max * (y_goal - y_robot) / rho_goal;
+        F[0] = v_max * (x_goal - x_robot) / rho_goal * k_att;
+        F[1] = v_max * (y_goal - y_robot) / rho_goal * k_att;
     }
 
     // if the robot is close to the goal (rho_goal <= trigger_decel), the robot decelerates
     else {
-        F[0] = v_max * (x_goal - x_robot) / trigger_decel;
-        F[1] = v_max * (y_goal - y_robot) / trigger_decel;
+        F[0] = v_max * (x_goal - x_robot) / trigger_decel * k_att;
+        F[1] = v_max * (y_goal - y_robot) / trigger_decel * k_att;
     }
 
 
@@ -62,32 +66,33 @@ void Path_planning_update(BigStruct* all_struct){
     // Variables declaration
 
     double trigger_wall = 0.5;  // distance [m] from the wall impact the trajectory
-    double rho_0 = 0.3;
+    rho_0 = 0.3;
+    k_rep = 10
     
 
     if (x_robot < trigger_wall) {
         rho = x_robot;
         if (rho < 0.1) {
             rho = 0.1; }
-        Frep[0] += (1/rho - 1/rho_0) / pow(rho, 3) * (x_robot);
+        Frep[0] += (1/rho - 1/rho_0) / pow(rho, 3) * (x_robot) * k_rep;
     }
     if (x_lim-x_robot < trigger_wall) {
         rho = x_lim-x_robot;
         if (rho < 0.1) {
             rho = 0.1; }
-        Frep[0] += (1/rho - 1/rho_0) / pow(rho, 3) * (x_robot-x_lim);
+        Frep[0] += (1/rho - 1/rho_0) / pow(rho, 3) * (x_robot-x_lim) * k_rep;
     }
     if (y_robot < rho_0) {
         rho = y_robot;
         if (rho < 0.1) {
             rho = 0.1; }
-        Frep[1] += (1/rho - 1/rho_0) / pow(rho, 3) * (y_robot);
+        Frep[1] += (1/rho - 1/rho_0) / pow(rho, 3) * (y_robot) * k_rep;
     }
     if (y_lim-y_robot < rho_0) {
         rho = y_lim-y_robot;
         if (rho < 0.1) {
             rho = 0.1; }
-        Frep[1] += (1/rho - 1/rho_0) / pow(rho, 3) * (y_robot-y_lim);
+        Frep[1] += (1/rho - 1/rho_0) / pow(rho, 3) * (y_robot-y_lim) * k_rep;
     }
 
 
@@ -111,7 +116,8 @@ void Path_planning_update(BigStruct* all_struct){
             {-0.300 + 1, -0.500 + 1.5}
         };
 
-    k_rep = 1;
+    k_rep = 5;
+    rho_0 = 0.3;
 
     for (int i = 0; i < 6; i++) {
 
@@ -167,7 +173,7 @@ void Path_planning_update(BigStruct* all_struct){
 
     ////////---------    PAMI's avoidance   -------////////
 
-    k_rep = 0.5;
+    k_rep = 5;
     rho_0 = 0.3;
 
     if (sqrt(pow(1.05 - y_robot, 2) + pow(x_robot - 0.15, 2)) < rho_0) {
