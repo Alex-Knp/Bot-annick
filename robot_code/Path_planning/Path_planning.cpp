@@ -136,14 +136,11 @@ void Path_planning_update(BigStruct* all_struct){
 
         rho = sqrt(pow(x_obs-x_robot, 2) + pow(y_obs-x_robot, 2)) - radius;  // Minimal distance from the obstacle
 
-        if (rho < rho_0) {
+        if (rho < rho_0 && cvs->path->active_zone[i] == 1) {
             Frep[0] += k_rep * (1/rho - 1/rho_0) / pow(rho, 3) * (x_robot-x_obs);
             Frep[1] += Frep[0] / (x_robot-x_obs) * (y_robot-y_obs);
         }
     }
-
-
-    /////////--------   Pots avoidance  -------/////////
 
 
     /////////--------   Opponent avoidance  -------/////////
@@ -165,10 +162,6 @@ void Path_planning_update(BigStruct* all_struct){
             Frep[1] += Frep[1] / (x_robot-x_obs) * (y_robot-y_obs);
         }
     }
-
-
-
-    /////////--------   Obstacle avoidance  -------/////////
 
 
     ////////---------    PAMI's avoidance   -------////////
@@ -275,9 +268,9 @@ void setSpeed(BigStruct* all_struct) {
     float angle_error = wanted_theta - current_theta;
 
     if (angle_error > M_PI) {                       // Angle error between -PI and +PI
-    angle_error -= 2*M_PI;
+        angle_error -= 2*M_PI;
     } else if (angle_error < -M_PI) {
-    angle_error += 2*M_PI;
+        angle_error += 2*M_PI;
     }
 
     float linear_speed = 0.0;

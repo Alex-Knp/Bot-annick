@@ -71,6 +71,15 @@ BigStruct* init_BigStruct(){
 	all_struct->strat->goal_x = 0.5;
 	all_struct->strat->goal_x = 0.5;
 
+	// Path planning
+	all_struct->path->norm = 0;
+	all_struct->path->theta = 0;
+	all_struct->path->v_max = 10;
+	all_struct->path->active_zone = (int *)malloc(6*sizeof(int));
+	for (int i = 0; i < 6; i++) {
+		all_struct->path->active_zone[i] = 1;
+	}
+
 
 	return all_struct;
 }
