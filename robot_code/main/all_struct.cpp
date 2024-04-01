@@ -70,31 +70,7 @@ BigStruct* init_BigStruct(){
 	all_struct->strat->goal_reached = false;
 	all_struct->strat->goal_x = 0.5;
 	all_struct->strat->goal_x = 0.5;
-	all_struct->start_time = time(NULL);
-	all_struct->elapsed_time = 0.0;
-	all_struct->strat->count_plant = 0;
-	all_struct->strat->count_pot = 0;
 
-	all_struct->pot_list = (int*) malloc(7*sizeof(int));
-	int[7] pot_list_blue = {0, 1, 2, 3, 4, 5, 6};// Faire un odre de passage des pots
-	int[7] pot_list_yellow = {0, 1, 2, 3, 4, 5, 6};// Faire un odre de passage des pots
-
-	if(all_struct->team_id == TEAM_BLUE)
-	{
-		for(int i=0; i<7; i++)
-		{
-			all_struct->pot_list[i] = pot_list_blue[i];
-		}
-		
-	}
-	else if(all_struct->team_id == TEAM_YELLOW)
-	{
-		for(int i=0; i<7; i++)
-		{
-			all_struct->pot_list[i] = pot_list_yellow[i];
-		}
-	}
-	all_struct->strat->next_pot = all_struct->pot_list[0];
 
 	return all_struct;
 }
