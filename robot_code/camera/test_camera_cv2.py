@@ -15,7 +15,6 @@ def main():
         # Capture frame-by-frame
         ret, frame = cap.read()
        
-        
         if not ret:
             print("Error: Failed to capture frame.")
             break
@@ -25,7 +24,7 @@ def main():
 
         # Display the resulting frame
         
-        # cv2.imshow('Camera Stream', frame)
+        cv2.imshow('Camera Stream', frame)
 
         # Press 'q' to exit the loop
         if cv2.waitKey(1) & 0xFF == ord('q'):

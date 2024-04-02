@@ -4,6 +4,10 @@ import os
 
 # Initialize Picamera2
 picam2 = Picamera2()
+
+# camera_config = picam2.create_video_configuration(main={"size":(640,480),"format":"RGB888"}, raw={"size": (640, 480)})
+# picam2.configure(camera_config)
+
 res_x = 640
 res_y = 480
 picam2.resolution = (res_x,res_y)
@@ -35,13 +39,16 @@ try:
         image = image[:, :, [2, 1, 0]]    # RGB to BGR for opencv
         # cv2.imshow("Frame", image)  # Display the image
 
-        # Save the current frame with a unique filename
-        # cv2.imwrite("frame" + str(i) + ".png", image)
-        filename = os.path.join(directory, "frame{}.png".format(i))
-        cv2.imwrite(filename, image, (res_x, res_y))
+    
+        # filename = os.path.join(directory, "frame{}.png".format(i))
+        # cv2.imwrite(filename, image)
+        filename = os.path.join(directory, f"frame{i}.png")
+        picam2.capture(filename)
+
         i += 1
         if i == 100:
             break
+        
 
         # Wait for 1 ms and check if the 'q' key is pressed to exit the loop
         # if cv2.waitKey(1) & 0xFF == ord('q'):

@@ -23,7 +23,7 @@ MODULE_NAME := $(notdir $(CURDIR))
 
 include $(HOME_TREE)/mak_def.inc
 
-CXXSRC +=  ../localization/localisation.cpp main.cpp all_struct.cpp ../communication/SPI_spidev.cpp ../Path_planning/Path_planning.cpp ../Sensors/Micro_Switch.cpp 
+CXXSRC +=  ../localization/localisation.cpp main.cpp all_struct.cpp ../communication/SPI_spidev.cpp ../Path_planning/Path_planning.cpp ../Sensors/Micro_Switch.cpp ../Sensors/odometry.cpp 
 C_INCLUDES += -I$(CURDIR)/../sdk/include -I$(CURDIR)/../sdk/src  #-L./home/student/lidar_example_cpp-main/output/Linux/Release/
 
 EXTRA_OBJ :=

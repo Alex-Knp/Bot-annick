@@ -14,5 +14,5 @@ typedef struct odometer_data {
     int32_t right_prev;
 } odometer_data;
 
-void update_position_encoders(RobotPosition *prev_known_coord, struct odometer_data *odo_data);
+void update_position_encoders(BigStruct *all_struct, struct odometer_data *odo_data);
 int odo_init(BigStruct *all_struct,odometer_data *odo_data);

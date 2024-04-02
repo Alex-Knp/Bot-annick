@@ -510,14 +510,15 @@ int main(){
     init_plant_manager(plant_manager);
     plant_manager->potting_enable = 1;
 
-    XL_320 left_Servo;
-    left_Servo.verbose = true;
-    left_Servo.is_id(0x05);
+    XL_320 Servo;
+    Servo.verbose = false;
 
     plant_manager->left_dyn = new DynStruct;
-    plant_manager->right_dyn = NULL;
-    plant_manager->left_dyn->Servo = left_Servo;
+    plant_manager->right_dyn = new DynStruct;
+    plant_manager->left_dyn->Servo = Servo;
+    plant_manager->right_dyn->Servo = Servo;
     left_dyn_init(plant_manager->left_dyn);
+    right_dyn_init(plant_manager->right_dyn);
 
 
     while(1){

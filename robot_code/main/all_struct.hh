@@ -59,6 +59,7 @@ typedef struct Storage Storage;
 typedef struct Side Side;
 typedef struct Plant_Manager; 
 typedef struct Path_planning;
+typedef struct odometer_data;
 
 
 typedef struct RobotPosition
@@ -116,6 +117,7 @@ typedef struct BigStruct
 	// Communication data
 	int fd1;   // correspond au spi_init_1
 	int fd0;   // correspond au spi_init_0
+	odometer_data *odo_data;
 
 
 

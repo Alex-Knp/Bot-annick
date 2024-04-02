@@ -11,6 +11,7 @@
 #include "../actuators/stepper/Stepper.hh"
 #include "../Sensors/IR.hh"
 #include "../Sensors/Micro_switch.hh"
+#include "../Sensors/odometry.hh"
 
 /*! \brief initialize all the structure that we need
  * 
@@ -111,6 +112,7 @@ BigStruct* init_BigStruct(){
 		}
 	}
 	all_struct->strat->next_pot = all_struct->pot_list[0];
+
 
 	return all_struct;
 }

@@ -1,8 +1,7 @@
 #include "odometry.hh"
 
-void update_position_encoders(RobotPosition *prev_known_coord, odometer_data *odo_data) 
+void update_position_encoders( BigStruct *all_struct, odometer_data *odo_data) 
 {
-    RobotPosition *new_coord = new RobotPosition;
     float odo_wheel_radius = 0.02245963698;
     float b = 0.2939241998; //wheel spacing in meters
 
@@ -23,22 +22,22 @@ void update_position_encoders(RobotPosition *prev_known_coord, odometer_data *od
     float delta_s = (R_dist + L_dist)/2.0;
     float delta_theta = (R_dist - L_dist)/b;
 
-    new_coord->x = prev_known_coord->x + delta_s*cos(prev_known_coord->theta + delta_theta/2);
-    new_coord->y = prev_known_coord->y + delta_s*sin(prev_known_coord->theta + delta_theta/2);
-    new_coord->theta = prev_known_coord->theta + delta_theta;
+    all_struct->rob_pos->x += delta_s*cos(all_struct->rob_pos->theta + delta_theta/2);
+    all_struct->rob_pos->y += delta_s*sin(all_struct->rob_pos->theta + delta_theta/2);
+    all_struct->rob_pos->theta += delta_theta;
 
-    *prev_known_coord = *new_coord;
     odo_data->left_prev = left_value;
     odo_data->right_prev = right_value;
 };
 
 int odo_init(BigStruct* all_struct,odometer_data *odo_data){
     int fd1 = all_struct->fd1;
+    all_struct->odo_data = odo_data;
     uint8_t left_init[5] = {0x10, 0x0A, 0x00, 0x0A, 0x00};    
     uint8_t right_init[5] = {0x20, 0x0A, 0x00, 0x0A, 0x00};
     spi_transfer(fd1, left_init, 5);
     spi_transfer(fd1, right_init, 5);
-
+    
     odo_data->left_prev = left_init[1] << 24 | left_init[2] << 16 | left_init[3] << 8 | left_init[4];
     odo_data->right_prev = right_init[1] << 24 | right_init[2] << 16 | right_init[3] << 8 | right_init[4];
 

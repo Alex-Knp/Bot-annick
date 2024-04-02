@@ -10,6 +10,7 @@
 #include "../Path_planning/Path_planning.hh"
 #include "../Strategy/strategy.hh"
 #include "../Sensors/Micro_switch.hh"
+#include "../Sensors/odometry.hh"
 
 
 /*! \brief controller loop 
@@ -22,16 +23,12 @@ int main()
 {
     BigStruct *all_struct = init_BigStruct();
 
-    
-    while (  !static_cast<bool>(get_MS(all_struct->fd1, Right_ms))  ){
-        printf("not pressed\n");
+    //Odometry init
+    odometer_data *odo_data = new odometer_data;
+    if(odo_init(all_struct,odo_data)!=0){
+        printf("error odo");
     }
-    if (static_cast<bool>(get_MS(all_struct->fd1, Right_ms)))
-    {
-        printf("pressed\n");
-    }
-    
-  
+      
     //scanLidar(all_struct);
 
     
