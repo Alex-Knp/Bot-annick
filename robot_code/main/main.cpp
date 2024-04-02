@@ -9,6 +9,7 @@
 #include "../communication/UART.hh"
 #include "../Path_planning/Path_planning.hh"
 #include "../Strategy/strategy.hh"
+#include "../Sensors/Micro_switch.hh"
 
 
 /*! \brief controller loop 
@@ -20,6 +21,8 @@
 int main()
 {
     BigStruct *all_struct = init_BigStruct();
+
+    startup = !static_cast<bool>(get_MS(all_struct->fd, Right_ms));
   
     scanLidar(all_struct);
 

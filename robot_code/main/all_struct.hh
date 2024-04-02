@@ -87,6 +87,7 @@ typedef struct Strategy
     double goal_theta;
     bool goal_reached;
     int next_pot;
+	int drop_zone;
     int count_pot;
 	int count_plant;
 
@@ -110,10 +111,16 @@ typedef struct BigStruct
 	int* pot_list;
 	int* plant_list;
 
+
+	// Variables communicants avec la FSM de la pince
+	// Enable : FSM Strat vers FSM Pince
+	// Done : FSM Pince vers FSM Strat
 	bool grabbing_pot_enable;
 	bool grabbing_plant_enable;
 	bool grabbing_pot_done;
 	bool grabbing_plant_done;
+	bool dropping_enable;
+	bool dropping_done;
 
 
 } BigStruct;

@@ -23,6 +23,8 @@ BigStruct* init_BigStruct(){
 
 	BigStruct* all_struct = new BigStruct;
 
+	// start up
+	all_struct->startup = false;
 
 	// Localisation data
     all_struct->rob_pos = new RobotPosition;
@@ -90,11 +92,6 @@ BigStruct* init_BigStruct(){
 		}
 	}
 	all_struct->strat->next_pot = all_struct->pot_list[0]; */
-
-	
-
-
-
 
 	return all_struct;
 }
