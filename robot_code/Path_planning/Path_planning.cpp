@@ -31,8 +31,8 @@ void Path_planning_update(BigStruct* all_struct){
 
     double trigger_decel = 0.1;     // distance [m] from goal at which the robot starts to decelerate
 
-    double X_goal = 0.0;            // Goal position [m]
-    double Y_goal = 0.0;            // Goal position [m]
+    double X_goal = all_struct->strat->goal_x;            // Goal position [m]
+    double Y_goal = all_struct->strat->goal_y;            // Goal position [m]
 
     double rho_goal = sqrt(pow(x_robot - X_goal, 2) + pow(y_robot - Y_goal, 2));
 

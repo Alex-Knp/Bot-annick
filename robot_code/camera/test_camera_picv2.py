@@ -40,13 +40,12 @@ try:
         # cv2.imshow("Frame", image)  # Display the image
 
     
-        # filename = os.path.join(directory, "frame{}.png".format(i))
-        # cv2.imwrite(filename, image)
+  
         filename = os.path.join(directory, f"frame{i}.png")
-        picam2.capture(filename)
+        cv2.imwrite(filename, image, (res_x, res_y))
 
         i += 1
-        if i == 100:
+        if i == 1:
             break
         
 

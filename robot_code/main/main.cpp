@@ -11,6 +11,7 @@
 #include "../Strategy/strategy.hh"
 #include "../Sensors/Micro_switch.hh"
 #include "../Sensors/odometry.hh"
+#include "../controller/main_controller.hh"
 
 
 /*! \brief controller loop 
@@ -33,8 +34,8 @@ int main()
 
     
     
-    //std::thread scanThread(scanLidar, all_struct);
-    //std::thread controlThread(main_controller, all_struct); 
+    std::thread scanThread(scanLidar, all_struct);
+    std::thread controlThread(main_controller, all_struct); 
     //std::thread time_thread(timeThread);
   
 

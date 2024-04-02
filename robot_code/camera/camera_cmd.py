@@ -11,7 +11,8 @@ def capture_frame(frame_count):
     frame_count += 1
     
     # Recursively call capture_frame with updated frame count
-    capture_frame(frame_count)
+    # capture_frame(frame_count)
+   
 
 if __name__ == "__main__":
     # Create directory to store images if it doesn't exist
@@ -20,3 +21,5 @@ if __name__ == "__main__":
     
     # Start capturing frames
     capture_frame(0)
+
+
