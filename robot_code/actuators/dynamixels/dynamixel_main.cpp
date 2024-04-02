@@ -144,53 +144,53 @@ int right_dyn_init(DynStruct* right_dyn){
 
 
 
-int main(){
+// int main(){
         
-    XL_320 Servo;
+//     XL_320 Servo;
 
-    Servo.verbose = true;
+//     Servo.verbose = true;
 
-    DynStruct *left_dyn = new DynStruct;
-    left_dyn->Servo = Servo;
-    DynStruct *right_dyn = new DynStruct;
-    right_dyn->Servo = Servo;
+//     DynStruct *left_dyn = new DynStruct;
+//     left_dyn->Servo = Servo;
+//     DynStruct *right_dyn = new DynStruct;
+//     right_dyn->Servo = Servo;
 
-    left_dyn_init(left_dyn);
-    right_dyn_init(right_dyn);
-    printf("Init done\n");
+//     left_dyn_init(left_dyn);
+//     right_dyn_init(right_dyn);
+//     printf("Init done\n");
 
-    while(1){
-        dyn_go_to(left_dyn, NULL, LEFT, STANDBY, 100);
-        sleep(1);
-        dyn_go_to(left_dyn, NULL, LEFT, PICKING, 100);
-        sleep(1);
-        dyn_go_to(left_dyn, NULL, LEFT, PLANT1, 100);
-        sleep(1);
-        dyn_go_to(left_dyn, NULL, LEFT, PLANT2, 100);
-        sleep(1);
-        dyn_go_to(left_dyn, NULL, LEFT, PLANT3, 100);
-        sleep(1);
-        dyn_go_to(left_dyn, NULL, LEFT, STANDBY, 100);
+//     while(1){
+//         dyn_go_to(left_dyn, NULL, LEFT, STANDBY, 100);
+//         sleep(1);
+//         dyn_go_to(left_dyn, NULL, LEFT, PICKING, 100);
+//         sleep(1);
+//         dyn_go_to(left_dyn, NULL, LEFT, PLANT1, 100);
+//         sleep(1);
+//         dyn_go_to(left_dyn, NULL, LEFT, PLANT2, 100);
+//         sleep(1);
+//         dyn_go_to(left_dyn, NULL, LEFT, PLANT3, 100);
+//         sleep(1);
+//         dyn_go_to(left_dyn, NULL, LEFT, STANDBY, 100);
 
-        //same for the right dynamixel
-        dyn_go_to(NULL, right_dyn, RIGHT, STANDBY, 100);
-        sleep(1);
-        dyn_go_to(NULL, right_dyn, RIGHT, PICKING, 100);
-        sleep(1);
-        dyn_go_to(NULL, right_dyn, RIGHT, PLANT1, 100);
-        sleep(1);
-        dyn_go_to(NULL, right_dyn, RIGHT, PLANT2, 100);
-        sleep(1);
-        dyn_go_to(NULL, right_dyn, RIGHT, PLANT3, 100);
-        sleep(1);
-        dyn_go_to(NULL, right_dyn, RIGHT, STANDBY, 100);
+//         //same for the right dynamixel
+//         dyn_go_to(NULL, right_dyn, RIGHT, STANDBY, 100);
+//         sleep(1);
+//         dyn_go_to(NULL, right_dyn, RIGHT, PICKING, 100);
+//         sleep(1);
+//         dyn_go_to(NULL, right_dyn, RIGHT, PLANT1, 100);
+//         sleep(1);
+//         dyn_go_to(NULL, right_dyn, RIGHT, PLANT2, 100);
+//         sleep(1);
+//         dyn_go_to(NULL, right_dyn, RIGHT, PLANT3, 100);
+//         sleep(1);
+//         dyn_go_to(NULL, right_dyn, RIGHT, STANDBY, 100);
         
-    }
-    dyn_go_to(left_dyn, NULL, LEFT, PLANT1, 100);
-    sleep(100);
+//     }
+//     dyn_go_to(left_dyn, NULL, LEFT, PLANT1, 100);
+//     sleep(100);
 
-    return 0;
-}
+//     return 0;
+// }
 
 int dyn_go_to(DynStruct *left_dyn,DynStruct *right_dyn, side side, Angle angle, int speed){
     //left side
