@@ -1,7 +1,7 @@
 v1
-DSP_BALANCING_IMPLEMENTATION,DSP_BLOCKS,stepper:stepper_inst_L|lpm_mult:Mult0|mult_sgt:auto_generated|mac_out2,
-DSP_BALANCING_IMPLEMENTATION,DSP_BLOCKS,stepper:stepper_inst_R|lpm_mult:Mult0|mult_sgt:auto_generated|mac_out2,
-DSP_BALANCING_IMPLEMENTATION,DSP_BLOCKS,stepper:stepper_inst_L|lpm_mult:Mult0|mult_sgt:auto_generated|mac_out4,
-DSP_BALANCING_IMPLEMENTATION,DSP_BLOCKS,stepper:stepper_inst_R|lpm_mult:Mult0|mult_sgt:auto_generated|mac_out4,
-PORT_SWAPPING,PORT_SWAP_TYPE_DSPMULT,stepper:stepper_inst_L|lpm_mult:Mult0|mult_sgt:auto_generated|mac_mult3,
-PORT_SWAPPING,PORT_SWAP_TYPE_DSPMULT,stepper:stepper_inst_R|lpm_mult:Mult0|mult_sgt:auto_generated|mac_mult3,
+DSP_BALANCING_IMPLEMENTATION,DSP_BLOCKS,stepper:stepper_inst_L|lpm_mult:Mult1|mult_sgt:auto_generated|mac_out2,
+DSP_BALANCING_IMPLEMENTATION,DSP_BLOCKS,stepper:stepper_inst_R|lpm_mult:Mult1|mult_sgt:auto_generated|mac_out2,
+DSP_BALANCING_IMPLEMENTATION,DSP_BLOCKS,stepper:stepper_inst_L|lpm_mult:Mult1|mult_sgt:auto_generated|mac_out4,
+DSP_BALANCING_IMPLEMENTATION,DSP_BLOCKS,stepper:stepper_inst_R|lpm_mult:Mult1|mult_sgt:auto_generated|mac_out4,
+PORT_SWAPPING,PORT_SWAP_TYPE_DSPMULT,stepper:stepper_inst_L|lpm_mult:Mult1|mult_sgt:auto_generated|mac_mult3,
+PORT_SWAPPING,PORT_SWAP_TYPE_DSPMULT,stepper:stepper_inst_R|lpm_mult:Mult1|mult_sgt:auto_generated|mac_mult3,
