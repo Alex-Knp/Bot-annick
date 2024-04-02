@@ -154,6 +154,8 @@ always_comb begin
 		4'h5 : DataToPI = IR3_ext;				// IR3
 		4'h6 : DataToPI = IR4_ext;				// IR4
 		4'h7 : DataToPI = micro_switch_data;	// Micro-switches
+		4'h8 : DataToPI = Position_Stepper_L;	// Position Stepper gauche
+		4'h9 : DataToPI = Position_Stepper_R;	// Position Stepper droit
 
 		default : DataToPI = 32'bx; 		
 	endcase
@@ -167,7 +169,7 @@ always_ff @(posedge CLOCK_50) begin
 	Actuators_RAM[AddrFromPi[3:0]] = DataFromPI;  
 end
 
-assign State_control 	  = Actuators_RAM[0];		// State control
+assign State_control 	  = Actuators_RAM[7];		// State control
 
 assign Servo_control_LC   = Actuators_RAM[1];		// Servo pince gauche 	: x1
 assign Servo_control_RC   = Actuators_RAM[2];		// Servo pince droite	: x2
@@ -345,6 +347,7 @@ assign micro_switch_data[31] = micro_switch_2;
 
 logic stepper_L, stepper_R, dir_L, dir_R, homing_L, homing_R;
 logic [31:0] stepper_control_L, stepper_control_R;
+logic [31:0] Position_Stepper_L, Position_Stepper_R;
 
 stepper stepper_inst_L (
 	.clk(CLOCK_50),
@@ -352,7 +355,8 @@ stepper stepper_inst_L (
 	.control(stepper_control_L),
 	.homing_enable(homing_L),
 	.step(stepper_L),
-	.dir(dir_L)
+	.dir(dir_L),
+	.feedback_position(Position_Stepper_L)
 );
 
 stepper stepper_inst_R (
@@ -361,7 +365,8 @@ stepper stepper_inst_R (
 	.control(stepper_control_R),
 	.homing_enable(homing_R),
 	.step(stepper_R),
-	.dir(dir_R)
+	.dir(dir_R),
+	.feedback_position(Position_Stepper_R)
 );
 
 //assign homing_L = State_control[12];

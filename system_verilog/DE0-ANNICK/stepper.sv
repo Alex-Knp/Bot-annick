@@ -1,11 +1,12 @@
 
 module stepper (
-    input   logic clk,            // Clock input
-    input   logic reset,          // Reset input
-    input   logic [31:0] control, // Control input (speed, position)
-    input   logic homing_enable,  // homing mode enable
-    output  logic step,           // Step output
-    output  logic dir             // Direction output
+    input   logic clk,              // Clock input
+    input   logic reset,            // Reset input
+    input   logic [31:0] control,   // Control input (speed, position)
+    input   logic homing_enable,    // homing mode enable
+    output  logic step,             // Step output
+    output  logic dir,               // Direction output
+    output  logic [31:0] feedback_position // Feedback position
 );
 
 // Parameters
@@ -16,6 +17,8 @@ logic [20:0] MIN_DELAY;
 logic [27:0] DELAY;
 logic [14:0] ACCEL_Counter;
 logic [14:0] ACCEL_trigger;
+logic [31:0] Decel_trigger; // [step]
+logic [31:0] Diff_step; 
 
 
 always_comb begin
@@ -79,7 +82,7 @@ end
 
 
 assign {speed, goal_position} = control;
-assign ACCEL_trigger = 15'd3_500;
+assign ACCEL_trigger = dir ? 15'd7_000 : 15'd2_000;
 
 // Internal variables
 logic [17:0] counter;
@@ -112,29 +115,37 @@ always_ff @(posedge clk, posedge reset) begin
     // DYNAMIC MODE
     else begin
 
+        // DECELERATION LOGIC
+        Decel_trigger <= speed * 3200 / 10;         // 1 rotation of decel for 5 rps 
+        if(current_position < goal_position)    Diff_step <= goal_position - current_position;
+        else                                    Diff_step <= current_position - goal_position;
+
         // ACCELERATION LOGIC
         ACCEL_Counter <=  ACCEL_Counter + 1;
-        if(ACCEL_Counter == ACCEL_trigger) begin
+        if(ACCEL_Counter == ACCEL_trigger & Diff_step > Decel_trigger) begin
             ACCEL_Counter <= 0;
-            if(DELAY > MIN_DELAY) begin
-                DELAY <= (DELAY*9_999)/10_000;
-            end
+            if(DELAY > MIN_DELAY)   DELAY <= (DELAY*9_999)/10_000;
+            else                    DELAY <= MIN_DELAY;
+            
         end
 
         // DELAY MODE 
-        else if (counter < DELAY) begin
+        if (counter < DELAY) begin
             counter <= counter + 1;
-            //Maintained step
-            if(step == 1'b1) begin
-                if(counter < 50) step <= 1'b1;
-                else step <= 1'b0;
-            end
-            //lower step
-            else step <= 1'b0;
+            step <= 1'b0;
         end
 
         // STARTING STEP MODE
         else begin
+
+            // DECEL LOGIC
+            if(Diff_step <= Decel_trigger) begin
+                if(DELAY < 5_000) begin
+                    DELAY <= DELAY + (5_000 - DELAY) / Diff_step;
+                end
+            end
+
+            // STEP LOGIC
             counter <= 0;
             step <= 1'b1;
             case(dir)
@@ -148,8 +159,10 @@ end
 // Direction control
 always_comb begin
     if(homing_enable) dir = 1; 
-    else if (goal_position > current_position)  dir = 0; 
+    else if (goal_position >= current_position)  dir = 0; 
     else dir = 1; 
 end
+
+assign feedback_position = {8'b0 , current_position};
 
 endmodule

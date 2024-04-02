@@ -1,5 +1,11 @@
 #include "picking_FSM.hh"
 
+// command de fils de pute
+
+/*
+g++ -o picking picking_FSM.cpp ../main/all_struct.cpp ../communication/SPI_spidev.cpp ../actuators/stepper/Stepper.cpp ../actuators/dynamixels/dynamixel_main.cpp ..//actuators/dynamixels/XL_320_library/XL_320.cpp ../Sensors/IR.cpp ../actuators/Servo/Servo.cpp -lgpiod
+*/
+
 int init_plant_manager(Plant_Manager* plant_manager){
     int fd = spi_init_1();
 
@@ -18,6 +24,7 @@ int init_plant_manager(Plant_Manager* plant_manager){
     plant_manager->potting_enable = 0;
     plant_manager->type_expected = POT;
     plant_manager->fd = fd; 
+    plant_manager->depot_angle = DEPOT_1;
 
     return 0;
 }
@@ -33,6 +40,30 @@ int picking_FSM_left(Plant_Manager* plant_manager){
 
     switch(plant_manager->left_state){
 
+        case CHECKING_INSTRUCTION:
+
+            if(plant_manager->potting_enable == 0){
+                next_state = CHECKING_INSTRUCTION;
+
+                // Stepper UP
+                depth = travel_height(plant_manager, LEFT, PLANT1) + offset_without_plant;
+                stepper_go_to(fd, LEFT, depth, 15);
+                usleep(10000);
+
+                // Dynamixel rotate 
+                dyn_go_to(plant_manager->left_dyn, plant_manager->right_dyn, LEFT, STANDBY, 100);
+            }
+            else if(plant_manager->potting_enable == 1){
+                next_state = WAITING_CLEAR;
+            }
+            else if{plant_manager->potting_enable == 2}{
+                next_state = DEPOT_PLANT;
+            }
+            else{
+                printf("Error: wrong potting enable value\n");
+                next_state = CHECKING_INSTRUCTION;
+            }
+
         case WAITING_CLEAR:
 
             printf("---------- in waiting clear state -----------\n");
@@ -44,17 +75,10 @@ int picking_FSM_left(Plant_Manager* plant_manager){
             depth = travel_height(plant_manager, LEFT, PLANT1) + offset_without_plant;
             stepper_go_to(fd, LEFT, depth, 15);
 
-            // Wait for potting mode ON
-            while(1){
-                if(plant_manager->potting_enable){
-                    break;
-                }
-                usleep(5000);
-            }
-
             // Wait for clear space 
             while(1){
                 if(plant_manager->storage.right.is_in_middle == 0){
+                    plant_manager->storage.left.is_in_middle = 1;
                     break;
                 }
                 usleep(5000);
@@ -66,8 +90,6 @@ int picking_FSM_left(Plant_Manager* plant_manager){
 
             printf("---------- in waiting plant state ----------\n");
 
-            plant_manager->storage.left.is_in_middle = 1;
-
             // Open claw
             open_claw(fd, LEFT);
 
@@ -76,14 +98,6 @@ int picking_FSM_left(Plant_Manager* plant_manager){
 
             // Stepper DOWN
             stepper_go_to(fd, LEFT, 4.7, 35); 
-
-            // Wait for potting mode ON
-            while(1){
-                if(plant_manager->potting_enable){
-                    break;
-                }
-                usleep(5000);
-            }
 
             printf("potting mode is on \n");
             printf("waiting for pot or plant \n");
@@ -119,7 +133,6 @@ int picking_FSM_left(Plant_Manager* plant_manager){
             // Sleep
 
             next_state = STORE_PLANT;
-
 
 
         case STORE_PLANT:
@@ -167,15 +180,69 @@ int picking_FSM_left(Plant_Manager* plant_manager){
                 printf(" depth = %f,    current = %f \n", depth, get_stepper_position(fd, LEFT));
             }
 
-            if(plant_manager->storage.right.is_in_middle == 0){
+            if(plant_manager->storage.right.is_in_middle == 0 && plant_manager->potting_enable == 1){
                 plant_manager->storage.left.is_in_middle = 1;
                 next_state = WAITING_PLANT;
             }
             else{
-                next_state = WAITING_CLEAR;
+                next_state = CHECKING_INSTRUCTION;
 
+        
+        case DEPOT_PLANT:
 
+            printf("---------- in depot plant state ----------\n");
+            
+            Angle take_angle = depot_slot(plant_manager, LEFT);
+            Angle depot_angle = plant_manager->depot_angle;
 
+            // checking if all sides empty 
+            if(angle == STANDBY){
+                printf("Error: no plant to depot\n");
+                next_state = CHECKING_INSTRUCTION;
+                depot_angle = DEPOT_1;
+                break;
+            }
+
+            // dyn go to plant to take
+            dyn_go_to(plant_manager->left_dyn, plant_manager->right_dyn, LEFT, take_angle, 100);
+
+            // Stepper DOWN to taking pot
+            stepper_go_to(fd, LEFT, 5.3, 35);
+
+            //checking when stepper arrived
+            while(1){
+                if(get_stepper_position(fd, LEFT) > 5.25){break;}
+            }
+
+            // Close claw
+            close_claw(fd, LEFT);
+            usleep(10000);
+
+            // Stepper UP
+            stepper_go_to(fd, LEFT, 3, 35);
+
+            // Checking if stepper arrived
+            while(1){
+                if(get_stepper_position(fd, LEFT) < 3.05){break;}
+            }
+
+            // dyn go to plant to depot
+            dyn_go_to(plant_manager->left_dyn, plant_manager->right_dyn, LEFT, angle, 100);
+
+            // Extend Claw 
+            extend_pento(fd, LEFT);
+            usleep(100000);
+
+            // Open claw
+            open_claw(fd, LEFT);
+            usleep(100000);
+
+            // Retract pento
+            retract_pento(fd, LEFT);
+            usleep(100000);
+
+            plant_manager->depot_angle = depot_angle + 1;
+            next_state = DEPOT_PLANT;
 
         default :
             printf("an error has occurred in plan manager left FSM, verfify the State the attribution\n");
@@ -417,6 +484,24 @@ int update_fill(Plant_Manager *PM, side side, Angle angle){
             return -1;
         }
         return 0;
+    }
+}
+
+int unupdate_fill(Plant_Manager *PM, side side, Angle angle){
+    return 0;
+}
+
+Angle depot_slot(Plant_Manager *PM, side side){
+    if(side == LEFT){
+        if(PM->storage.left.storage_1 == POT_AND_PLANT || PM->storage.left.storage_1 == DOUBLE_POT_AND_PLANT){ return PLANT1; }
+        if(PM->storage.left.storage_2 == POT_AND_PLANT || PM->storage.left.storage_2 == DOUBLE_POT_AND_PLANT){ return PLANT2; }
+        if(PM->storage.left.storage_3 == POT_AND_PLANT || PM->storage.left.storage_3 == DOUBLE_POT_AND_PLANT){ return PLANT3; }
+        return STANDBY;
+    } else {
+        if(PM->storage.right.storage_1 == POT_AND_PLANT || PM->storage.right.storage_1 == DOUBLE_POT_AND_PLANT){ return PLANT1; }
+        if(PM->storage.right.storage_2 == POT_AND_PLANT || PM->storage.right.storage_2 == DOUBLE_POT_AND_PLANT){ return PLANT2; }
+        if(PM->storage.right.storage_3 == POT_AND_PLANT || PM->storage.right.storage_3 == DOUBLE_POT_AND_PLANT){ return PLANT3; }
+        return STANDBY;
     }
 }
 
