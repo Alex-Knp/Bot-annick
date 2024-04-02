@@ -177,7 +177,8 @@ int picking_FSM_left(Plant_Manager* plant_manager){
             // Wait for stepper
             while(1){
                 if(get_stepper_position(fd, LEFT) < depth + 0.05){break;}
-                printf(" depth = %f,    current = %f \n", depth, get_stepper_position(fd, LEFT));
+                //printf(" depth = %f,    current = %f \n", depth, get_stepper_position(fd, LEFT));
+                printf("waiting for stepper to arrive in depot state\n");
             }
 
             if(plant_manager->storage.right.is_in_middle == 0 && plant_manager->potting_enable == 1){
