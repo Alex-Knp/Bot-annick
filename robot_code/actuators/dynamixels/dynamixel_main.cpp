@@ -159,7 +159,7 @@ int right_dyn_init(DynStruct* right_dyn){
 //     right_dyn_init(right_dyn);
 //     printf("Init done\n");
 
-//     while(1){
+//     while(0){
 //         dyn_go_to(left_dyn, NULL, LEFT, STANDBY, 100);
 //         sleep(1);
 //         dyn_go_to(left_dyn, NULL, LEFT, PICKING, 100);
@@ -187,6 +187,7 @@ int right_dyn_init(DynStruct* right_dyn){
         
 //     }
 //     dyn_go_to(left_dyn, NULL, LEFT, PLANT1, 100);
+//     dyn_go_to(NULL,right_dyn, RIGHT,PLANT1, 100);
 //     sleep(100);
 
 //     return 0;

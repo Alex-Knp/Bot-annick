@@ -3,8 +3,6 @@
 #include "../main/all_struct.hh"
 #include "../communication/SPI_spidev.hh"
 
-int get_right_MS(int fd); 
-int get_left_MS(int fd);
-int get_emergency_stop(int fd);
+int get_MS(int fd, Micro_switch MS);
 void print_MS(int fd);
 

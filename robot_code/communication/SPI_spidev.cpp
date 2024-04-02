@@ -92,37 +92,23 @@ int spi_init_1(){
 	return fd;
 }
 
-// int main() {
-// 	odo_calib();
-// // 	float left_speed = 35;
-// // 	float right_speed = -35;
-// // 	uint8_t byteBuffer[4];
-// //     int left_speed_int = (int)((left_speed+30)*250);
-// //     int right_speed_int = (int)((right_speed+30)*250);
+/* int main() {
+	//odo_calib();
+	 
+	// de0 test
+	int fd1 = spi_init_1();
 
-// //     intsToBytes(left_speed_int,right_speed_int,byteBuffer); 
-// // 	// teensy test
-// //     int fd0 = spi_init_0();
-// // 	uint8_t data[4] = {0x00, 0x0A, 0x00, 0x0A};    
-
-// // 	spi_transfer(fd0, byteBuffer, 4);
-
-// // 	close(fd0); 
-// // 	/*  
-// // 	// de0 test
-// // 	int fd1 = spi_init_1();
-
-// // 	uint8_t adr1 = 0xE0;
-// // 	uint8_t data1[5] = {adr1, 0x55, 0x45, 0xa8, 0x77};   
-// // 	spi_transfer(fd1, data1, 5);*/
+	uint8_t adr1 = 0xE0;
+	uint8_t data1[5] = {adr1, 0x00, 0x00, 0x00, 0x00};   
+	spi_transfer(fd1, data1, 5);
 	
-// // 	for (int i = 0; i < 4; i++) {
-// //         printf("%02X ", data[i]);
-// //     }
-// // 	printf("\n");
+	for (int i = 0; i < 5; i++) {
+        printf("%02X ", data1[i]);
+    }
+	printf("end\n");
 	
-// 	return 0;
-// }
+	return 0;
+} */
 
 // int odo_calib(){
 // 	int fd0 = spi_init_1();

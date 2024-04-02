@@ -26,6 +26,11 @@ BigStruct* init_BigStruct(){
 	// start up
 	all_struct->startup = false;
 
+	// Communication
+
+	all_struct->fd1 = spi_init_1();
+	all_struct->fd0 = spi_init_0();
+
 	// Localisation data
     all_struct->rob_pos = new RobotPosition;
 
@@ -40,7 +45,13 @@ BigStruct* init_BigStruct(){
   	all_struct->table->beaconsy[1] = 3094;
 	all_struct->table->beaconsy[2] = -94;
 
-  	all_struct->table->theta_lidar_calibration = M_PI/2; 
+  	all_struct->table->theta_lidar_calibration = M_PI/2;
+
+	//Path Planning
+ 	all_struct->path = (Path_planning*) malloc(sizeof(Path_planning)); 
+	all_struct->path->norm = 0.0;
+	all_struct->path->theta = 0.0;
+	all_struct->path->v_max = 0; 
 
 	// robot position
 	all_struct->rob_pos = (RobotPosition*) malloc(sizeof(RobotPosition));
@@ -62,7 +73,7 @@ BigStruct* init_BigStruct(){
 	all_struct->opp_pos->nb_opp = 0; 
 
 	// lidar driver
-	//all_struct->drv = connectLidar();
+	//all_struct->drv = connectLidar(); ////////////////////////////////////////////////////////////////////////////////////:
 
 	//Time
 	all_struct->start_time = time(NULL);
@@ -81,8 +92,8 @@ BigStruct* init_BigStruct(){
 	all_struct->strat->count_plant = 0;
 
 	all_struct->pot_list = (int*) malloc(7*sizeof(int));
-	int[7] pot_list_blue = {0, 1, 2, 3, 4, 5, 6};// Faire un odre de passage des pots
-	int[7] pot_list_yellow = {0, 1, 2, 3, 4, 5, 6};// Faire un odre de passage des pots
+	int pot_list_blue[7] = {0, 1, 2, 3, 4, 5, 6};// Faire un odre de passage des pots
+	int pot_list_yellow[7] = {0, 1, 2, 3, 4, 5, 6};// Faire un odre de passage des pots
 
 	if(all_struct->team_id == TEAM_BLUE)
 	{

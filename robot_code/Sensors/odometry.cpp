@@ -32,8 +32,8 @@ void update_position_encoders(RobotPosition *prev_known_coord, odometer_data *od
     odo_data->right_prev = right_value;
 };
 
-int odo_init(odometer_data *odo_data){
-    int fd1 = spi_init_1();
+int odo_init(BigStruct* all_struct,odometer_data *odo_data){
+    int fd1 = all_struct->fd1;
     uint8_t left_init[5] = {0x10, 0x0A, 0x00, 0x0A, 0x00};    
     uint8_t right_init[5] = {0x20, 0x0A, 0x00, 0x0A, 0x00};
     spi_transfer(fd1, left_init, 5);
@@ -42,7 +42,6 @@ int odo_init(odometer_data *odo_data){
     odo_data->left_prev = left_init[1] << 24 | left_init[2] << 16 | left_init[3] << 8 | left_init[4];
     odo_data->right_prev = right_init[1] << 24 | right_init[2] << 16 | right_init[3] << 8 | right_init[4];
 
-    close(fd1); 
     return 0;
 };
 

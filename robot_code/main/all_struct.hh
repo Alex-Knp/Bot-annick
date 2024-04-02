@@ -58,6 +58,7 @@ typedef struct lidar_data lidar_data;
 typedef struct Storage Storage;
 typedef struct Side Side;
 typedef struct Plant_Manager; 
+typedef struct Path_planning;
 
 
 typedef struct RobotPosition
@@ -101,6 +102,7 @@ typedef struct BigStruct
 	Strategy *strat;
 	lidar_data *table;
 	sl::ILidarDriver* drv;
+	Path_planning *path;
 
 	int team_id;
 	bool startup; // False until the startup microswitch is pressed
@@ -110,6 +112,11 @@ typedef struct BigStruct
 
 	int* pot_list;
 	int* plant_list;
+	
+	// Communication data
+	int fd1;   // correspond au spi_init_1
+	int fd0;   // correspond au spi_init_0
+
 
 
 	// Variables communicants avec la FSM de la pince

@@ -22,9 +22,17 @@ int main()
 {
     BigStruct *all_struct = init_BigStruct();
 
-    startup = !static_cast<bool>(get_MS(all_struct->fd, Right_ms));
+    
+    while (  !static_cast<bool>(get_MS(all_struct->fd1, Right_ms))  ){
+        printf("not pressed\n");
+    }
+    if (static_cast<bool>(get_MS(all_struct->fd1, Right_ms)))
+    {
+        printf("pressed\n");
+    }
+    
   
-    scanLidar(all_struct);
+    //scanLidar(all_struct);
 
     
     
@@ -45,7 +53,10 @@ int main()
  * \param[in] all_struct controller main structure
  */
 void controller_finish(BigStruct *all_struct)
-{
+{   
+    close(all_struct->fd1);
+    close(all_struct->fd0);
+
     free_BigStruct(all_struct);
 }
 
