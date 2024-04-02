@@ -67,7 +67,7 @@ void main_strategy(BigStruct* all_struct){
             all_struct->strat->next_state = DROP_POT_STATE;
             break;
 
-            
+
         case GO_TO_END: // Vérifier les coords
             if(all_struct->team_id == TEAM_BLUE){
                 all_struct->strat->goal_x = 225.0;
@@ -86,7 +86,7 @@ void main_strategy(BigStruct* all_struct){
             break;
         case TAKE_PLANT:
             /*if(all_struct->camera->pot_detected < 3){
-                go to anothet pot zone
+                go to another pot zone
             }*/
             all_struct->grabbing_plant_enable = true;
             if(all_struct->grabbing_plant_done){
@@ -96,7 +96,7 @@ void main_strategy(BigStruct* all_struct){
             break;
         case TAKE_POT:
             /*if(all_struct->camera->pot_detected < 3){
-                go to anothet pot zone
+                go to another pot zone
             }*/
             all_struct->grabbing_pot_enable = true;
             if(all_struct->grabbing_pot_done){
@@ -107,6 +107,11 @@ void main_strategy(BigStruct* all_struct){
         case SOLAR_PANNEL_STATE:
 
         case DROP_POT_STATE:
+            all_struct->dropping_enable = true;
+            if(all_struct->grabbing_plant_done){
+                all_struct->grabbing_plant_enable = false;
+                all_struct->strat->state = GO_TO_POT;
+            }
 
         case END_STATE:
             // shutdown actuators
