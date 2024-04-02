@@ -14,12 +14,14 @@ def main():
     while True:
         # Capture frame-by-frame
         ret, frame = cap.read()
-        print("frame count = ",count)
-        count+=1
+       
         
         if not ret:
             print("Error: Failed to capture frame.")
-            continue
+            break
+
+        print("frame count = ",count)
+        count+=1
 
         # Display the resulting frame
         
