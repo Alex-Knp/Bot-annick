@@ -5,6 +5,8 @@
 // travel_speed in % of max speed
 //goal angle in degrees
 int left_dyn_set_angle(DynStruct* dyn, float gripper_goal_angle, float travel_speed){
+    //set id
+    dyn->Servo.is_id(0x05);
 
     float gripper_angle_error = gripper_goal_angle - dyn->gripper_current_angle;
     int direction = gripper_angle_error > 0 ? 1.0 : 0.0;
@@ -53,6 +55,7 @@ int left_dyn_set_angle(DynStruct* dyn, float gripper_goal_angle, float travel_sp
 }
 
 int right_dyn_set_angle(DynStruct* dyn, float gripper_goal_angle, float travel_speed){
+    dyn->Servo.is_id(0x04);
 
     float gripper_angle_error = gripper_goal_angle - dyn->gripper_current_angle;
     int direction = gripper_angle_error > 0 ? 0.0 : 1.0;
@@ -102,8 +105,7 @@ int right_dyn_set_angle(DynStruct* dyn, float gripper_goal_angle, float travel_s
 
 
 int left_dyn_init(DynStruct* left_dyn){
-
-
+    left_dyn->Servo.is_id(0x05);
     // torque disable
     left_dyn->Servo.setTorqueEnable(0);
     //set joint mode
@@ -122,6 +124,7 @@ int left_dyn_init(DynStruct* left_dyn){
 }
 
 int right_dyn_init(DynStruct* right_dyn){
+    right_dyn->Servo.is_id(0x04);
     // torque disable
     right_dyn->Servo.setTorqueEnable(0);
     //set joint mode
@@ -141,35 +144,53 @@ int right_dyn_init(DynStruct* right_dyn){
 
 
 
-// int main(){
+int main(){
         
-//     XL_320 left_Servo;
-//     left_Servo.verbose = true;
-//     left_Servo.is_id(0x05);
+    XL_320 Servo;
 
-//     DynStruct *left_dyn = new DynStruct;
-//     left_dyn->Servo = left_Servo;
+    Servo.verbose = true;
 
-//     left_dyn_init(left_dyn);
-//     printf("Init done\n");
+    DynStruct *left_dyn = new DynStruct;
+    left_dyn->Servo = Servo;
+    DynStruct *right_dyn = new DynStruct;
+    right_dyn->Servo = Servo;
 
-//     while(1){
-//         dyn_go_to(left_dyn, NULL, LEFT, STANDBY, 100);
-//         sleep(5);
-//         dyn_go_to(left_dyn, NULL, LEFT, PICKING, 100);
-//         sleep(5);
-//         dyn_go_to(left_dyn, NULL, LEFT, PLANT1, 100);
-//         sleep(5);
-//         dyn_go_to(left_dyn, NULL, LEFT, PLANT2, 100);
-//         sleep(5);
-//         dyn_go_to(left_dyn, NULL, LEFT, PLANT3, 100);
-//         sleep(5);
-//     }
-//     dyn_go_to(left_dyn, NULL, LEFT, PLANT1, 100);
-//     sleep(100);
+    left_dyn_init(left_dyn);
+    right_dyn_init(right_dyn);
+    printf("Init done\n");
 
-//     return 0;
-// }
+    while(1){
+        dyn_go_to(left_dyn, NULL, LEFT, STANDBY, 100);
+        sleep(1);
+        dyn_go_to(left_dyn, NULL, LEFT, PICKING, 100);
+        sleep(1);
+        dyn_go_to(left_dyn, NULL, LEFT, PLANT1, 100);
+        sleep(1);
+        dyn_go_to(left_dyn, NULL, LEFT, PLANT2, 100);
+        sleep(1);
+        dyn_go_to(left_dyn, NULL, LEFT, PLANT3, 100);
+        sleep(1);
+        dyn_go_to(left_dyn, NULL, LEFT, STANDBY, 100);
+
+        //same for the right dynamixel
+        dyn_go_to(NULL, right_dyn, RIGHT, STANDBY, 100);
+        sleep(1);
+        dyn_go_to(NULL, right_dyn, RIGHT, PICKING, 100);
+        sleep(1);
+        dyn_go_to(NULL, right_dyn, RIGHT, PLANT1, 100);
+        sleep(1);
+        dyn_go_to(NULL, right_dyn, RIGHT, PLANT2, 100);
+        sleep(1);
+        dyn_go_to(NULL, right_dyn, RIGHT, PLANT3, 100);
+        sleep(1);
+        dyn_go_to(NULL, right_dyn, RIGHT, STANDBY, 100);
+        
+    }
+    dyn_go_to(left_dyn, NULL, LEFT, PLANT1, 100);
+    sleep(100);
+
+    return 0;
+}
 
 int dyn_go_to(DynStruct *left_dyn,DynStruct *right_dyn, side side, Angle angle, int speed){
     //left side
