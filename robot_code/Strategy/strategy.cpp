@@ -16,7 +16,7 @@ void main_strategy(BigStruct* all_struct){
 
     {
         case CALIB_STATE:
-            if (verification_beacon(all_struct)){
+            if ((verification_beacon(all_struct) && init_pince(all_struct) || all_struct->startup) ){
                 all_struct->strat->state = WAIT_INIT_STATE;
             }
             break;
@@ -123,10 +123,17 @@ void main_strategy(BigStruct* all_struct){
 }
 
 bool verification_beacon(BigStruct* all_struct){
-    if(all_struct->rob_pos->x ==0.0 && all_struct->rob_pos->y == 0.0 && all_struct->rob_pos->theta == 0.0){
-        return false;
+    if(all_struct->beacon_ok){
+        return true;
     }
-    return true;
+    return false;
+}
+
+bool init_pince(BigStruct* all_struct){
+    if (all_struct->pince_ok){
+        return true;
+    }
+    return false;
 }
 
 void pot_zone_select(BigStruct* all_struct, int num_pot){

@@ -26,14 +26,14 @@ BigStruct* init_BigStruct(){
 
 	// start up
 	all_struct->startup = false;
+	all_struct->beacon_ok = 0;     
+	all_struct->pince_ok = 0;       
+
 
 	// Communication
 
 	all_struct->fd1 = spi_init_1();
 	all_struct->fd0 = spi_init_0();
-
-	// Localisation data
-    all_struct->rob_pos = new RobotPosition;
 
 	// localization
 

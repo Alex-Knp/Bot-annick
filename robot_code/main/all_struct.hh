@@ -108,7 +108,11 @@ typedef struct BigStruct
 	Path_planning *path;
 
 	int team_id;
-	bool startup; // False until the startup microswitch is pressed
+
+	// initialisation of the robot
+	int beacon_ok;           						// 0 if beacons are not detected, 1 if beacons are detected (at the start of the game)
+	bool startup; 									// False until the startup microswitch is pressed
+	int pince_ok;
 
 	time_t start_time, current_time, elapsed_time;  // start time mis à zero dans init big struct
 	std::mutex time_mutex;
