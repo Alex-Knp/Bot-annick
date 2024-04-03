@@ -6,6 +6,7 @@
 #include "../actuators/dynamixels/dynamixel_main.hh"
 #include "../actuators/stepper/Stepper.hh"
 #include "../actuators/Servo/Servo.hh"
+#include "../Sensors/Micro_switch.hh"
 
 
 struct Side{
@@ -40,3 +41,6 @@ Angle depot_slot(Plant_Manager *PM, side side);
 float travel_height(Plant_Manager *PM, side side, Angle angle);
 int update_fill(Plant_Manager *PM, side side, Angle angle);
 int unupdate_fill(Plant_Manager *PM, side side, Angle angle);
+
+void left_gripper_thread(Plant_Manager* plant_manager);
+void right_gripper_thread(Plant_Manager* plant_manager);

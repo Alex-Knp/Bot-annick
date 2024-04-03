@@ -36,11 +36,11 @@ int main()
     
     std::thread scanThread(scanLidar, all_struct);
     std::thread controlThread(main_controller, all_struct); 
-    //std::thread time_thread(timeThread);
+    std::thread time_thread(timeThread);
   
 
-    //controlThread.join();
-    //scanThread.join();
+    controlThread.join();
+    scanThread.join();
 
     //main_camera(all_struct);        // à lancer par le troisième thread
     return 0;

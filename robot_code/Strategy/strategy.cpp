@@ -130,11 +130,6 @@ bool verification_beacon(BigStruct* all_struct){
 }
 
 void pot_zone_select(BigStruct* all_struct, int num_pot){
-    //printf("enter pot zone select\t");
-    //printf("num pot = %d\n", num_pot);
-/*     all_struct->strat->goal_x = all_struct->pot_zones[num_pot].x;
-    all_struct->strat->goal_y = all_struct->pot_zones[num_pot].y; */
-
 
     if(num_pot == 0){
         all_struct->strat->goal_x = 612,5;
@@ -167,11 +162,6 @@ void pot_zone_select(BigStruct* all_struct, int num_pot){
 } 
 
 void plant_zone_select(BigStruct* all_struct, int num_plant){
-    //printf("enter pot zone select\t");
-    //printf("num pot = %d\n", num_pot);
-/*     all_struct->strat->goal_x = all_struct->pot_zones[num_pot].x;
-    all_struct->strat->goal_y = all_struct->pot_zones[num_pot].y; */
-
 
     if(num_plant == 0){
         all_struct->strat->goal_x = 700;

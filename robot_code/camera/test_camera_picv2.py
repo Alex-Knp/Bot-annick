@@ -41,7 +41,7 @@ try:
 
     
   
-        filename = os.path.join(directory, f"frame{i}.png")
+        filename = os.path.join(directory, f"frame{i}.jpg")
         cv2.imwrite(filename, image, (res_x, res_y))
 
         i += 1
