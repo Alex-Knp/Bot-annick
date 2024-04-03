@@ -6,7 +6,7 @@
 #ifndef _countof
 #define _countof(_Array) (int)(sizeof(_Array) / sizeof(_Array[0]))
 #endif
-
+extern bool ctrl_c_pressed;
 ILidarDriver* connectLidar(){
 
   ILidarDriver* lidar;
@@ -27,7 +27,7 @@ ILidarDriver* connectLidar(){
 
 }
 
-bool ctrl_c_pressed;
+//bool ctrl_c_pressed;
 void ctrlc(int)
 {
     ctrl_c_pressed = true;

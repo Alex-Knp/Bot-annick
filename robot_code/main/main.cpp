@@ -14,16 +14,19 @@
 #include "../controller/main_controller.hh"
 
 
+
 /*! \brief controller loop 
  *
  * \param[in] all_struct main structure
  */
 
+extern bool ctrl_c_pressed = false;
 
-int main()
-{
+
+int main(){
+
     BigStruct *all_struct = init_BigStruct();
-
+    motor_ask(0,0,all_struct);
     //Odometry init
     odometer_data *odo_data = new odometer_data;
     if(odo_init(all_struct,odo_data)!=0){
@@ -34,19 +37,20 @@ int main()
 
     
     
-    std::thread scanThread(scanLidar, all_struct);
-    std::thread controlThread(main_controller, all_struct); 
-    std::thread time_thread(timeThread);
+    //std::thread scanThread(scanLidar, std::ref(all_struct));
+    std::thread controlThread(main_controller, std::ref(all_struct)); 
+    std::thread time_thread(timeThread, std::ref(all_struct)); 
   
 
     controlThread.join();
-    scanThread.join();
-
+    //scanThread.join();
+    time_thread.join();
+    controller_finish(all_struct);
     //main_camera(all_struct);        // à lancer par le troisième thread
 
     
     return 0;
-}
+} 
 
 /*! \brief last controller operations (called once)
  *
@@ -62,7 +66,7 @@ void controller_finish(BigStruct *all_struct)
 
 
 void timeThread(BigStruct *all_struct) {
-    time_t game = 180;
+    time_t game = 100;
     while (all_struct->strat->state != END_STATE) {
         // Obtenez le temps actuel
         time_t local_time = time(NULL);
@@ -77,6 +81,10 @@ void timeThread(BigStruct *all_struct) {
         }
         
         all_struct->time_mutex.unlock();
+
+        if (ctrl_c_pressed){ 
+          break;
+        }
 
         
         // Attendre un certain temps (par exemple, 1 seconde) avant de vérifier à nouveau le temps

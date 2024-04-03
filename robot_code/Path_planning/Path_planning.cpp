@@ -39,8 +39,8 @@ void Path_planning_update(BigStruct* all_struct){
 
     double trigger_decel = 0.1;     // distance [m] from goal at which the robot starts to decelerate
 
-    double x_goal = all_struct->strat->goal_x;            // Goal position [m]
-    double y_goal = all_struct->strat->goal_y;            // Goal position [m]
+    double x_goal = all_struct->strat->goal_x/1000;            // Goal position [m]
+    double y_goal = all_struct->strat->goal_y/1000;            // Goal position [m]
 
     double rho_goal = sqrt(pow(x_robot - x_goal, 2) + pow(y_robot - y_goal, 2));
 
@@ -240,7 +240,7 @@ void Path_planning_update(BigStruct* all_struct){
     printf("Angle goal = %f\n", all_struct->path->field->theta);
     printf("Angle theta = %f\n", all_struct->rob_pos->theta); */
 
-
+    speed_regulation(all_struct);
     ////////---------     free      -------////////
 
 
@@ -251,6 +251,8 @@ void Path_planning_update(BigStruct* all_struct){
 
 
 void speed_regulation(BigStruct* all_struct) {
+
+    printf("Enter speed reg\n");
 
     float stationnary_error_angle = M_PI/4 ;          //the error angles for which the robot only turns and do not drive forward
     double x_goal = all_struct->strat->goal_x;
@@ -265,9 +267,12 @@ void speed_regulation(BigStruct* all_struct) {
     double x = all_struct->rob_pos->x;
     double y = all_struct->rob_pos->y;
 
-    double rho = sqrt(pow(x-all_struct->strat->goal_x/1000, 2) + pow(y-all_struct->strat->goal_y/1000, 2));
+    double rho = sqrt(pow(x-x_goal/1000, 2) + pow(y-y_goal/1000, 2));  // TODO : find where to get the info
+
 
 	float angle_error = wanted_theta - current_theta;
+
+    printf("angle error : %f\n", angle_error);
 
     if (angle_error > M_PI) {
         angle_error -= 2*M_PI;
@@ -279,25 +284,6 @@ void speed_regulation(BigStruct* all_struct) {
     float rotational_speed = 0.0;
 
 
-
-
-    double rho = sqrt(pow(x-x_goal/1000, 2) + pow(y-y_goal/1000, 2));  // TODO : find where to get the info
-
-    float angle_error = wanted_theta - current_theta;
-
-    if (angle_error > M_PI) {                       // Angle error between -PI and +PI
-    angle_error -= 2*M_PI;
-    } else if (angle_error < -M_PI) {
-    angle_error += 2*M_PI;
-        angle_error -= 2*M_PI;
-    } else if (angle_error < -M_PI) {
-        angle_error += 2*M_PI;
-    }
-
-    float linear_speed = 0.0;
-    float rotational_speed = 0.0;
-
-
     if(abs(angle_error)>stationnary_error_angle){
         linear_speed = 0.0;
         rotational_speed = turning_speed * angle_error / abs(angle_error);
@@ -306,12 +292,13 @@ void speed_regulation(BigStruct* all_struct) {
         linear_speed = wanted_speed*cos(angle_error/stationnary_error_angle*M_PI/2.0);
         rotational_speed = turning_speed*angle_error/stationnary_error_angle;
     }
-
+    printf(" rotationnal speed = %f\n", rotational_speed);
+    printf("linear speed = %f\n", linear_speed);
 	float L_wheel_speed = linear_speed - rotational_speed;
 	float R_wheel_speed = linear_speed + rotational_speed;
 
 
-    if (rho < 0.05) {
+    if (rho < 0.02) {
         L_wheel_speed = 0;
         R_wheel_speed = 0;
         all_struct->strat->goal_reached = true;
@@ -323,9 +310,11 @@ void speed_regulation(BigStruct* all_struct) {
         L_wheel_speed = 0;
         R_wheel_speed = 0;
     }
-  
-	motor_ask(L_wheel_speed, R_wheel_speed);
-
+    printf(" L_wheel = %f\n", L_wheel_speed);
+    printf(" R_wheel = %f\n", R_wheel_speed);
+    printf("fd0");
+	motor_ask(L_wheel_speed, R_wheel_speed, all_struct);
+}
 
         //all_struct->strat->goal_reached = true;
 
@@ -333,4 +322,3 @@ void speed_regulation(BigStruct* all_struct) {
         all_struct->strat->goal_reached = false;
     }*/
 
-}

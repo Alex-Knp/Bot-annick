@@ -19,15 +19,17 @@
  * \param[in] outputs outputs of the controller
  * \return controller main structure
  */
+extern bool ctrl_c_pressed;
 
 BigStruct* init_BigStruct(){
 
 	BigStruct* all_struct = new BigStruct;
 
 	// start up
-	all_struct->startup = false;
+	all_struct->startup = 0;
 	all_struct->beacon_ok = 0;     
-	all_struct->pince_ok = 0;       
+	all_struct->pince_ok = 0; 
+	all_struct->team_id = TEAM_YELLOW;   
 
 
 	// Communication
@@ -61,9 +63,9 @@ BigStruct* init_BigStruct(){
 	// robot position
 	all_struct->rob_pos = (RobotPosition*) malloc(sizeof(RobotPosition));
 
-	all_struct->rob_pos->x = 1.486;
-	all_struct->rob_pos->y = 1.314;
-	all_struct->rob_pos->theta = 345.125*(M_PI/180);
+	all_struct->rob_pos->x = 0.2;
+	all_struct->rob_pos->y = 0.2;
+	all_struct->rob_pos->theta = 0*(M_PI/180);
 
 	// Opponents position
  	all_struct->opp_pos = (OpponentsPosition*) malloc(sizeof(OpponentsPosition));
@@ -78,7 +80,7 @@ BigStruct* init_BigStruct(){
 	all_struct->opp_pos->nb_opp = 0; 
 
 	// lidar driver
-	//all_struct->drv = connectLidar(); ////////////////////////////////////////////////////////////////////////////////////:
+	all_struct->drv = connectLidar(); ////////////////////////////////////////////////////////////////////////////////////:
 
 	//Time
 	all_struct->start_time = time(NULL);
@@ -95,8 +97,13 @@ BigStruct* init_BigStruct(){
 	all_struct->strat->goal_reached = false;
 
 	all_struct->pot_list = (int*) malloc(7*sizeof(int));
+	all_struct->plant_list = (int*) malloc(7*sizeof(int));
 	int pot_list_blue[7] = {0, 1, 2, 3, 4, 5, 6};// Faire un odre de passage des pots
 	int pot_list_yellow[7] = {0, 1, 2, 3, 4, 5, 6};// Faire un odre de passage des pots
+	int plant_list_blue[7] = {0, 1, 2, 3, 4, 5, 6};// Faire un odre de passage des plantes
+	int plant_list_yellow[7] = {0, 1, 2, 3, 4, 5, 6};// Faire un odre de passage des plantes
+
+
 	all_struct->strat->goal_reached = false;
 
 
@@ -105,6 +112,9 @@ BigStruct* init_BigStruct(){
 		for(int i=0; i<7; i++)
 		{
 			all_struct->pot_list[i] = pot_list_blue[i];
+			all_struct->plant_list[i] = plant_list_blue[i];
+
+			
 		}
 	}
 	else if(all_struct->team_id == TEAM_YELLOW)
@@ -112,6 +122,8 @@ BigStruct* init_BigStruct(){
 		for(int i=0; i<7; i++)
 		{
 			all_struct->pot_list[i] = pot_list_yellow[i];
+			all_struct->plant_list[i] = plant_list_yellow[i];
+
 		}
 	}
 	all_struct->strat->next_pot = all_struct->pot_list[0];
@@ -121,8 +133,7 @@ BigStruct* init_BigStruct(){
 }
 
 void free_BigStruct(BigStruct *all_struct)
-{	
-	free(all_struct->table);
+{	printf("Free all\n");
 	free(all_struct->rob_pos);
 
 	//Opponent position free
@@ -130,8 +141,18 @@ void free_BigStruct(BigStruct *all_struct)
 	free(all_struct->opp_pos->y);
 	free(all_struct->opp_pos);
 
-	
-	//disconnectLidar(all_struct->drv);
+	// Lidar
+	free(all_struct->table);
+
+	// path planning
+	free(all_struct->path->active_zone);
+	free(all_struct->path);
+
+	// strat
+	free(all_struct->strat);
+	free(all_struct->pot_list);
+		
+	disconnectLidar(all_struct->drv);
 
 	free(all_struct);
 }
