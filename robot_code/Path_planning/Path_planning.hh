@@ -19,7 +19,12 @@ typedef struct Path_planning
 {
 	double norm;  ///< current norm of the force vector field
 	double theta; ///< current angle of the force vector field
+<<<<<<< HEAD
 	double v_max;    ///< max speed
+=======
+	int v_max;    ///< max speed
+	int *active_zone;
+>>>>>>> RomainOrange
 
 } Path_planning;
 

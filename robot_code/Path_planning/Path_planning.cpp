@@ -12,8 +12,15 @@ void Path_planning_update(BigStruct* all_struct){
     //  Global Variables 
 
     double k_rep;
-    double rho;
+    double k_att = 100;
     double K = 0.1;         // Speed factor
+<<<<<<< HEAD
+=======
+
+    double rho;
+    double rho_0
+
+>>>>>>> RomainOrange
     double x_robot = all_struct->rob_pos->x;   // Robot position [m]
     double y_robot = all_struct->rob_pos->y;   // Robot position [m]
 
@@ -45,14 +52,24 @@ void Path_planning_update(BigStruct* all_struct){
 
     // if the robot is far from the goal (rho_goal > trigger_decel), the robot moves at maximum speed
     if (rho_goal > trigger_decel) {     
+<<<<<<< HEAD
         F[0] = v_max * (x_goal - x_robot) / rho_goal;
         F[1] = v_max * (y_goal - y_robot) / rho_goal;
+=======
+        F[0] = v_max * (x_goal - x_robot) / rho_goal * k_att;
+        F[1] = v_max * (y_goal - y_robot) / rho_goal * k_att;
+>>>>>>> RomainOrange
     }
 
     // if the robot is close to the goal (rho_goal <= trigger_decel), the robot decelerates
     else {
+<<<<<<< HEAD
         F[0] = v_max * (x_goal - x_robot) / trigger_decel;
         F[1] = v_max * (y_goal - y_robot) / trigger_decel;
+=======
+        F[0] = v_max * (x_goal - x_robot) / trigger_decel * k_att;
+        F[1] = v_max * (y_goal - y_robot) / trigger_decel * k_att;
+>>>>>>> RomainOrange
     }
 
 
@@ -63,32 +80,33 @@ void Path_planning_update(BigStruct* all_struct){
     // Variables declaration
 
     double trigger_wall = 0.5;  // distance [m] from the wall impact the trajectory
-    double rho_0 = 0.3;
+    rho_0 = 0.3;
+    k_rep = 10
     
 
     if (x_robot < trigger_wall) {
         rho = x_robot;
         if (rho < 0.1) {
             rho = 0.1; }
-        Frep[0] += (1/rho - 1/rho_0) / pow(rho, 3) * (x_robot);
+        Frep[0] += (1/rho - 1/rho_0) / pow(rho, 3) * (x_robot) * k_rep;
     }
     if (x_lim-x_robot < trigger_wall) {
         rho = x_lim-x_robot;
         if (rho < 0.1) {
             rho = 0.1; }
-        Frep[0] += (1/rho - 1/rho_0) / pow(rho, 3) * (x_robot-x_lim);
+        Frep[0] += (1/rho - 1/rho_0) / pow(rho, 3) * (x_robot-x_lim) * k_rep;
     }
     if (y_robot < rho_0) {
         rho = y_robot;
         if (rho < 0.1) {
             rho = 0.1; }
-        Frep[1] += (1/rho - 1/rho_0) / pow(rho, 3) * (y_robot);
+        Frep[1] += (1/rho - 1/rho_0) / pow(rho, 3) * (y_robot) * k_rep;
     }
     if (y_lim-y_robot < rho_0) {
         rho = y_lim-y_robot;
         if (rho < 0.1) {
             rho = 0.1; }
-        Frep[1] += (1/rho - 1/rho_0) / pow(rho, 3) * (y_robot-y_lim);
+        Frep[1] += (1/rho - 1/rho_0) / pow(rho, 3) * (y_robot-y_lim) * k_rep;
     }
 
 
@@ -112,7 +130,8 @@ void Path_planning_update(BigStruct* all_struct){
             {-0.300 + 1, -0.500 + 1.5}
         };
 
-    k_rep = 1;
+    k_rep = 5;
+    rho_0 = 0.3;
 
     for (int i = 0; i < 6; i++) {
 
@@ -131,14 +150,11 @@ void Path_planning_update(BigStruct* all_struct){
 
         rho = sqrt(pow(x_obs-x_robot, 2) + pow(y_obs-x_robot, 2)) - radius;  // Minimal distance from the obstacle
 
-        if (rho < rho_0) {
+        if (rho < rho_0 && cvs->path->active_zone[i] == 1) {
             Frep[0] += k_rep * (1/rho - 1/rho_0) / pow(rho, 3) * (x_robot-x_obs);
             Frep[1] += Frep[0] / (x_robot-x_obs) * (y_robot-y_obs);
         }
     }
-
-
-    /////////--------   Pots avoidance  -------/////////
 
 
     /////////--------   Opponent avoidance  -------/////////
@@ -162,13 +178,9 @@ void Path_planning_update(BigStruct* all_struct){
     }
 
 
-
-    /////////--------   Obstacle avoidance  -------/////////
-
-
     ////////---------    PAMI's avoidance   -------////////
 
-    k_rep = 0.5;
+    k_rep = 5;
     rho_0 = 0.3;
 
     if (sqrt(pow(1.05 - y_robot, 2) + pow(x_robot - 0.15, 2)) < rho_0) {
@@ -250,6 +262,7 @@ void Path_planning_update(BigStruct* all_struct){
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 void speed_regulation(BigStruct *all_struct){
 
 	float stationnary_error_angle = M_PI/4 ;//the error angles for which the robot only turns and do not drive forward
@@ -259,6 +272,8 @@ void speed_regulation(BigStruct *all_struct){
 	float wanted_speed = all_struct->path->norm; //TODO: find where to get the info
     float turning_speed = wanted_speed / 1.5; //[rad/s] the speed at which the robot turns
 =======
+=======
+>>>>>>> RomainOrange
 
 
 void setSpeed(BigStruct* all_struct) {
@@ -271,11 +286,15 @@ void setSpeed(BigStruct* all_struct) {
     float wanted_theta = all_struct->path->theta;
     float wanted_speed = all_struct->path->norm;
     float turning_speed = wanted_speed / 1.5;       //[rad/s] the speed at which the robot turns
+<<<<<<< HEAD
 >>>>>>> 8cdd76b (path)
+=======
+>>>>>>> RomainOrange
 
     double x = all_struct->rob_pos->x;
     double y = all_struct->rob_pos->y;
 
+<<<<<<< HEAD
 <<<<<<< HEAD
     double rho = sqrt(pow(x-all_struct->strat->goal_x/1000, 2) + pow(y-all_struct->strat->goal_y/1000, 2));
 
@@ -293,25 +312,37 @@ void setSpeed(BigStruct* all_struct) {
 
 
 =======
+=======
+>>>>>>> RomainOrange
     double rho = sqrt(pow(x-x_goal/1000, 2) + pow(y-y_goal/1000, 2));  // TODO : find where to get the info
 
     float angle_error = wanted_theta - current_theta;
 
     if (angle_error > M_PI) {                       // Angle error between -PI and +PI
+<<<<<<< HEAD
     angle_error -= 2*M_PI;
     } else if (angle_error < -M_PI) {
     angle_error += 2*M_PI;
+=======
+        angle_error -= 2*M_PI;
+    } else if (angle_error < -M_PI) {
+        angle_error += 2*M_PI;
+>>>>>>> RomainOrange
     }
 
     float linear_speed = 0.0;
     float rotational_speed = 0.0;
 
 
+<<<<<<< HEAD
 >>>>>>> 8cdd76b (path)
+=======
+>>>>>>> RomainOrange
     if(abs(angle_error)>stationnary_error_angle){
         linear_speed = 0.0;
         rotational_speed = turning_speed * angle_error / abs(angle_error);
     } else {
+<<<<<<< HEAD
 <<<<<<< HEAD
         linear_speed = wanted_speed*cos(angle_error/stationnary_error_angle*M_PI/2.0);
         rotational_speed = turning_speed*angle_error/stationnary_error_angle;
@@ -320,17 +351,23 @@ void setSpeed(BigStruct* all_struct) {
 	float L_wheel_speed = linear_speed - rotational_speed;
 	float R_wheel_speed = linear_speed + rotational_speed;
 =======
+=======
+>>>>>>> RomainOrange
         linear_speed = wanted_speed*cos(angle_error/stationnary_error_angle*PI/2.0);
         rotational_speed = turning_speed*angle_error/stationnary_error_angle;
     }
 
     float L_wheel_speed = linear_speed - rotational_speed;
     float R_wheel_speed = linear_speed + rotational_speed;
+<<<<<<< HEAD
 >>>>>>> 8cdd76b (path)
+=======
+>>>>>>> RomainOrange
 
     if (rho < 0.05) {
         L_wheel_speed = 0;
         R_wheel_speed = 0;
+<<<<<<< HEAD
 <<<<<<< HEAD
         all_struct->strat->goal_reached = true;
     }
@@ -345,6 +382,8 @@ void setSpeed(BigStruct* all_struct) {
 	motor_ask(L_wheel_speed, R_wheel_speed);
 
 =======
+=======
+>>>>>>> RomainOrange
         //all_struct->strat->goal_reached = true;
     }
     /*else {
@@ -352,5 +391,8 @@ void setSpeed(BigStruct* all_struct) {
     }*/
 
     motor_ask(L_wheel_speed, R_wheel_speed);
+<<<<<<< HEAD
 >>>>>>> 8cdd76b (path)
+=======
+>>>>>>> RomainOrange
 }

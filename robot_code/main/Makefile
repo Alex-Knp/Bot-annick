@@ -25,6 +25,7 @@ include $(HOME_TREE)/mak_def.inc
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 CXXSRC +=  ../localization/localisation.cpp main.cpp all_struct.cpp ../communication/SPI_spidev.cpp ../Path_planning/Path_planning.cpp ../Sensors/Micro_Switch.cpp ../Sensors/odometry.cpp 
 =======
 CXXSRC += ../localization/localisation.cpp main.cpp all_struct.cpp ../Path_planning/Path_planning.cpp 
@@ -32,6 +33,9 @@ CXXSRC += ../localization/localisation.cpp main.cpp all_struct.cpp ../Path_plann
 =======
 CXXSRC += ../localization/localisation.cpp main.cpp all_struct.cpp ../Path_planning/Path_planning.cpp motor_ask.cpp
 >>>>>>> 8cdd76b (path)
+=======
+CXXSRC += ../localization/localisation.cpp main.cpp all_struct.cpp ../Path_planning/Path_planning.cpp motor_ask.cpp
+>>>>>>> RomainOrange
 C_INCLUDES += -I$(CURDIR)/../sdk/include -I$(CURDIR)/../sdk/src  #-L./home/student/lidar_example_cpp-main/output/Linux/Release/
 
 EXTRA_OBJ :=
