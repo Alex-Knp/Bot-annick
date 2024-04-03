@@ -22,7 +22,10 @@ void main_strategy(BigStruct* all_struct){
             break;
 
         case WAIT_INIT_STATE:
-            if(all_struct->team_id == TEAM_BLUE && !all_struct->startup){
+
+            if(all_struct->team_id == TEAM_BLUE && all_struct->startup)
+
+/*             if(all_struct->team_id == TEAM_BLUE && !all_struct->startup){
                 all_struct->strat->goal_x = 225.0;
                 all_struct->strat->goal_y = 225.0;
                 all_struct->strat->goal_theta = 90.0;// degree
@@ -35,7 +38,7 @@ void main_strategy(BigStruct* all_struct){
                 all_struct->strat->goal_theta = 270.0;// degree
                 all_struct->strat->state = ON_THE_MOVE;
                 all_struct->strat->next_state = GO_TO_POT;
-            }
+            } */
             break;
         case ON_THE_MOVE:
             // Robot is moving
