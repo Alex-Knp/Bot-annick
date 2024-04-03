@@ -26,14 +26,14 @@ BigStruct* init_BigStruct(){
 
 	// start up
 	all_struct->startup = false;
+	all_struct->beacon_ok = 0;     
+	all_struct->pince_ok = 0;       
+
 
 	// Communication
 
 	all_struct->fd1 = spi_init_1();
 	all_struct->fd0 = spi_init_0();
-
-	// Localisation data
-    all_struct->rob_pos = new RobotPosition;
 
 	// localization
 
@@ -52,7 +52,11 @@ BigStruct* init_BigStruct(){
  	all_struct->path = (Path_planning*) malloc(sizeof(Path_planning)); 
 	all_struct->path->norm = 0.0;
 	all_struct->path->theta = 0.0;
-	all_struct->path->v_max = 0; 
+	all_struct->path->v_max = 10.0; 
+	all_struct->path->active_zone = (int *)malloc(6*sizeof(int));
+	for (int i = 0; i < 6; i++) {
+		all_struct->path->active_zone[i] = 1;
+	}
 
 	// robot position
 	all_struct->rob_pos = (RobotPosition*) malloc(sizeof(RobotPosition));
@@ -89,12 +93,12 @@ BigStruct* init_BigStruct(){
 	all_struct->strat->goal_y = 0.0;
 	all_struct->strat->goal_theta = 0.0;
 	all_struct->strat->goal_reached = false;
-	all_struct->strat->count_pot = 0;
-	all_struct->strat->count_plant = 0;
 
 	all_struct->pot_list = (int*) malloc(7*sizeof(int));
 	int pot_list_blue[7] = {0, 1, 2, 3, 4, 5, 6};// Faire un odre de passage des pots
 	int pot_list_yellow[7] = {0, 1, 2, 3, 4, 5, 6};// Faire un odre de passage des pots
+	all_struct->strat->goal_reached = false;
+
 
 	if(all_struct->team_id == TEAM_BLUE)
 	{
@@ -102,7 +106,6 @@ BigStruct* init_BigStruct(){
 		{
 			all_struct->pot_list[i] = pot_list_blue[i];
 		}
-		
 	}
 	else if(all_struct->team_id == TEAM_YELLOW)
 	{

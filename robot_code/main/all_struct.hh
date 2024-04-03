@@ -57,9 +57,11 @@ typedef struct lidar_data lidar_data;
 // forward declaration for actuators
 typedef struct Storage Storage;
 typedef struct Side Side;
-typedef struct Plant_Manager; 
-typedef struct Path_planning;
 typedef struct odometer_data;
+typedef struct Plant_Manager Plant_Manager; 
+
+
+typedef struct Path_planning Path_planning;
 
 
 typedef struct RobotPosition
@@ -106,7 +108,11 @@ typedef struct BigStruct
 	Path_planning *path;
 
 	int team_id;
-	bool startup; // False until the startup microswitch is pressed
+
+	// initialisation of the robot
+	int beacon_ok;           						// 0 if beacons are not detected, 1 if beacons are detected (at the start of the game)
+	bool startup; 									// False until the startup microswitch is pressed
+	int pince_ok;
 
 	time_t start_time, current_time, elapsed_time;  // start time mis à zero dans init big struct
 	std::mutex time_mutex;

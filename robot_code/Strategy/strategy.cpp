@@ -16,13 +16,16 @@ void main_strategy(BigStruct* all_struct){
 
     {
         case CALIB_STATE:
-            if (verification_beacon(all_struct)){
+            if ((verification_beacon(all_struct) && init_pince(all_struct) || all_struct->startup) ){
                 all_struct->strat->state = WAIT_INIT_STATE;
             }
             break;
 
         case WAIT_INIT_STATE:
-            if(all_struct->team_id == TEAM_BLUE && !all_struct->startup){
+
+            if(all_struct->team_id == TEAM_BLUE && all_struct->startup)
+
+/*             if(all_struct->team_id == TEAM_BLUE && !all_struct->startup){
                 all_struct->strat->goal_x = 225.0;
                 all_struct->strat->goal_y = 225.0;
                 all_struct->strat->goal_theta = 90.0;// degree
@@ -35,7 +38,7 @@ void main_strategy(BigStruct* all_struct){
                 all_struct->strat->goal_theta = 270.0;// degree
                 all_struct->strat->state = ON_THE_MOVE;
                 all_struct->strat->next_state = GO_TO_POT;
-            }
+            } */
             break;
         case ON_THE_MOVE:
             // Robot is moving
@@ -123,10 +126,17 @@ void main_strategy(BigStruct* all_struct){
 }
 
 bool verification_beacon(BigStruct* all_struct){
-    if(all_struct->rob_pos->x ==0.0 && all_struct->rob_pos->y == 0.0 && all_struct->rob_pos->theta == 0.0){
-        return false;
+    if(all_struct->beacon_ok){
+        return true;
     }
-    return true;
+    return false;
+}
+
+bool init_pince(BigStruct* all_struct){
+    if (all_struct->pince_ok){
+        return true;
+    }
+    return false;
 }
 
 void pot_zone_select(BigStruct* all_struct, int num_pot){

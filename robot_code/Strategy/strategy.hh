@@ -17,6 +17,7 @@
 void main_strategy(BigStruct* all_struct);
 
 bool verification_beacon(BigStruct* all_struct);
+bool init_pince(BigStruct* all_struct);
 
 void pot_zone_select(BigStruct* all_struct, int num_pot);
 void plant_zone_select(BigStruct* all_struct, int num_plant);

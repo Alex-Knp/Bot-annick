@@ -1,4 +1,7 @@
 #include "Path_planning.hh"
+#include "../localization/localisation.hh"
+#include "../controller/motor_ask.hh"
+#include "../Strategy/strategy.hh"
 #include <cmath>
 #include <vector>
 #include "../controller/motor_ask.hh"
@@ -9,18 +12,22 @@ void Path_planning_update(BigStruct* all_struct){
     //  Global Variables 
 
     double k_rep;
-    double rho;
+    double k_att = 100;
     double K = 0.1;         // Speed factor
-    double x_robot = 0.0;   // Robot position [m]
-    double y_robot = 0.0;   // Robot position [m]
+
+    double rho;
+    double rho_0;
+
+    double x_robot = all_struct->rob_pos->x;   // Robot position [m]
+    double y_robot = all_struct->rob_pos->y;   // Robot position [m]
 
     double x_obs;           // Obstacle position [m]
-    double y_obs;
+    double y_obs;          
 
     double x_lim = 2.0;     // limite map x [m]
     double y_lim = 3.0;     // limite map y [m]
 
-    double *F = (double *)calloc(2, sizeof(double));    // Field vector [rad/s]
+    double *F = (double *)calloc(2, sizeof(double));       // Field vector [rad/s]
     double *Frep = (double *)calloc(2, sizeof(double));    // Field vector [rad/s]
 
     double v_max = all_struct->path->v_max;
@@ -32,24 +39,24 @@ void Path_planning_update(BigStruct* all_struct){
 
     double trigger_decel = 0.1;     // distance [m] from goal at which the robot starts to decelerate
 
-    double X_goal = all_struct->strat->goal_x;            // Goal position [m]
-    double Y_goal = all_struct->strat->goal_y;            // Goal position [m]
+    double x_goal = all_struct->strat->goal_x;            // Goal position [m]
+    double y_goal = all_struct->strat->goal_y;            // Goal position [m]
 
-    double rho_goal = sqrt(pow(x_robot - X_goal, 2) + pow(y_robot - Y_goal, 2));
+    double rho_goal = sqrt(pow(x_robot - x_goal, 2) + pow(y_robot - y_goal, 2));
 
 
     // compute attractive field
 
     // if the robot is far from the goal (rho_goal > trigger_decel), the robot moves at maximum speed
     if (rho_goal > trigger_decel) {     
-        F[0] = v_max * (X_goal - x_robot) / rho_goal;
-        F[1] = v_max * (Y_goal - y_robot) / rho_goal;
+        F[0] = v_max * (x_goal - x_robot) / rho_goal * k_att;
+        F[1] = v_max * (y_goal - y_robot) / rho_goal * k_att;
     }
 
     // if the robot is close to the goal (rho_goal <= trigger_decel), the robot decelerates
     else {
-        F[0] = v_max * (X_goal - x_robot) / trigger_decel;
-        F[1] = v_max * (Y_goal - y_robot) / trigger_decel;
+        F[0] = v_max * (x_goal - x_robot) / trigger_decel * k_att;
+        F[1] = v_max * (y_goal - y_robot) / trigger_decel * k_att;
     }
 
 
@@ -60,32 +67,33 @@ void Path_planning_update(BigStruct* all_struct){
     // Variables declaration
 
     double trigger_wall = 0.5;  // distance [m] from the wall impact the trajectory
-    double rho_0 = 0.3;
+    rho_0 = 0.3;
+    k_rep = 10;
     
 
     if (x_robot < trigger_wall) {
         rho = x_robot;
         if (rho < 0.1) {
             rho = 0.1; }
-        Frep[0] += (1/rho - 1/rho_0) / pow(rho, 3) * (x_robot);
+        Frep[0] += (1/rho - 1/rho_0) / pow(rho, 3) * (x_robot) * k_rep;
     }
     if (x_lim-x_robot < trigger_wall) {
         rho = x_lim-x_robot;
         if (rho < 0.1) {
             rho = 0.1; }
-        Frep[0] += (1/rho - 1/rho_0) / pow(rho, 3) * (x_robot-x_lim);
+        Frep[0] += (1/rho - 1/rho_0) / pow(rho, 3) * (x_robot-x_lim) * k_rep;
     }
     if (y_robot < rho_0) {
         rho = y_robot;
         if (rho < 0.1) {
             rho = 0.1; }
-        Frep[1] += (1/rho - 1/rho_0) / pow(rho, 3) * (y_robot);
+        Frep[1] += (1/rho - 1/rho_0) / pow(rho, 3) * (y_robot) * k_rep;
     }
     if (y_lim-y_robot < rho_0) {
         rho = y_lim-y_robot;
         if (rho < 0.1) {
             rho = 0.1; }
-        Frep[1] += (1/rho - 1/rho_0) / pow(rho, 3) * (y_robot-y_lim);
+        Frep[1] += (1/rho - 1/rho_0) / pow(rho, 3) * (y_robot-y_lim) * k_rep;
     }
 
 
@@ -109,7 +117,8 @@ void Path_planning_update(BigStruct* all_struct){
             {-0.300 + 1, -0.500 + 1.5}
         };
 
-    k_rep = 1;
+    k_rep = 5;
+    rho_0 = 0.3;
 
     for (int i = 0; i < 6; i++) {
 
@@ -128,14 +137,11 @@ void Path_planning_update(BigStruct* all_struct){
 
         rho = sqrt(pow(x_obs-x_robot, 2) + pow(y_obs-x_robot, 2)) - radius;  // Minimal distance from the obstacle
 
-        if (rho < rho_0) {
+        if (rho < rho_0 && all_struct->path->active_zone[i] == 1) {
             Frep[0] += k_rep * (1/rho - 1/rho_0) / pow(rho, 3) * (x_robot-x_obs);
             Frep[1] += Frep[0] / (x_robot-x_obs) * (y_robot-y_obs);
         }
     }
-
-
-    /////////--------   Pots avoidance  -------/////////
 
 
     /////////--------   Opponent avoidance  -------/////////
@@ -159,13 +165,9 @@ void Path_planning_update(BigStruct* all_struct){
     }
 
 
-
-    /////////--------   Obstacle avoidance  -------/////////
-
-
     ////////---------    PAMI's avoidance   -------////////
 
-    k_rep = 0.5;
+    k_rep = 5;
     rho_0 = 0.3;
 
     if (sqrt(pow(1.05 - y_robot, 2) + pow(x_robot - 0.15, 2)) < rho_0) {
@@ -186,7 +188,7 @@ void Path_planning_update(BigStruct* all_struct){
         Frep[1] += k_rep * (1/rho - 1/rho_0) / pow(rho, 3) * (y_robot-y_obs);
         Frep[0] += k_rep * (1/rho - 1/rho_0) / pow(rho, 3) * (x_robot-x_obs);
     }
-    else if (x_robot - 0.15 < rho_0 && 1.05 < y_robot < 1.95) {
+    else if (x_robot - 0.15 < rho_0 && (1.05 < y_robot) < 1.95) {
         rho = x_robot - 0.15;
         x_obs = 0.15;
         if (rho < 0.1) {
@@ -246,14 +248,19 @@ void Path_planning_update(BigStruct* all_struct){
     free(F);
 }
 
-void speed_regulation(BigStruct *all_struct){
 
-	float stationnary_error_angle = M_PI/4 ;//the error angles for which the robot only turns and do not drive forward
 
-	float current_theta = all_struct->rob_pos->theta; //TODO: find where to get the info
-	float wanted_theta = all_struct->path->theta; //TODO: find where to get the info
-	float wanted_speed = all_struct->path->norm; //TODO: find where to get the info
-    float turning_speed = wanted_speed / 1.5; //[rad/s] the speed at which the robot turns
+void speed_regulation(BigStruct* all_struct) {
+
+    float stationnary_error_angle = M_PI/4 ;          //the error angles for which the robot only turns and do not drive forward
+    double x_goal = all_struct->strat->goal_x;
+    double y_goal = all_struct->strat->goal_y;
+
+    float current_theta = all_struct->rob_pos->theta;
+    float wanted_theta = all_struct->path->theta;
+    float wanted_speed = all_struct->path->norm;
+    float turning_speed = wanted_speed / 1.5;       //[rad/s] the speed at which the robot turns
+
 
     double x = all_struct->rob_pos->x;
     double y = all_struct->rob_pos->y;
@@ -273,16 +280,36 @@ void speed_regulation(BigStruct *all_struct){
 
 
 
+
+    double rho = sqrt(pow(x-x_goal/1000, 2) + pow(y-y_goal/1000, 2));  // TODO : find where to get the info
+
+    float angle_error = wanted_theta - current_theta;
+
+    if (angle_error > M_PI) {                       // Angle error between -PI and +PI
+    angle_error -= 2*M_PI;
+    } else if (angle_error < -M_PI) {
+    angle_error += 2*M_PI;
+        angle_error -= 2*M_PI;
+    } else if (angle_error < -M_PI) {
+        angle_error += 2*M_PI;
+    }
+
+    float linear_speed = 0.0;
+    float rotational_speed = 0.0;
+
+
     if(abs(angle_error)>stationnary_error_angle){
         linear_speed = 0.0;
         rotational_speed = turning_speed * angle_error / abs(angle_error);
     } else {
+
         linear_speed = wanted_speed*cos(angle_error/stationnary_error_angle*M_PI/2.0);
         rotational_speed = turning_speed*angle_error/stationnary_error_angle;
     }
 
 	float L_wheel_speed = linear_speed - rotational_speed;
 	float R_wheel_speed = linear_speed + rotational_speed;
+
 
     if (rho < 0.05) {
         L_wheel_speed = 0;
@@ -298,5 +325,12 @@ void speed_regulation(BigStruct *all_struct){
     }
   
 	motor_ask(L_wheel_speed, R_wheel_speed);
+
+
+        //all_struct->strat->goal_reached = true;
+
+    /*else {
+        all_struct->strat->goal_reached = false;
+    }*/
 
 }
