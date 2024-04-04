@@ -6,7 +6,7 @@
 #ifndef _countof
 #define _countof(_Array) (int)(sizeof(_Array) / sizeof(_Array[0]))
 #endif
-extern bool ctrl_c_pressed;
+
 ILidarDriver* connectLidar(){
 
   ILidarDriver* lidar;
@@ -30,7 +30,7 @@ ILidarDriver* connectLidar(){
 //bool ctrl_c_pressed;
 void ctrlc(int)
 {
-    ctrl_c_pressed = true;
+    *ctrl_c_pressed = true;
 }
 
 void scanLidar(BigStruct *all_struct){
@@ -100,12 +100,13 @@ void scanLidar(BigStruct *all_struct){
                 printf("beacon %ld : %f, angle : %f \n", i, beacons[i].distance, beacons[i].angle);
             } */
             getFinalBeacon(beacons, final_beacons, all_struct);
+            getObstacles(all_struct, clusters, all_struct->rob_pos);
+            printf("x = %f, y = %f, theta = %f\n", all_struct->rob_pos->x, all_struct->rob_pos->y, all_struct->rob_pos->theta*(180/M_PI));
+
             if (final_beacons.size() == 3) {
                 all_struct->beacon_ok = 1;
                 lidar_update_position(*all_struct->rob_pos, *all_struct->table, final_beacons, x_tab, y_tab, x_ref_tab, y_ref_tab);
                 printf("x = %f, y = %f, theta = %f\n", all_struct->rob_pos->x, all_struct->rob_pos->y, all_struct->rob_pos->theta*(180/M_PI));
-                getObstacles(all_struct, clusters, all_struct->rob_pos);
-
             }
             else {
                 printf("not enough beacons\n");
@@ -119,7 +120,7 @@ void scanLidar(BigStruct *all_struct){
         }
                    //////////////// threads end of lock mutex
 
-       if (ctrl_c_pressed){ 
+       if (*ctrl_c_pressed){ 
           break;
         }
        is++;
@@ -189,10 +190,6 @@ void getBeacon(std::vector<Beacon>& beacons, std::vector<Cluster> tab){
 void getObstacles(BigStruct* all_struct, std::vector<Cluster> tab,RobotPosition* coord){
     int nb_clusters = tab.size();
     all_struct->opp_pos->nb_opp = 0;
-    for(int i = 0; i < 2; i++){
-        all_struct->opp_pos->x[i] = 0;
-        all_struct->opp_pos->y[i] = 0;
-     }
 
     // pour chaque cluster test si c'est un obstacle et si oui on calcule la distance et l'angle en prenant pour distance la distance du point le plus proche et pour angle celui du point le plus proche
     for (int i = 0; i < nb_clusters; i++) {
@@ -200,8 +197,6 @@ void getObstacles(BigStruct* all_struct, std::vector<Cluster> tab,RobotPosition*
         {    
 
             all_struct->opp_pos->nb_opp++;
-
-            printf("nb_opp:%d\n",all_struct->opp_pos->nb_opp);            
             
 
             int len = tab[i].points.size();
@@ -219,9 +214,9 @@ void getObstacles(BigStruct* all_struct, std::vector<Cluster> tab,RobotPosition*
 
             double x_obstacle = coord->x*1000 + cos(coord->theta +PI/2 +nearest_angle)* nearest_distance;
             double y_obstacle = coord->y*1000 + sin(coord->theta +PI/2 +nearest_angle)* nearest_distance;
-
+/* 
             printf("x_obstacle : %f\n",x_obstacle);
-            printf("y_obstacle : %f\n",y_obstacle);
+            printf("y_obstacle : %f\n",y_obstacle); */
 
             all_struct->opp_pos->x[all_struct->opp_pos->nb_opp-1] = x_obstacle;
             all_struct->opp_pos->y[all_struct->opp_pos->nb_opp-1] = y_obstacle;
@@ -424,22 +419,23 @@ bool OpponnentBeaconCancel (Beacon beacon0, Beacon beacon1, Beacon beacon2, BigS
     double beacon1_angle = beacon1.angle + 90;
     double beacon2_angle = beacon2.angle + 90;
 
-    if (beacon0_angle < 0)
+    if (beacon0_angle > 360)
     {
-        beacon0_angle+=360;
+        beacon0_angle-=360;
     }
-        if (beacon1_angle < 0)
+    if (beacon1_angle > 360)
     {
-        beacon1_angle+=360;
+        beacon1_angle-=360;
     }
-        if (beacon2_angle < 0)
+    if (beacon2_angle > 360)
     {
-        beacon2_angle+=360;
-    }
+        beacon2_angle-=360;
+    } 
+
         
-    printf("beacon 0 : %f, angle : %f \n", beacon0.distance, beacon0.angle);
-    printf("beacon 1 : %f, angle : %f \n", beacon1.distance, beacon1.angle);
-    printf("beacon 2 : %f, angle : %f \n", beacon2.distance, beacon2.angle); 
+    printf("beacon 0 : %f, angle : %f \n", beacon0.distance, beacon0_angle);
+    printf("beacon 1 : %f, angle : %f \n", beacon1.distance, beacon1_angle);
+    printf("beacon 2 : %f, angle : %f \n", beacon2.distance, beacon2_angle); 
 
     for (int i = 0; i < 3; i++) {
         double angle = 0.0;

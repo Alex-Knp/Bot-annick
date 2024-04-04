@@ -117,7 +117,7 @@ void Path_planning_update(BigStruct* all_struct){
             {-0.300 + 1, -0.500 + 1.5}
         };
 
-    k_rep = 5;
+    k_rep = 0;//5;
     rho_0 = 0.3;
 
     for (int i = 0; i < 6; i++) {
@@ -146,15 +146,14 @@ void Path_planning_update(BigStruct* all_struct){
 
     /////////--------   Opponent avoidance  -------/////////
 
-    k_rep = 200;
-    rho_0 = 0.5;
+    k_rep = 0;//500;
+    rho_0 = 0.75;
 
     int N = 3;
 
     for (int i = 0; i < N; i++) {
-
-        x_obs = all_struct->opp_pos->x[i];
-        y_obs = all_struct->opp_pos->y[i];
+        x_obs = all_struct->opp_pos->x[i]/1000;
+        y_obs = all_struct->opp_pos->y[i]/1000;
 
         rho = sqrt(pow(x_obs-x_robot, 2) + pow(y_obs-y_robot, 2)); 
 
@@ -252,8 +251,6 @@ void Path_planning_update(BigStruct* all_struct){
 
 void speed_regulation(BigStruct* all_struct) {
 
-    printf("Enter speed reg\n");
-
     float stationnary_error_angle = M_PI/4 ;          //the error angles for which the robot only turns and do not drive forward
     double x_goal = all_struct->strat->goal_x;
     double y_goal = all_struct->strat->goal_y;
@@ -271,8 +268,6 @@ void speed_regulation(BigStruct* all_struct) {
 
 
 	float angle_error = wanted_theta - current_theta;
-
-    printf("angle error : %f\n", angle_error);
 
     if (angle_error > M_PI) {
         angle_error -= 2*M_PI;
@@ -292,8 +287,7 @@ void speed_regulation(BigStruct* all_struct) {
         linear_speed = wanted_speed*cos(angle_error/stationnary_error_angle*M_PI/2.0);
         rotational_speed = turning_speed*angle_error/stationnary_error_angle;
     }
-    printf(" rotationnal speed = %f\n", rotational_speed);
-    printf("linear speed = %f\n", linear_speed);
+
 	float L_wheel_speed = linear_speed - rotational_speed;
 	float R_wheel_speed = linear_speed + rotational_speed;
 
@@ -310,9 +304,7 @@ void speed_regulation(BigStruct* all_struct) {
         L_wheel_speed = 0;
         R_wheel_speed = 0;
     }
-    printf(" L_wheel = %f\n", L_wheel_speed);
-    printf(" R_wheel = %f\n", R_wheel_speed);
-    printf("fd0");
+
 	motor_ask(L_wheel_speed, R_wheel_speed, all_struct);
 }
 

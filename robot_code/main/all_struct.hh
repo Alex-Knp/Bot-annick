@@ -91,9 +91,11 @@ typedef struct Strategy
     double goal_theta;
     bool goal_reached;
     int next_pot;
-	int drop_zone;
+	int next_plant;
+	int next_drop;
     int count_pot;
 	int count_plant;
+	int count_drop;
 
 } Strategy;
 /// Main controller structure
@@ -119,6 +121,7 @@ typedef struct BigStruct
 
 	int* pot_list;
 	int* plant_list;
+	int* drop_zone_list;
 	
 	// Communication data
 	int fd1;   // correspond au spi_init_1
@@ -139,7 +142,7 @@ typedef struct BigStruct
 
 
 } BigStruct;
-
+extern bool *ctrl_c_pressed;
 // function prototypes
 BigStruct* init_BigStruct();
 void free_BigStruct(BigStruct *calib);

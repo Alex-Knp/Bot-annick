@@ -19,7 +19,6 @@
  * \param[in] outputs outputs of the controller
  * \return controller main structure
  */
-extern bool ctrl_c_pressed;
 
 BigStruct* init_BigStruct(){
 
@@ -29,7 +28,7 @@ BigStruct* init_BigStruct(){
 	all_struct->startup = 0;
 	all_struct->beacon_ok = 0;     
 	all_struct->pince_ok = 0; 
-	all_struct->team_id = TEAM_YELLOW;   
+	all_struct->team_id = TEAM_YELLOW;  
 
 
 	// Communication
@@ -63,8 +62,8 @@ BigStruct* init_BigStruct(){
 	// robot position
 	all_struct->rob_pos = (RobotPosition*) malloc(sizeof(RobotPosition));
 
-	all_struct->rob_pos->x = 0.2;
-	all_struct->rob_pos->y = 0.2;
+	all_struct->rob_pos->x = 0.24;
+	all_struct->rob_pos->y = 0.24;
 	all_struct->rob_pos->theta = 0*(M_PI/180);
 
 	// Opponents position
@@ -91,17 +90,22 @@ BigStruct* init_BigStruct(){
 	all_struct->strat->state = CALIB_STATE;
 	all_struct->strat->count_plant = 0;
 	all_struct->strat->count_pot = 0;
+	all_struct->strat->count_drop = 0;
 	all_struct->strat->goal_x = 0.0;
 	all_struct->strat->goal_y = 0.0;
 	all_struct->strat->goal_theta = 0.0;
 	all_struct->strat->goal_reached = false;
 
-	all_struct->pot_list = (int*) malloc(7*sizeof(int));
-	all_struct->plant_list = (int*) malloc(7*sizeof(int));
-	int pot_list_blue[7] = {0, 1, 2, 3, 4, 5, 6};// Faire un odre de passage des pots
-	int pot_list_yellow[7] = {0, 1, 2, 3, 4, 5, 6};// Faire un odre de passage des pots
-	int plant_list_blue[7] = {0, 1, 2, 3, 4, 5, 6};// Faire un odre de passage des plantes
-	int plant_list_yellow[7] = {0, 1, 2, 3, 4, 5, 6};// Faire un odre de passage des plantes
+	all_struct->pot_list = (int*) malloc(6*sizeof(int));
+	all_struct->plant_list = (int*) malloc(6*sizeof(int));
+	all_struct->drop_zone_list = (int*) malloc(3*sizeof(int));
+	int pot_list_blue[7] = {0, 1, 2, 3, 4, 5};// Faire un odre de passage des pots
+	int pot_list_yellow[7] = {5, 4, 2, 3, 4, 0};// Faire un odre de passage des pots
+	int plant_list_blue[7] = {0, 1, 2, 3, 4, 5};// Faire un odre de passage des plantes
+	int plant_list_yellow[7] = {0, 1, 2, 3, 4, 5};// Faire un odre de passage des plantes
+	int drop_zone_yellow[3] = {1,5,2};
+	int drop_zone_blue[3] = {0,3,4};
+
 
 
 	all_struct->strat->goal_reached = false;
@@ -109,24 +113,34 @@ BigStruct* init_BigStruct(){
 
 	if(all_struct->team_id == TEAM_BLUE)
 	{
-		for(int i=0; i<7; i++)
+		for(int i=0; i<6; i++)
 		{
 			all_struct->pot_list[i] = pot_list_blue[i];
 			all_struct->plant_list[i] = plant_list_blue[i];
 
 			
 		}
+		for(int i=0; i<3; i++){
+			all_struct->drop_zone_list[i] = drop_zone_blue[i];	
+		}
 	}
 	else if(all_struct->team_id == TEAM_YELLOW)
 	{
-		for(int i=0; i<7; i++)
+		for(int i=0; i<6; i++)
 		{
 			all_struct->pot_list[i] = pot_list_yellow[i];
 			all_struct->plant_list[i] = plant_list_yellow[i];
 
 		}
+		for(int i=0; i<3; i++){
+			all_struct->drop_zone_list[i] = drop_zone_yellow[i];	
+		}
+		
 	}
 	all_struct->strat->next_pot = all_struct->pot_list[0];
+	all_struct->strat->next_drop = all_struct->drop_zone_list[0];
+	all_struct->strat->next_plant = all_struct->plant_list[0];
+
 
 
 	return all_struct;

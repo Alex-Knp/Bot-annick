@@ -20,33 +20,33 @@
  * \param[in] all_struct main structure
  */
 
-extern bool ctrl_c_pressed = false;
+bool *ctrl_c_pressed = nullptr;
 
 
 int main(){
 
     BigStruct *all_struct = init_BigStruct();
+    ctrl_c_pressed = new bool;
+    *ctrl_c_pressed = false;
     motor_ask(0,0,all_struct);
     //Odometry init
     odometer_data *odo_data = new odometer_data;
     if(odo_init(all_struct,odo_data)!=0){
         printf("error odo");
     }
-      
-    //scanLidar(all_struct);
-
     
     
-    //std::thread scanThread(scanLidar, std::ref(all_struct));
+    std::thread scanThread(scanLidar, std::ref(all_struct));
     std::thread controlThread(main_controller, std::ref(all_struct)); 
     std::thread time_thread(timeThread, std::ref(all_struct)); 
   
 
     controlThread.join();
-    //scanThread.join();
+    scanThread.join();
     time_thread.join();
     controller_finish(all_struct);
     //main_camera(all_struct);        // à lancer par le troisième thread
+    free(ctrl_c_pressed);
 
     
     return 0;
@@ -82,7 +82,7 @@ void timeThread(BigStruct *all_struct) {
         
         all_struct->time_mutex.unlock();
 
-        if (ctrl_c_pressed){ 
+        if (*ctrl_c_pressed){ 
           break;
         }
 
