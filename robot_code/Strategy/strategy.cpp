@@ -1,4 +1,5 @@
 #include "strategy.hh"
+#include "../Path_planning/Path_planning.hh"
 
 void main_strategy(BigStruct* all_struct){
     //  Global Variables 
@@ -114,15 +115,12 @@ void main_strategy(BigStruct* all_struct){
         case SOLAR_PANNEL_STATE:
 
         case DROP_POT_STATE:
-            // all_struct->dropping_enable = true;
-            // if(all_struct->grabbing_plant_done){
-            //     all_struct->grabbing_plant_enable = false;
-            //     all_struct->strat->state = GO_TO_POT;
-            // }
-            sleep(2);
-
-            all_struct->strat->state = GO_TO_POT;
-
+            //Bypass
+            all_struct->dropping_enable = true;
+            if(all_struct->grabbing_plant_done){
+                all_struct->grabbing_plant_enable = false;
+                all_struct->strat->state = GO_TO_POT;
+             }
         case END_STATE:
             // shutdown actuators
             break;
@@ -237,4 +235,26 @@ void drop_zone_select(BigStruct* all_struct,int num_drop_zone){
     all_struct->strat->count_drop++;
     all_struct->strat->count_drop = all_struct->strat->count_drop % 3;
     all_struct->strat->next_drop = all_struct->drop_zone_list[all_struct->strat->count_drop];
+}
+
+void(calib_drop_zone(BigStruct* all_struct)){
+    int drop_case = all_struct->drop_zone_list[all_struct->strat->count_drop-1];
+    if(drop_case == 0){
+        speed_regulation(all_struct, all_struct->strat->goal_x, all_struct->strat->goal_y-440, 270*M_PI/180 , 3.0);
+    }
+    else if(drop_case == 1){
+        speed_regulation(all_struct, all_struct->strat->goal_x, all_struct->strat->goal_y-440, 270*M_PI/180 , 3.0);
+    }
+    else if(drop_case == 2){
+        speed_regulation(all_struct, all_struct->strat->goal_x+440, all_struct->strat->goal_y, 0*M_PI/180 , 3.0);
+    }
+    else if(drop_case == 3){
+        speed_regulation(all_struct, all_struct->strat->goal_x+440, all_struct->strat->goal_y, 0*M_PI/180 , 3.0);
+    }
+    else if(drop_case == 4){
+        speed_regulation(all_struct, all_struct->strat->goal_x, all_struct->strat->goal_y+440, 90*M_PI/180 , 3.0);
+    }
+    else if(drop_case == 5){
+        speed_regulation(all_struct, all_struct->strat->goal_x, all_struct->strat->goal_y+440, 90*M_PI/180 , 3.0);
+    }
 }

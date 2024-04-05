@@ -22,3 +22,4 @@ bool init_pince(BigStruct* all_struct);
 void pot_zone_select(BigStruct* all_struct, int num_pot);
 void plant_zone_select(BigStruct* all_struct, int num_plant);
 void drop_zone_select(BigStruct* all_struct,int num_drop_zone);
+void calib_drop_zone(BigStruct* all_struct);
