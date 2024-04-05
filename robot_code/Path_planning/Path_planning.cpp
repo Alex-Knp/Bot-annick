@@ -304,7 +304,6 @@ void speed_regulation(BigStruct* all_struct) {
         L_wheel_speed = 0;
         R_wheel_speed = 0;
     }
-
 	motor_ask(L_wheel_speed, R_wheel_speed, all_struct);
 }
 
