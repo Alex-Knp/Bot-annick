@@ -23,7 +23,10 @@ void main_controller(BigStruct* all_struct){
         main_strategy(all_struct);
 
         if (all_struct->strat->state == DROP_POT_STATE){
-            if(get_MS(all_struct->fd1, Right_ms) && get_MS(all_struct->fd1, Left_ms)){
+            if(all_struct->dropping_done){
+                back_up(all_struct);
+            }
+            else if(get_MS(all_struct->fd1, Right_ms) && get_MS(all_struct->fd1, Left_ms)){
                 motor_ask(0,0);
             }
             else{
