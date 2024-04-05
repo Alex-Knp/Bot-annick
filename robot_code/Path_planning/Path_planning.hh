@@ -25,4 +25,5 @@ typedef struct Path_planning
 } Path_planning;
 
 void Path_planning_update(BigStruct* all_struct);
-void speed_regulation(BigStruct *all_struct);
+void speed_regulation(BigStruct* all_struct, double x_goal, double y_goal,double wanted_theta, double wanted_speed);
+

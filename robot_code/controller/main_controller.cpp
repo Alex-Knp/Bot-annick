@@ -22,7 +22,18 @@ void main_controller(BigStruct* all_struct){
         update_position_encoders(all_struct, all_struct->odo_data);
         main_strategy(all_struct);
 
-        if (all_struct->strat->state != WAIT_INIT_STATE && all_struct->strat->state != CALIB_STATE){
+        if (all_struct->strat->state == DROP_POT_STATE){
+            if(all_struct->dropping_done){
+                back_up(all_struct);
+            }
+            else if(get_MS(all_struct->fd1, Right_ms) && get_MS(all_struct->fd1, Left_ms)){
+                motor_ask(0,0);
+            }
+            else{
+                calib_drop_zone(all_struct);
+            }
+        }
+        else if (all_struct->strat->state != WAIT_INIT_STATE && all_struct->strat->state != CALIB_STATE){
             Path_planning_update(all_struct);
         }
         if (*ctrl_c_pressed){ 

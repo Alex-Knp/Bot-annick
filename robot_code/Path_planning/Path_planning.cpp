@@ -12,8 +12,8 @@ void Path_planning_update(BigStruct* all_struct){
     //  Global Variables 
 
     double k_rep;
-    double k_att = 100;
-    double K = 0.1;         // Speed factor
+    double k_att = 150;
+    double K = 1;         // Speed factor
 
     double rho;
     double rho_0;
@@ -31,6 +31,8 @@ void Path_planning_update(BigStruct* all_struct){
     double *Frep = (double *)calloc(2, sizeof(double));    // Field vector [rad/s]
 
     double v_max = all_struct->path->v_max;
+
+    double radius_robot = 0.15;  // TO FIND IMPORTANT, DISTANCE BETWEEN ORIGIN OF THE ROBOT AND THE FICTIVE CIRCLE CENTERED AT ORIGIN WHICH IS THE REPULSIVE BOARDER
 
 
     /////////--------  Attractive field  -------/////////
@@ -66,33 +68,24 @@ void Path_planning_update(BigStruct* all_struct){
 
     // Variables declaration
 
-    double trigger_wall = 0.5;  // distance [m] from the wall impact the trajectory
-    rho_0 = 0.3;
-    k_rep = 10;
+    rho_0 = 0.05;  // [m] : distance from which the repulsive field is triggered
+    k_rep = 0.001; // Magnitude of the repulsive field
     
 
-    if (x_robot < trigger_wall) {
-        rho = x_robot;
-        if (rho < 0.1) {
-            rho = 0.1; }
+    rho = x_robot - radius_robot;
+    if (rho < rho_0) {
         Frep[0] += (1/rho - 1/rho_0) / pow(rho, 3) * (x_robot) * k_rep;
     }
-    if (x_lim-x_robot < trigger_wall) {
-        rho = x_lim-x_robot;
-        if (rho < 0.1) {
-            rho = 0.1; }
+    rho = x_lim-x_robot - radius_robot;
+    if (rho < rho_0) {
         Frep[0] += (1/rho - 1/rho_0) / pow(rho, 3) * (x_robot-x_lim) * k_rep;
     }
-    if (y_robot < rho_0) {
-        rho = y_robot;
-        if (rho < 0.1) {
-            rho = 0.1; }
+    rho = y_robot - radius_robot;
+    if (rho < rho_0) {
         Frep[1] += (1/rho - 1/rho_0) / pow(rho, 3) * (y_robot) * k_rep;
     }
-    if (y_lim-y_robot < rho_0) {
-        rho = y_lim-y_robot;
-        if (rho < 0.1) {
-            rho = 0.1; }
+    rho = y_lim-y_robot - radius_robot;
+    if (rho < rho_0) {
         Frep[1] += (1/rho - 1/rho_0) / pow(rho, 3) * (y_robot-y_lim) * k_rep;
     }
 
@@ -117,25 +110,15 @@ void Path_planning_update(BigStruct* all_struct){
             {-0.300 + 1, -0.500 + 1.5}
         };
 
-    k_rep = 0;//5;
-    rho_0 = 0.3;
+    rho_0 = 0.05;  // [m] : distance from which the repulsive field is triggered
+    k_rep = 0.001; // Magnitude of the repulsive field
 
     for (int i = 0; i < 6; i++) {
-
-            /*if (i == 1) {
-                rho_0 = 0.2;
-                k_rep = 0.4; }
-            else if (i == 4 or i == 5) {
-                rho_0 = 0.3;
-                k_rep = 1; }
-            else {
-                rho_0 = 0.3;
-                k_rep = 1; }*/
 
         x_obs = plants[i].x;
         y_obs = plants[i].y;
 
-        rho = sqrt(pow(x_obs-x_robot, 2) + pow(y_obs-x_robot, 2)) - radius;  // Minimal distance from the obstacle
+        rho = sqrt(pow(x_obs-x_robot, 2) + pow(y_obs-x_robot, 2)) - radius - radius_robot;  // Minimal distance from the obstacle
 
         if (rho < rho_0 && all_struct->path->active_zone[i] == 1) {
             Frep[0] += k_rep * (1/rho - 1/rho_0) / pow(rho, 3) * (x_robot-x_obs);
@@ -146,16 +129,17 @@ void Path_planning_update(BigStruct* all_struct){
 
     /////////--------   Opponent avoidance  -------/////////
 
-    k_rep = 0;//500;
-    rho_0 = 0.75;
+    rho_0 = 0.05;  // [m] : distance from which the repulsive field is triggered
+    k_rep = 0.001; // Magnitude of the repulsive field
 
     int N = 3;
 
     for (int i = 0; i < N; i++) {
+
         x_obs = all_struct->opp_pos->x[i]/1000;
         y_obs = all_struct->opp_pos->y[i]/1000;
 
-        rho = sqrt(pow(x_obs-x_robot, 2) + pow(y_obs-y_robot, 2)); 
+        rho = sqrt(pow(x_obs-x_robot, 2) + pow(y_obs-y_robot, 2)) - radius_robot; 
 
         if (rho < rho_0) {
             Frep[0] += k_rep * (1/rho - 1/rho_0) / pow(rho, 3) * (x_robot-x_obs);
@@ -166,32 +150,26 @@ void Path_planning_update(BigStruct* all_struct){
 
     ////////---------    PAMI's avoidance   -------////////
 
-    k_rep = 5;
-    rho_0 = 0.3;
+    rho_0 = 0.05;  // [m] : distance from which the repulsive field is triggered
+    k_rep = 0.001; // Magnitude of the repulsive field
 
-    if (sqrt(pow(1.05 - y_robot, 2) + pow(x_robot - 0.15, 2)) < rho_0) {
-        y_obs = 1.05;
-        x_obs = 0.15;
-        rho = sqrt(pow(x_obs-x_robot, 2) + pow(y_obs-y_robot, 2));
-        if (rho < 0.1) {
-            rho = 0.1; }
+    y_obs = 1.05;
+    x_obs = 0.15;
+    rho = sqrt(pow(x_obs-x_robot, 2) + pow(y_obs-y_robot, 2)) - radius_robot;
+    if (rho < rho_0) {
         Frep[1] += k_rep * (1/rho - 1/rho_0) / pow(rho, 3) * (y_robot-y_obs);
         Frep[0] += k_rep * (1/rho - 1/rho_0) / pow(rho, 3) * (x_robot-x_obs);
     }
-    else if (sqrt(pow(1.95 - y_robot, 2) + pow(x_robot - 0.15, 2)) < rho_0) {
-        x_obs = 0.15;
-        y_obs = 1.95;
-        rho = sqrt(pow(x_obs-x_robot, 2) + pow(y_obs-y_robot, 2));
-        if (rho < 0.1) {
-            rho = 0.1; }
+    x_obs = 0.15;
+    y_obs = 1.95;
+    rho = sqrt(pow(x_obs-x_robot, 2) + pow(y_obs-y_robot, 2)) - radius_robot;
+    if (rho < rho_0) {
         Frep[1] += k_rep * (1/rho - 1/rho_0) / pow(rho, 3) * (y_robot-y_obs);
         Frep[0] += k_rep * (1/rho - 1/rho_0) / pow(rho, 3) * (x_robot-x_obs);
     }
-    else if (x_robot - 0.15 < rho_0 && (1.05 < y_robot) < 1.95) {
-        rho = x_robot - 0.15;
-        x_obs = 0.15;
-        if (rho < 0.1) {
-            rho = 0.1; }
+    x_obs = 0.15;
+    rho = x_robot - x_obs - radius_robot;
+    if (rho < rho_0 && (1.05 < y_robot) < 1.95) {
         Frep[0] += k_rep * (1/rho - 1/rho_0) / pow(rho, 3) * (x_robot-x_obs);
     }
 
@@ -199,7 +177,7 @@ void Path_planning_update(BigStruct* all_struct){
     ////////--------- Repulsive field cancellation -------////////
 
 
-    if (rho_goal < 0.3) {
+    if (rho_goal < 0.1 + radius_robot) {
         Frep[0] = 0;
         Frep[1] = 0;
     }
@@ -239,7 +217,7 @@ void Path_planning_update(BigStruct* all_struct){
     printf("Angle goal = %f\n", all_struct->path->field->theta);
     printf("Angle theta = %f\n", all_struct->rob_pos->theta); */
 
-    speed_regulation(all_struct);
+    speed_regulation(all_struct,all_struct->strat->goal_x,all_struct->strat->goal_y,all_struct->path->theta,all_struct->path->norm);
     ////////---------     free      -------////////
 
 
@@ -249,15 +227,15 @@ void Path_planning_update(BigStruct* all_struct){
 
 
 
-void speed_regulation(BigStruct* all_struct) {
+void speed_regulation(BigStruct* all_struct, double x_goal, double y_goal,double wanted_theta, double wanted_speed) {
 
     float stationnary_error_angle = M_PI/4 ;          //the error angles for which the robot only turns and do not drive forward
-    double x_goal = all_struct->strat->goal_x;
-    double y_goal = all_struct->strat->goal_y;
+    //double x_goal = all_struct->strat->goal_x;
+    //double y_goal = all_struct->strat->goal_y;
 
     float current_theta = all_struct->rob_pos->theta;
-    float wanted_theta = all_struct->path->theta;
-    float wanted_speed = all_struct->path->norm;
+    //float wanted_theta = all_struct->path->theta;
+    //float wanted_speed = all_struct->path->norm;
     float turning_speed = wanted_speed / 1.5;       //[rad/s] the speed at which the robot turns
 
 
