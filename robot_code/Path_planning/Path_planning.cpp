@@ -177,7 +177,7 @@ void Path_planning_update(BigStruct* all_struct){
     ////////--------- Repulsive field cancellation -------////////
 
 
-    if (rho_goal < 0.1) {
+    if (rho_goal < 0.1 + radius_robot) {
         Frep[0] = 0;
         Frep[1] = 0;
     }
