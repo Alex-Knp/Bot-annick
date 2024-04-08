@@ -69,7 +69,7 @@ void Path_planning_update(BigStruct* all_struct){
     // Variables declaration
 
     rho_0 = 0.05;  // [m] : distance from which the repulsive field is triggered
-    k_rep = 0.001; // Magnitude of the repulsive field
+    k_rep = 0.000; // Magnitude of the repulsive field
     
 
     rho = x_robot - radius_robot;
@@ -127,10 +127,44 @@ void Path_planning_update(BigStruct* all_struct){
     }
 
 
+/////////--------   Plant avoidance (test predictive fields)     --------/////////
+
+    double a = (y_goal - y_robot) / (x_goal - x_robot); 
+    double b;
+    double x_proj; 
+    double y_proj;
+    double rho_obs_proj;
+    double rho_robot_proj;
+    double safety_distance =  radius_plant + radius_robot + 0.1; 
+    double max_speed_correction = 30; // [rad/s] : maximum speed correction due to obstacles
+
+    for (int i = 0; i < 1; i++) {
+        b = plants[i].y - a*plants[i].x; 
+        
+        x_proj = (a*y_robot + x_robot - a*b) / (pow(a, 2) + 1);  
+        y_proj = a*x_proj + b; 
+
+        rho_obs_proj = sqrt(pow(plants[i].x - x_proj , 2) + pow(plants[i].y - y_proj));
+        rho_robot_proj = sqrt(pow(x_robot - x_proj , 2) + pow(y_robot - y_proj));
+
+        if(rho_obs_proj < safety_distance) {
+            rho_obs_proj = safety_distance;
+        }
+        if(rho_robot_proj < safety_distance) {
+            rho_robot_proj = safety_distance;
+        }
+
+        if(all_struct->path->active_zone[i] == 1){
+            Frep[0] += max_speed_correction ((x_robot - x_proj) / rho_robot_proj) * safety_distance / rho_obs_proj; 
+            Frep[1] += max_speed_correction ((y_robot - y_proj) / rho_robot_proj) * safety_distance / rho_obs_proj;
+        }
+    }
+
+
     /////////--------   Opponent avoidance  -------/////////
 
     rho_0 = 0.75;  // [m] : distance from which the repulsive field is triggered
-    k_rep = 1000; // Magnitude of the repulsive field
+    k_rep = 0; // Magnitude of the repulsive field
 
     int N = sizeof(all_struct->opp_pos->x)/all_struct->opp_pos->x[0];
 
@@ -143,7 +177,7 @@ void Path_planning_update(BigStruct* all_struct){
 
         if (rho < rho_0) {
             Frep[0] += k_rep * (1/rho - 1/rho_0) / pow(rho, 3) * (x_robot-x_obs);
-            Frep[1] += Frep[1] / (x_robot-x_obs) * (y_robot-y_obs);
+            Frep[1] += 0*Frep[1] / (x_robot-x_obs) * (y_robot-y_obs);
         }
     }
 
