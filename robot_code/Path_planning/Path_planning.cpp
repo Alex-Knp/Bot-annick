@@ -217,14 +217,14 @@ void Path_planning_update(BigStruct* all_struct){
     printf("Angle goal = %f\n", all_struct->path->field->theta);
     printf("Angle theta = %f\n", all_struct->rob_pos->theta); */
 
-    if (rho_goal < 0.1) {
+    if (rho_goal < 0.1 + radius_robot) {
         all_struct->strat->goal_reached = true;
-        speed_regulation(all_struct,all_struct->strat->goal_x,all_struct->strat->goal_y,0,0);
+        speed_regulation(all_struct,0,0);
 
     }
     else {
         all_struct->strat->goal_reached = false;
-        speed_regulation(all_struct,all_struct->strat->goal_x,all_struct->strat->goal_y,all_struct->path->theta,all_struct->path->norm);
+        speed_regulation(all_struct,all_struct->path->theta,all_struct->path->norm);
 
     }
     ////////---------     free      -------////////
@@ -236,23 +236,13 @@ void Path_planning_update(BigStruct* all_struct){
 
 
 
-void speed_regulation(BigStruct* all_struct, double x_goal, double y_goal,double wanted_theta, double wanted_speed) {
+void speed_regulation(BigStruct* all_struct,double wanted_theta, double wanted_speed) {
 
     float stationnary_error_angle = M_PI/12 ;          //the error angles for which the robot only turns and do not drive forward
-    //double x_goal = all_struct->strat->goal_x;
-    //double y_goal = all_struct->strat->goal_y;
 
     float current_theta = all_struct->rob_pos->theta;
-    //float wanted_theta = all_struct->path->theta;
-    //float wanted_speed = all_struct->path->norm;
+
     float turning_speed = wanted_speed / 1.5;       //[rad/s] the speed at which the robot turns
-
-
-    //double x = all_struct->rob_pos->x;
-    //double y = all_struct->rob_pos->y;
-
-    //double rho = sqrt(pow(x-x_goal/1000, 2) + pow(y-y_goal/1000, 2));  // TODO : find where to get the info
-
 
 	float angle_error = wanted_theta - current_theta;
 

@@ -1,6 +1,7 @@
 #include "strategy.hh"
 #include "../controller/motor_ask.hh"
 #include "../Path_planning/Path_planning.hh"
+#inclde "../Sensors/IR.hh"
 
 void main_strategy(BigStruct* all_struct){
     //  Global Variables 
@@ -93,13 +94,13 @@ void main_strategy(BigStruct* all_struct){
             /*if(all_struct->camera->pot_detected < 3){
                 go to another pot zone
             }*/
-            // all_struct->grabbing_plant_enable = true;
-            // if(all_struct->grabbing_plant_done){
-            //     all_struct->grabbing_plant_enable = false;
-            //     all_struct->strat->state = GO_TO_DROP;
-            // }
-            sleep(2);
-            all_struct->strat->state = GO_TO_DROP;
+            all_struct->grabbing_plant_enable = true;
+            if(all_struct->grabbing_plant_done){
+                 all_struct->grabbing_plant_enable = false;
+                 all_struct->strat->first_time_plant = 1;
+                 all_struct->strat->state = GO_TO_DROP;
+             }
+            //all_struct->strat->state = GO_TO_DROP;
             break;
         case TAKE_POT:
             /*if(all_struct->camera->pot_detected < 3){
@@ -120,7 +121,7 @@ void main_strategy(BigStruct* all_struct){
             all_struct->dropping_enable = true;
             if(all_struct->strat->backup_ok){
                 all_struct->dropping_enable = false;
-                all_struct->dropping_done = false;
+                all_struct->dropping_done = false; // To be done by pot manager (Temporary)
                 all_struct->strat->backup_ok = false;
                 all_struct->strat->state = GO_TO_POT;
              }
@@ -244,22 +245,22 @@ void calib_drop_zone(BigStruct* all_struct){
     int drop_case = all_struct->drop_zone_list[all_struct->strat->count_drop-1];
     if(all_struct->dropping_enable){
         if(drop_case == 0){
-            speed_regulation(all_struct, all_struct->strat->goal_x, all_struct->strat->goal_y-440, 270*M_PI/180 , 3.0);
+            speed_regulation(all_struct, 270*M_PI/180 , 3.0);
         }
         else if(drop_case == 1){
-            speed_regulation(all_struct, all_struct->strat->goal_x, all_struct->strat->goal_y-440.0, 270*M_PI/180 , 3.0);
+            speed_regulation(all_struct, 270*M_PI/180 , 3.0);
         }
         else if(drop_case == 2){
-            speed_regulation(all_struct, all_struct->strat->goal_x+440, all_struct->strat->goal_y, 0*M_PI/180 , 3.0);
+            speed_regulation(all_struct, 0*M_PI/180 , 3.0);
         }
         else if(drop_case == 3){
-            speed_regulation(all_struct, all_struct->strat->goal_x+440, all_struct->strat->goal_y, 0*M_PI/180 , 3.0);
+            speed_regulation(all_struct, 0*M_PI/180 , 3.0);
         }
         else if(drop_case == 4){
-            speed_regulation(all_struct, all_struct->strat->goal_x, all_struct->strat->goal_y+440, 90*M_PI/180 , 3.0);
+            speed_regulation(all_struct, 90*M_PI/180 , 3.0);
         }
         else if(drop_case == 5){
-            speed_regulation(all_struct, all_struct->strat->goal_x, all_struct->strat->goal_y+440, 90*M_PI/180 , 3.0);
+            speed_regulation(all_struct, 90*M_PI/180 , 3.0);
         }
     }
 }
@@ -271,7 +272,7 @@ void back_up(BigStruct* all_struct){
         }
         else{
             all_struct->strat->backup_ok = true;
-            all_struct->dropping_done = false;
+            all_struct->dropping_done = false;// TEMPORARY
         }
     }
     else if(260*M_PI/180 <all_struct->rob_pos->theta && all_struct->rob_pos->theta<280*M_PI/180){
@@ -280,7 +281,7 @@ void back_up(BigStruct* all_struct){
         }
         else{
             all_struct->strat->backup_ok = true;
-            all_struct->dropping_done = false;
+            all_struct->dropping_done = false;// TEMPORARY
         }
     }
     else  {
@@ -289,7 +290,22 @@ void back_up(BigStruct* all_struct){
         }
         else{
             all_struct->strat->backup_ok = true;
-            all_struct->dropping_done = false;
+            all_struct->dropping_done = false;// TEMPORARY
         }
     }
+}
+
+void calib_plant_zone(BigStruct* all_struct,double angle){
+    if(If_plant_IR(all_struct->fd1)){
+        speed_regulation(all_struct, angle ,0.0);
+
+    }
+    else{
+        speed_regulation(all_struct, angle , 3.0);
+    }
+    double rho_goal = sqrt(pow(all_struct->rob_pos->x - all_struct->strat->goal_x/1000, 2) + pow(all_struct->rob_pos->y - all_struct->strat->goal_y/1000, 2));
+    if(rho_goal > 0.2){
+        all_struct->grabbing_plant_done = true;// Temporary
+    }
+
 }
