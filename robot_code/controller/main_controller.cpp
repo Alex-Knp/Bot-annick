@@ -11,13 +11,13 @@ void main_controller(BigStruct* all_struct){
     
     while(all_struct->strat->state != END_STATE){
         all_struct->startup = !get_MS(all_struct->fd1, Left_ms);
-/*         printf(" startup = %d\n",all_struct->startup);
-        printf(" State = %d\n", all_struct->strat->state);
+        //printf(" startup = %d\n",all_struct->startup);
+/*         printf(" State = %d\n", all_struct->strat->state);
         printf(" Goal_X = %f\n", all_struct->strat->goal_x);
         printf(" Goal_Y = %f\n", all_struct->strat->goal_y);
         printf("\n");
         printf("Position : x = %f\t y = %f\n", all_struct->rob_pos->x, all_struct->rob_pos->y);
-        printf("\n"); */
+        printf("\n");  */
 
         update_position_encoders(all_struct, all_struct->odo_data);
         main_strategy(all_struct);
@@ -27,12 +27,13 @@ void main_controller(BigStruct* all_struct){
                 back_up(all_struct);
             }
             else if(get_MS(all_struct->fd1, Right_ms) && get_MS(all_struct->fd1, Left_ms)){
-                motor_ask(0,0);
+                motor_ask(0,0, all_struct);
+                all_struct->dropping_done = true;
             }
             else{
                 calib_drop_zone(all_struct);
             }
-        }
+        } 
         else if (all_struct->strat->state != WAIT_INIT_STATE && all_struct->strat->state != CALIB_STATE){
             Path_planning_update(all_struct);
         }

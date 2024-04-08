@@ -176,9 +176,7 @@ void pot_zone_select(BigStruct* all_struct, int num_pot){
     }
 
     all_struct->strat->count_pot++;
-    printf("befor countpot\n");
     all_struct->strat->next_pot = all_struct->pot_list[all_struct->strat->count_pot];
-    printf("after countpot\n");
 } 
 
 void plant_zone_select(BigStruct* all_struct, int num_plant){
@@ -249,7 +247,7 @@ void calib_drop_zone(BigStruct* all_struct){
             speed_regulation(all_struct, all_struct->strat->goal_x, all_struct->strat->goal_y-440, 270*M_PI/180 , 3.0);
         }
         else if(drop_case == 1){
-            speed_regulation(all_struct, all_struct->strat->goal_x, all_struct->strat->goal_y-440, 270*M_PI/180 , 3.0);
+            speed_regulation(all_struct, all_struct->strat->goal_x, all_struct->strat->goal_y-440.0, 270*M_PI/180 , 3.0);
         }
         else if(drop_case == 2){
             speed_regulation(all_struct, all_struct->strat->goal_x+440, all_struct->strat->goal_y, 0*M_PI/180 , 3.0);
@@ -267,20 +265,31 @@ void calib_drop_zone(BigStruct* all_struct){
 }
 
 void back_up(BigStruct* all_struct){
-    if(80*M_PI/180 <all_struct->rob_pos->theta <100*M_PI/180){
-        while (all_struct->rob_pos->y > 2.7 ){
-            motor_ask(-3.0, -3.0);
+    if(80*M_PI/180 <all_struct->rob_pos->theta && all_struct->rob_pos->theta<100*M_PI/180){
+        if (all_struct->rob_pos->y > 2.5 ){
+            motor_ask(-3.0, -3.0, all_struct);
+        }
+        else{
+            all_struct->strat->backup_ok = true;
+            all_struct->dropping_done = false;
         }
     }
-    else if(260*M_PI/180 <all_struct->rob_pos->theta <280*M_PI/180){
-        while (all_struct->rob_pos->y < 0.3 ){
-            motor_ask(-3.0, -3.0);
+    else if(260*M_PI/180 <all_struct->rob_pos->theta && all_struct->rob_pos->theta<280*M_PI/180){
+        if (all_struct->rob_pos->y < 0.5 ){
+            motor_ask(-3.0, -3.0, all_struct);
+        }
+        else{
+            all_struct->strat->backup_ok = true;
+            all_struct->dropping_done = false;
         }
     }
-    else {
-        while (all_struct->rob_pos->x > 1.7 ){
-            motor_ask(-3.0, -3.0);
+    else  {
+        if (all_struct->rob_pos->x > 1.5 ){
+            motor_ask(-3.0, -3.0, all_struct);
+        }
+        else{
+            all_struct->strat->backup_ok = true;
+            all_struct->dropping_done = false;
         }
     }
-    all_struct->strat->backup_ok = true;
 }

@@ -1,57 +1,138 @@
-import time
-
-import torch
-import numpy as np
-from torchvision import models, transforms
-
 import cv2
-from PIL import Image
+import numpy as np
+from picamera2 import Picamera2
+import os
+import tensorflow as tf
+from tensorflow.keras.applications.mobilenet_v2 import preprocess_input, decode_predictions
 
-torch.backends.quantized.engine = 'qnnpack'
 
-cap = cv2.VideoCapture(0, cv2.CAP_V4L2)
-cap.set(cv2.CAP_PROP_FRAME_WIDTH, 224)
-cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 224)
-cap.set(cv2.CAP_PROP_FPS, 36)
+# Load the pre-trained MobileNetV2 model
+model = tf.keras.applications.MobileNetV2(weights='imagenet', include_top=True)
 
-preprocess = transforms.Compose([
-    transforms.ToTensor(),
-    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
-])
+# Initialize video capture
 
-net = models.quantization.mobilenet_v2(pretrained=True, quantize=True)
-# jit model to take it from ~20fps to ~30fps
-net = torch.jit.script(net)
+# Initialize Picamera2
+picam2 = Picamera2()
+full_res = picam2.sensor_resolution
 
-started = time.time()
-last_logged = time.time()
-frame_count = 0
+half_res=tuple([dim // 2 for dim in picam2.sensor_resolution])
 
-with torch.no_grad():
+# camera_config = picam2.create_video_configuration(main={"size":(1920,1080),"format":"BGR888"}, raw={"size": (1920, 1080)})
+
+# cam = picam2.configure(camera_config)
+# print("cam_config : ", cam)
+# picam2.configure(camera_config)
+
+picam2.configure(picam2.create_video_configuration(raw={"size":half_res},main={"size": full_res})) 
+
+
+
+print("========================================&============")
+
+
+picam2.start()  # Ensure you start the camera before capturing
+
+
+
+directory = "/home/annick/Annick/Bot-annick/robot_code/camera/test_frames"
+dir2 = "/home/annick/Annick/Bot-annick/robot_code/camera/data/0"
+
+
+# def empty_directory(directory):
+#     # Remove all files in the directory
+#     for filename in os.listdir(directory):
+#         filepath = os.path.join(directory, filename)
+#         try:
+#             os.remove(filepath)
+#         except Exception as e:
+#             print(f"Failed to delete {filepath}: {e}")
+
+# # Empty the directory before starting
+# empty_directory(dir2)
+# print("directory emptied")
+
+# i = 0
+try:
     while True:
-        # read frame
-        ret, image = cap.read()
-        if not ret:
-            raise RuntimeError("failed to read frame")
+        # print(i)
+        frame = picam2.capture_array()  # Capture the image into a NumPy array
+        frame = frame[:, :, [2, 1, 0]]    # RGB to BGR for opencv
+        # cv2.imshow("Frame", frame)  # Display the image
 
-        # convert opencv output from BGR to RGB
-        image = image[:, :, [2, 1, 0]]
-        permuted = image
+         # Resize the frame to 224x224 for the model
+        img = cv2.resize(frame, (224, 224))
+        img_array = tf.keras.preprocessing.image.img_to_array(img)
+        img_array = np.expand_dims(img_array, axis=0)
+        img_array = preprocess_input(img_array)
 
-        # preprocess
-        input_tensor = preprocess(image)
+        # Make predictions
+        predictions = model.predict(img_array)
+        # Decode the predictions
+        label = decode_predictions(predictions, top=1)[0][0][1]
+        confidence = decode_predictions(predictions, top=1)[0][0][2]
 
-        # create a mini-batch as expected by the model
-        input_batch = input_tensor.unsqueeze(0)
+        # Check if the label is related to plants (you might need to adjust the labels)
+        plant_detected = "pot" in label or "vase" in label
+        display_text = f"{label}: {confidence:.2f}" if plant_detected else "No plant detected"
 
-        # run model
-        output = net(input_batch)
-        # do something with output ...
+        # Draw the display_text on the frame
+        cv2.putText(frame, display_text, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
 
-        # log model performance
-        frame_count += 1
-        now = time.time()
-        if now - last_logged > 1:
-            print(f"{frame_count / (now-last_logged)} fps")
-            last_logged = now
-            frame_count = 0
+        # Display the frame
+        cv2.imshow('Plant Detection', frame)
+
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+
+    
+  
+        # filename = os.path.join(dir2, f"frame{i}.jpg")
+        # cv2.imwrite(filename, image)
+        # i += 1
+        # if i == 100:
+        #     break
+        # Wait for 1 ms and check if the 'q' key is pressed to exit the loop
+        # if cv2.waitKey(1) & 0xFF == ord('q'):
+        #     break
+finally:
+    cv2.destroyAllWindows()  # Cleanly close OpenCV windows
+
+
+
+
+
+
+
+while True:
+    ret, frame = cap.read()
+    if not ret:
+        break
+
+    # Resize the frame to 224x224 for the model
+    img = cv2.resize(frame, (224, 224))
+    img_array = tf.keras.preprocessing.image.img_to_array(img)
+    img_array = np.expand_dims(img_array, axis=0)
+    img_array = preprocess_input(img_array)
+
+    # Make predictions
+    predictions = model.predict(img_array)
+    # Decode the predictions
+    label = decode_predictions(predictions, top=1)[0][0][1]
+    confidence = decode_predictions(predictions, top=1)[0][0][2]
+
+    # Check if the label is related to plants (you might need to adjust the labels)
+    plant_detected = "pot" in label or "vase" in label
+    display_text = f"{label}: {confidence:.2f}" if plant_detected else "No plant detected"
+
+    # Draw the display_text on the frame
+    cv2.putText(frame, display_text, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
+
+    # Display the frame
+    cv2.imshow('Plant Detection', frame)
+
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+
+# Release the capture
+cap.release()
+cv2.destroyAllWindows()

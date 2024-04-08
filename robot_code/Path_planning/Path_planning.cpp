@@ -111,7 +111,7 @@ void Path_planning_update(BigStruct* all_struct){
         };
 
     rho_0 = 0.05;  // [m] : distance from which the repulsive field is triggered
-    k_rep = 0.001; // Magnitude of the repulsive field
+    k_rep = 0.000; // Magnitude of the repulsive field
 
     for (int i = 0; i < 6; i++) {
 
@@ -129,10 +129,10 @@ void Path_planning_update(BigStruct* all_struct){
 
     /////////--------   Opponent avoidance  -------/////////
 
-    rho_0 = 0.05;  // [m] : distance from which the repulsive field is triggered
-    k_rep = 0.001; // Magnitude of the repulsive field
+    rho_0 = 0.75;  // [m] : distance from which the repulsive field is triggered
+    k_rep = 1000; // Magnitude of the repulsive field
 
-    int N = 3;
+    int N = sizeof(all_struct->opp_pos->x)/all_struct->opp_pos->x[0];
 
     for (int i = 0; i < N; i++) {
 
@@ -151,7 +151,7 @@ void Path_planning_update(BigStruct* all_struct){
     ////////---------    PAMI's avoidance   -------////////
 
     rho_0 = 0.05;  // [m] : distance from which the repulsive field is triggered
-    k_rep = 0.001; // Magnitude of the repulsive field
+    k_rep = 0.000; // Magnitude of the repulsive field
 
     y_obs = 1.05;
     x_obs = 0.15;
@@ -177,10 +177,10 @@ void Path_planning_update(BigStruct* all_struct){
     ////////--------- Repulsive field cancellation -------////////
 
 
-    if (rho_goal < 0.1 + radius_robot) {
+/*     if (rho_goal < 0.1 + radius_robot) {
         Frep[0] = 0;
         Frep[1] = 0;
-    }
+    } */
 
     F[0] += Frep[0];
     F[1] += Frep[1];
@@ -217,7 +217,16 @@ void Path_planning_update(BigStruct* all_struct){
     printf("Angle goal = %f\n", all_struct->path->field->theta);
     printf("Angle theta = %f\n", all_struct->rob_pos->theta); */
 
-    speed_regulation(all_struct,all_struct->strat->goal_x,all_struct->strat->goal_y,all_struct->path->theta,all_struct->path->norm);
+    if (rho_goal < 0.1) {
+        all_struct->strat->goal_reached = true;
+        speed_regulation(all_struct,all_struct->strat->goal_x,all_struct->strat->goal_y,0,0);
+
+    }
+    else {
+        all_struct->strat->goal_reached = false;
+        speed_regulation(all_struct,all_struct->strat->goal_x,all_struct->strat->goal_y,all_struct->path->theta,all_struct->path->norm);
+
+    }
     ////////---------     free      -------////////
 
 
@@ -229,7 +238,7 @@ void Path_planning_update(BigStruct* all_struct){
 
 void speed_regulation(BigStruct* all_struct, double x_goal, double y_goal,double wanted_theta, double wanted_speed) {
 
-    float stationnary_error_angle = M_PI/4 ;          //the error angles for which the robot only turns and do not drive forward
+    float stationnary_error_angle = M_PI/12 ;          //the error angles for which the robot only turns and do not drive forward
     //double x_goal = all_struct->strat->goal_x;
     //double y_goal = all_struct->strat->goal_y;
 
@@ -239,10 +248,10 @@ void speed_regulation(BigStruct* all_struct, double x_goal, double y_goal,double
     float turning_speed = wanted_speed / 1.5;       //[rad/s] the speed at which the robot turns
 
 
-    double x = all_struct->rob_pos->x;
-    double y = all_struct->rob_pos->y;
+    //double x = all_struct->rob_pos->x;
+    //double y = all_struct->rob_pos->y;
 
-    double rho = sqrt(pow(x-x_goal/1000, 2) + pow(y-y_goal/1000, 2));  // TODO : find where to get the info
+    //double rho = sqrt(pow(x-x_goal/1000, 2) + pow(y-y_goal/1000, 2));  // TODO : find where to get the info
 
 
 	float angle_error = wanted_theta - current_theta;
@@ -269,19 +278,6 @@ void speed_regulation(BigStruct* all_struct, double x_goal, double y_goal,double
 	float L_wheel_speed = linear_speed - rotational_speed;
 	float R_wheel_speed = linear_speed + rotational_speed;
 
-
-    if (rho < 0.02) {
-        L_wheel_speed = 0;
-        R_wheel_speed = 0;
-        all_struct->strat->goal_reached = true;
-    }
-    else {
-        all_struct->strat->goal_reached = false;
-    }
-    if (all_struct->strat->goal_reached==true){
-        L_wheel_speed = 0;
-        R_wheel_speed = 0;
-    }
 	motor_ask(L_wheel_speed, R_wheel_speed, all_struct);
 }
 

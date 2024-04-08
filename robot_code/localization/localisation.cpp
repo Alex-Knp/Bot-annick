@@ -214,9 +214,9 @@ void getObstacles(BigStruct* all_struct, std::vector<Cluster> tab,RobotPosition*
 
             double x_obstacle = coord->x*1000 + cos(coord->theta +PI/2 +nearest_angle)* nearest_distance;
             double y_obstacle = coord->y*1000 + sin(coord->theta +PI/2 +nearest_angle)* nearest_distance;
-/* 
+ 
             printf("x_obstacle : %f\n",x_obstacle);
-            printf("y_obstacle : %f\n",y_obstacle); */
+            printf("y_obstacle : %f\n",y_obstacle); 
 
             all_struct->opp_pos->x[all_struct->opp_pos->nb_opp-1] = x_obstacle;
             all_struct->opp_pos->y[all_struct->opp_pos->nb_opp-1] = y_obstacle;
@@ -433,9 +433,9 @@ bool OpponnentBeaconCancel (Beacon beacon0, Beacon beacon1, Beacon beacon2, BigS
     } 
 
         
-    printf("beacon 0 : %f, angle : %f \n", beacon0.distance, beacon0_angle);
+    /*printf("beacon 0 : %f, angle : %f \n", beacon0.distance, beacon0_angle);
     printf("beacon 1 : %f, angle : %f \n", beacon1.distance, beacon1_angle);
-    printf("beacon 2 : %f, angle : %f \n", beacon2.distance, beacon2_angle); 
+    printf("beacon 2 : %f, angle : %f \n", beacon2.distance, beacon2_angle); */
 
     for (int i = 0; i < 3; i++) {
         double angle = 0.0;
@@ -449,7 +449,7 @@ bool OpponnentBeaconCancel (Beacon beacon0, Beacon beacon1, Beacon beacon2, BigS
         if (angle < 0) {
             angle += 360.0;
         }
-        printf("anglerange = %f\n", angle);
+        //printf("anglerange = %f\n", angle);
         if (belong_range(beacon0_angle, angle - 10, angle + 10) || belong_range(beacon1_angle, angle - 10, angle + 10) || belong_range(beacon2_angle, angle - 10, angle + 10)){
             counter++;
         }            
