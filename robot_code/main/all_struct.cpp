@@ -96,6 +96,7 @@ BigStruct* init_BigStruct(){
 	all_struct->strat->goal_theta = 0.0;
 	all_struct->strat->backup_ok = false;
 	all_struct->strat->goal_reached = false;
+	all_struct->strat->first_time_plant = 1;
 
 	all_struct->pot_list = (int*) malloc(6*sizeof(int));
 	all_struct->plant_list = (int*) malloc(6*sizeof(int));

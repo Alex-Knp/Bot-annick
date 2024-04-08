@@ -97,6 +97,8 @@ typedef struct Strategy
 	int count_plant;
 	int count_drop;
 
+	int first_time_plant;
+
 
 	bool backup_ok;
 
