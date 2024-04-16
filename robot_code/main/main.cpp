@@ -24,7 +24,6 @@ bool *ctrl_c_pressed = nullptr;
 
 
 int main(){
-
     BigStruct *all_struct = init_BigStruct();
     ctrl_c_pressed = new bool;
     *ctrl_c_pressed = false;
@@ -33,18 +32,21 @@ int main(){
     odometer_data *odo_data = new odometer_data;
     if(odo_init(all_struct,odo_data)!=0){
         printf("error odo");
+        return 0;
     }
-    
+
     
     std::thread scanThread(scanLidar, std::ref(all_struct));
     std::thread controlThread(main_controller, std::ref(all_struct)); 
     std::thread time_thread(timeThread, std::ref(all_struct)); 
   
 
-    controlThread.join();
+    controlThread.join();    
     scanThread.join();
     time_thread.join();
     controller_finish(all_struct);
+    delete(odo_data);
+
     //main_camera(all_struct);        // à lancer par le troisième thread
     free(ctrl_c_pressed);
 

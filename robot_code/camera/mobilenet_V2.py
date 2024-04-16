@@ -4,8 +4,11 @@ from picamera2 import Picamera2
 import os
 import tensorflow as tf
 from tensorflow.keras.applications.mobilenet_v2 import preprocess_input, decode_predictions
+import time
+import os
+import sys
 
-
+# print("tensorflow version: ",tf.__version__)
 # Load the pre-trained MobileNetV2 model
 model = tf.keras.applications.MobileNetV2(weights='imagenet', include_top=True)
 
@@ -53,86 +56,56 @@ dir2 = "/home/annick/Annick/Bot-annick/robot_code/camera/data/0"
 
 # i = 0
 try:
-    while True:
-        # print(i)
-        frame = picam2.capture_array()  # Capture the image into a NumPy array
-        frame = frame[:, :, [2, 1, 0]]    # RGB to BGR for opencv
-        # cv2.imshow("Frame", frame)  # Display the image
+    start_time = time.time()  # Initialize start time
 
-         # Resize the frame to 224x224 for the model
+    while True:
+        frame = picam2.capture_array()  # Capture the image into a NumPy array
+        frame = frame[:, :, [2, 1, 0]]
+
+        # Resize the frame to 224x224 for the model
         img = cv2.resize(frame, (224, 224))
         img_array = tf.keras.preprocessing.image.img_to_array(img)
         img_array = np.expand_dims(img_array, axis=0)
         img_array = preprocess_input(img_array)
 
+        # get rid of the unneccesary prints from the model
+        original_stdout = sys.stdout
+        sys.stdout = open(os.devnull, 'w')
+
         # Make predictions
         predictions = model.predict(img_array)
+
+        sys.stdout = original_stdout
+
         # Decode the predictions
         label = decode_predictions(predictions, top=1)[0][0][1]
         confidence = decode_predictions(predictions, top=1)[0][0][2]
 
-        # Check if the label is related to plants (you might need to adjust the labels)
+        # Check if the label is related to plants
         plant_detected = "pot" in label or "vase" in label
-        display_text = f"{label}: {confidence:.2f}" if plant_detected else "No plant detected"
 
-        # Draw the display_text on the frame
-        cv2.putText(frame, display_text, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
+        if plant_detected:
+            display_text = f"Plant detected, confidence: {confidence:.2f}"
+            if not continuous_detection:
+                first_detection_time = time.time()  # Update the detection time
+                continuous_detection = True
+        else:
+            display_text = "No plant detected"
+            continuous_detection = False  # Reset the continuous detection flag
+
+        # Calculate elapsed time
+        elapsed_time = time.time() - start_time
+        fps = 1 / elapsed_time
+        start_time = time.time()
+        # Update the display_text with label and average FPS
+        print(display_text,f"Label: {label}, Confidence: {confidence:.2f},FPS: {fps:.4f}", end="\r")
 
         # Display the frame
-        cv2.imshow('Plant Detection', frame)
+        # cv2.putText(frame, display_text, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
+        # cv2.imshow('Plant Detection', frame)
 
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
-
-    
-  
-        # filename = os.path.join(dir2, f"frame{i}.jpg")
-        # cv2.imwrite(filename, image)
-        # i += 1
-        # if i == 100:
-        #     break
-        # Wait for 1 ms and check if the 'q' key is pressed to exit the loop
-        # if cv2.waitKey(1) & 0xFF == ord('q'):
-        #     break
 finally:
-    cv2.destroyAllWindows()  # Cleanly close OpenCV windows
-
-
-
-
-
-
-
-while True:
-    ret, frame = cap.read()
-    if not ret:
-        break
-
-    # Resize the frame to 224x224 for the model
-    img = cv2.resize(frame, (224, 224))
-    img_array = tf.keras.preprocessing.image.img_to_array(img)
-    img_array = np.expand_dims(img_array, axis=0)
-    img_array = preprocess_input(img_array)
-
-    # Make predictions
-    predictions = model.predict(img_array)
-    # Decode the predictions
-    label = decode_predictions(predictions, top=1)[0][0][1]
-    confidence = decode_predictions(predictions, top=1)[0][0][2]
-
-    # Check if the label is related to plants (you might need to adjust the labels)
-    plant_detected = "pot" in label or "vase" in label
-    display_text = f"{label}: {confidence:.2f}" if plant_detected else "No plant detected"
-
-    # Draw the display_text on the frame
-    cv2.putText(frame, display_text, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
-
-    # Display the frame
-    cv2.imshow('Plant Detection', frame)
-
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
-
-# Release the capture
-cap.release()
-cv2.destroyAllWindows()
+    # Release the capture
+      cv2.destroyAllWindows()

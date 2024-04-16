@@ -27,20 +27,26 @@ typedef struct Plant_Manager{
     State right_state;
     int potting_enable;
     Fill type_expected;
-    DynStruct* left_dyn;
-    DynStruct* right_dyn;
+    DynStruct* dynamixels;
     int fd;
     Angle depot_angle;
+    side depot_zone; 
 } Plant_Manager;
 
-int picking_FSM_left(Plant_Manager* plant_manager);
-int init_plant_manager();
+int picking_FSM(Plant_Manager* plant_manager, side* Side);
+int init_plant_manager(Plant_Manager* plant_manager);
+int close_plant_manager(Plant_Manager* plant_manager); 
 Angle drop_slot(Plant_Manager *PM, side side);
-Angle depot_slot(Plant_Manager *PM, side side);
 
 float travel_height(Plant_Manager *PM, side side, Angle angle);
 int update_fill(Plant_Manager *PM, side side, Angle angle);
-int unupdate_fill(Plant_Manager *PM, side side, Angle angle);
+
+Angle depot_slot(Plant_Manager *PM, side side);
+int update_unfill(Plant_Manager *PM, side side, Angle angle);
+double grab_height(Plant_Manager *PM, side side, Angle angle);
+int is_full(Plant_Manager *PM, side Side); 
 
 void left_gripper_thread(Plant_Manager* plant_manager);
 void right_gripper_thread(Plant_Manager* plant_manager);
+
+

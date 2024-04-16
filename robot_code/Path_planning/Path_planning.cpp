@@ -29,6 +29,8 @@ void Path_planning_update(BigStruct* all_struct){
 
     double *F = (double *)calloc(2, sizeof(double));       // Field vector [rad/s]
     double *Frep = (double *)calloc(2, sizeof(double));    // Field vector [rad/s]
+    Frep[0] = 0.0;
+    Frep[1] = 0.0;  
 
     double v_max = all_struct->path->v_max;
 
@@ -39,7 +41,7 @@ void Path_planning_update(BigStruct* all_struct){
 
     // Attractive field variables
 
-    double trigger_decel = 0.1;     // distance [m] from goal at which the robot starts to decelerate
+    double trigger_decel = 0.2;     // distance [m] from goal at which the robot starts to decelerate
 
     double x_goal = all_struct->strat->goal_x/1000;            // Goal position [m]
     double y_goal = all_struct->strat->goal_y/1000;            // Goal position [m]
@@ -69,7 +71,7 @@ void Path_planning_update(BigStruct* all_struct){
     // Variables declaration
 
     rho_0 = 0.05;  // [m] : distance from which the repulsive field is triggered
-    k_rep = 0.000; // Magnitude of the repulsive field
+    k_rep = 0.001; // Magnitude of the repulsive field
     
 
     rho = x_robot - radius_robot;
@@ -93,8 +95,8 @@ void Path_planning_update(BigStruct* all_struct){
     /////////--------   Plants avoidance  -------/////////
 
     // Variables declaration
-
-    double radius = 0.125;
+    
+    double radius_plant = 0.125;
 
     struct Plant {
             double x;
@@ -118,7 +120,7 @@ void Path_planning_update(BigStruct* all_struct){
         x_obs = plants[i].x;
         y_obs = plants[i].y;
 
-        rho = sqrt(pow(x_obs-x_robot, 2) + pow(y_obs-x_robot, 2)) - radius - radius_robot;  // Minimal distance from the obstacle
+        rho = sqrt(pow(x_obs-x_robot, 2) + pow(y_obs-x_robot, 2)) - radius_plant - radius_robot;  // Minimal distance from the obstacle
 
         if (rho < rho_0 && all_struct->path->active_zone[i] == 1) {
             Frep[0] += k_rep * (1/rho - 1/rho_0) / pow(rho, 3) * (x_robot-x_obs);
@@ -128,6 +130,11 @@ void Path_planning_update(BigStruct* all_struct){
 
 
 /////////--------   Plant avoidance (test predictive fields)     --------/////////
+    
+    // coefficient 
+    double trigger_laterale = 0.2;    // [m] : latérale distance from which the robot starts to avoid the plant
+    double trigger_longitudinale = 0.3; // [m] : longitudinale distance from which the robot starts to avoid the plant
+    double max_correction = sqrt(120);   // sqrt([rad/s]) : maximum speed correction due to plant (sqrt because multiply two times the normal vector)
 
     double a = (y_goal - y_robot) / (x_goal - x_robot); 
     double b;
@@ -135,28 +142,23 @@ void Path_planning_update(BigStruct* all_struct){
     double y_proj;
     double rho_obs_proj;
     double rho_robot_proj;
-    double safety_distance =  radius_plant + radius_robot + 0.1; 
-    double max_speed_correction = 30; // [rad/s] : maximum speed correction due to obstacles
+    //double safety_distance =  radius_plant + radius_robot + 0.1; 
 
-    for (int i = 0; i < 1; i++) {
+    for (int i = 0; i < 6; i++) {
         b = plants[i].y - a*plants[i].x; 
         
         x_proj = (a*y_robot + x_robot - a*b) / (pow(a, 2) + 1);  
         y_proj = a*x_proj + b; 
 
-        rho_obs_proj = sqrt(pow(plants[i].x - x_proj , 2) + pow(plants[i].y - y_proj));
-        rho_robot_proj = sqrt(pow(x_robot - x_proj , 2) + pow(y_robot - y_proj));
+        rho_obs_proj = sqrt(pow(plants[i].x - x_proj , 2) + pow(plants[i].y - y_proj, 2));
+        rho_robot_proj = sqrt(pow(x_robot - x_proj , 2) + pow(y_robot - y_proj, 2));
 
-        if(rho_obs_proj < safety_distance) {
-            rho_obs_proj = safety_distance;
-        }
-        if(rho_robot_proj < safety_distance) {
-            rho_robot_proj = safety_distance;
-        }
+        if(rho_obs_proj < trigger_longitudinale && rho_robot_proj < trigger_laterale && 0.01 < rho_robot_proj && all_struct->path->active_zone[i] == 1) {
+            
+            Frep[0] += ((x_robot - x_proj) / rho_robot_proj) * (rho_obs_proj * (-max_correction/trigger_longitudinale) + max_correction) * (rho_robot_proj * (-max_correction/trigger_laterale) + max_correction); 
+            Frep[1] += ((y_robot - y_proj) / rho_robot_proj) * (rho_obs_proj * (-max_correction/trigger_longitudinale) + max_correction) * (rho_robot_proj * (-max_correction/trigger_laterale) + max_correction);
 
-        if(all_struct->path->active_zone[i] == 1){
-            Frep[0] += max_speed_correction ((x_robot - x_proj) / rho_robot_proj) * safety_distance / rho_obs_proj; 
-            Frep[1] += max_speed_correction ((y_robot - y_proj) / rho_robot_proj) * safety_distance / rho_obs_proj;
+            printf("correction from plant %d : %f, %f", i, Frep[0], Frep[1]); 
         }
     }
 
@@ -166,7 +168,8 @@ void Path_planning_update(BigStruct* all_struct){
     rho_0 = 0.75;  // [m] : distance from which the repulsive field is triggered
     k_rep = 0; // Magnitude of the repulsive field
 
-    int N = sizeof(all_struct->opp_pos->x)/all_struct->opp_pos->x[0];
+    int N = 20;
+
 
     for (int i = 0; i < N; i++) {
 
@@ -177,10 +180,9 @@ void Path_planning_update(BigStruct* all_struct){
 
         if (rho < rho_0) {
             Frep[0] += k_rep * (1/rho - 1/rho_0) / pow(rho, 3) * (x_robot-x_obs);
-            Frep[1] += 0*Frep[1] / (x_robot-x_obs) * (y_robot-y_obs);
+            Frep[1] += Frep[1] / (x_robot-x_obs) * (y_robot-y_obs);
         }
     }
-
 
     ////////---------    PAMI's avoidance   -------////////
 
@@ -207,7 +209,6 @@ void Path_planning_update(BigStruct* all_struct){
         Frep[0] += k_rep * (1/rho - 1/rho_0) / pow(rho, 3) * (x_robot-x_obs);
     }
 
-
     ////////--------- Repulsive field cancellation -------////////
 
 
@@ -216,22 +217,21 @@ void Path_planning_update(BigStruct* all_struct){
         Frep[1] = 0;
     } */
 
+    printf(" attractive field value = %f , %f", F[0], F[0]); 
+
     F[0] += Frep[0];
     F[1] += Frep[1];
-
 
     ////////--------- Robot's speed setting -------////////
 
 
     all_struct->path->norm = sqrt(pow(F[0] * K, 2) + pow(F[1] * K, 2));
     all_struct->path->theta = atan2(F[1], F[0]);
-
     if (all_struct->path->theta > 2*M_PI) { all_struct->path->theta -= 2*M_PI; }
     else if (all_struct->path->theta < 0) { all_struct->path->theta += 2*M_PI; }
 
 
     ////////--------- Speed limitation -----------////////
-
 
     if (all_struct->path->norm > v_max) {
         all_struct->path->norm = v_max;
@@ -241,7 +241,7 @@ void Path_planning_update(BigStruct* all_struct){
     ////////-----------    Print    -------------////////
 
     
-/*     printf("Fx = %f\t", F[0]*K);
+/*  printf("Fx = %f\t", F[0]*K);
     printf("Fy = %f\t", F[1]*K);
     printf("Frep x = %f\t", Frep[0]*K);
     printf("Frep y = %f\n", Frep[1]*K);
@@ -250,7 +250,7 @@ void Path_planning_update(BigStruct* all_struct){
     printf("Position y = %f\t", y);
     printf("Angle goal = %f\n", all_struct->path->field->theta);
     printf("Angle theta = %f\n", all_struct->rob_pos->theta); */
-
+    printf("sortie pp\n");
     if (rho_goal < 0.1 + radius_robot) {
         all_struct->strat->goal_reached = true;
         speed_regulation(all_struct,0,0);
@@ -262,7 +262,6 @@ void Path_planning_update(BigStruct* all_struct){
 
     }
     ////////---------     free      -------////////
-
 
     free(Frep);
     free(F);
@@ -304,10 +303,4 @@ void speed_regulation(BigStruct* all_struct,double wanted_theta, double wanted_s
 
 	motor_ask(L_wheel_speed, R_wheel_speed, all_struct);
 }
-
-        //all_struct->strat->goal_reached = true;
-
-    /*else {
-        all_struct->strat->goal_reached = false;
-    }*/
 

@@ -62,9 +62,9 @@ BigStruct* init_BigStruct(){
 	// robot position
 	all_struct->rob_pos = (RobotPosition*) malloc(sizeof(RobotPosition));
 
-	all_struct->rob_pos->x = 0.24;
-	all_struct->rob_pos->y = 0.24;
-	all_struct->rob_pos->theta = 0*(M_PI/180);
+	all_struct->rob_pos->x = 0.24;//0.24;
+	all_struct->rob_pos->y = 0.24;//0.24;
+	all_struct->rob_pos->theta = 0*(M_PI/180);//0*(M_PI/180);
 
 	// Opponents position
  	all_struct->opp_pos = (OpponentsPosition*) malloc(sizeof(OpponentsPosition));
@@ -97,6 +97,9 @@ BigStruct* init_BigStruct(){
 	all_struct->strat->backup_ok = false;
 	all_struct->strat->goal_reached = false;
 	all_struct->strat->first_time_plant = 1;
+	all_struct->strat->wiggle_plant = 0;
+	all_struct->strat->plant_angle = 0.0;
+
 
 	all_struct->pot_list = (int*) malloc(6*sizeof(int));
 	all_struct->plant_list = (int*) malloc(6*sizeof(int));

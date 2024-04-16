@@ -12,6 +12,7 @@ void update_position_encoders( BigStruct *all_struct, odometer_data *odo_data)
 
 	int32_t left_value = left[1] << 24 | left[2] << 16 | left[3] << 8 | left[4];
 	int32_t right_value = right[1] << 24 | right[2] << 16 | right[3] << 8 | right[4];
+    //printf(" left odo =%d\t right odo = %d\n", left_value, right_value);
 
 
     float L_dist = 2*PI*(left_value-odo_data->left_prev)/8192.0*odo_wheel_radius;

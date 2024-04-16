@@ -1,7 +1,6 @@
 #include "strategy.hh"
 #include "../controller/motor_ask.hh"
 #include "../Path_planning/Path_planning.hh"
-#inclde "../Sensors/IR.hh"
 
 void main_strategy(BigStruct* all_struct){
     //  Global Variables 
@@ -172,8 +171,8 @@ void pot_zone_select(BigStruct* all_struct, int num_pot){
         all_struct->strat->goal_y = 2000;
     }
     else if(num_pot == 5){
-        all_struct->strat->goal_x = 285;
-        all_struct->strat->goal_y = 1000;
+        all_struct->strat->goal_x = 285;//285;
+        all_struct->strat->goal_y = 1000;//1000;
     }
 
     all_struct->strat->count_pot++;
@@ -301,11 +300,12 @@ void calib_plant_zone(BigStruct* all_struct,double angle){
 
     }
     else{
-        speed_regulation(all_struct, angle , 3.0);
+        speed_regulation(all_struct, angle , 6.0);
     }
     double rho_goal = sqrt(pow(all_struct->rob_pos->x - all_struct->strat->goal_x/1000, 2) + pow(all_struct->rob_pos->y - all_struct->strat->goal_y/1000, 2));
-    if(rho_goal > 0.2){
+    if(rho_goal > 0.3){
         all_struct->grabbing_plant_done = true;// Temporary
     }
+    all_struct->strat->wiggle_plant++;
 
 }

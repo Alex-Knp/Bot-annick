@@ -97,6 +97,9 @@ typedef struct Strategy
 	int count_plant;
 	int count_drop;
 
+	int wiggle_plant;
+	double plant_angle;
+
 	int first_time_plant;
 
 

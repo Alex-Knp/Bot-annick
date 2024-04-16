@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../main/all_struct.hh"
+#include "../Sensors/IR.hh"
 #include <iostream>
 #include <thread>
 #include <mutex>
